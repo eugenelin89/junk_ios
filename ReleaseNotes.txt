@@ -1,0 +1,50 @@
+GOT-JUNK Release Notes:
+
+Version 1.2 (rev. 2438)
+- Added Push Notifications
+- Added Disaster Recovery: when JunkNet goes down, the app caches data so that the user can continue using the app.
+- Bug fixes when the app was taken over:
+	- The Expense sheets where crashes due to a variable being called "Description".
+	- The Login screen would appear twice when logging in.
+
+Version 1.2.1 (rev. 2446)
+- Bug Fix: Fixes the bug where the offline screen will appear when it is not suppose to.
+- Code: Centralizes the location of where the server API is defined.
+
+Version 1.2.2 (check-in log)
+- Improved offline mode: Better detection of offline mode, Offline screen will only appear when JunkNet goes down.  Disable refresh and next/previous day buttons during offline mode.
+- Improved refreshing feedback of the Jobs screen.
+- Various UI Tweaks.
+- Bug Fix: Tax Issue with the AU Mobile App. #2860.
+- Bug Fix: notes not working #4199.
+- Payments and Add Notes screen close after saving.  The SAVE buttons disable when pressed to prevent the user from pressing it multiple times.
+Major changes/cleanup task, plus 
+Bug fixes #6956:
+- Jobs screen: Go to a different date, selecting a job, then going back to the Job screen makes the date default back to the current date (not the date that the user was on).
+- Job Details screen: The title momentarily says "Phone List", then changes to be the job ID.
+- Job Details screen: After saving a note, the app should go back to the Notes screen.
+- Notes screen: There should be a + sign at the top right of the screen.
+- Route screen: When selecting a route, the app should transition to the right to go to the Jobs screen.
+- Franchise screen: After selecting a franchise, and then a route, the app should go to the Jobs screen automatically.
+- Status screen: The text at the bottom of the screen is not very clear.
+
+Version 1.2.2 Release Notes (rev. 2468):
+- Fixes issue when the offline screen appears too often.
+- Fixes issue when entering a payment in Australia (#2860).
+- Fixes issue when entering a new note for a job (#4199).
+- Improved offline mode functionality.
+- Improved user interface flow and functionality.
+- Various bug fixes that addresses stability.
+- Various user interface tweaks.
+- Added a no internet connection screen when the device has no internet.
+
+Version 1.2.3 Release Notes(rev. 2478)
+- Fixes issue with the app always asking to upgrade to a new version.
+- Fixes issue with the app not clearing the Push Notification (Parse) channels.
+
+Version 1.2.5
+- Fixes issue with the app not downloading a new version.
+
+Version 1.2.6 Release Notes (rev. 2507)
+- Potential crash fixes for 1. Resource addresses and 2. Deallocating the location manager.
+

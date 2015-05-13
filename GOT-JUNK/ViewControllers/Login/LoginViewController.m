@@ -1,0 +1,284 @@
+//
+//  LoginViewController.m
+//  GOT-JUNK
+//
+//  Created by epau on 1/23/13.
+//  Copyright (c) 2013 1800 Got Junk. All rights reserved.
+//
+
+#import "LoginViewController.h"
+#import "UserDefaultsSingleton.h"
+#import "DateHelper.h"
+#import "FetchHelper.h"
+#import "Route.h"
+
+@interface LoginViewController ()
+
+@end
+
+@implementation LoginViewController
+
+@synthesize loginTableView = _loginTableView;
+@synthesize usernameTF = _usernameTF;
+@synthesize passwordTF = _passwordTF;
+@synthesize loginButton = _loginButton;
+
+#pragma mark - Initialization
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+#pragma mark - View Lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    NSLog(@"LoginViewController view did load");
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"FetchLoginFailed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"FetchLoginSuccess" object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchTestSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchServerUp" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchFailedServerDown" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchFailedNoInternet" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchInternetUp" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentUpgradeMenu) name:@"UpdateAvailable" object:nil];
+    
+    [Flurry logEvent:@"Login Controller"];
+    self.loginTableView.backgroundColor = [UIColor clearColor];
+    UIImage *buttonImage = [[UIImage imageNamed:@"button-green.png"]
+                            resizableImageWithCapInsets:UIEdgeInsetsMake(0, 6, 0, 6)];
+    UIImage *buttonImageHighlight = [[UIImage imageNamed:@"button-green-press.png"]
+                                     resizableImageWithCapInsets:UIEdgeInsetsMake(15, 6, 15, 6)];
+    [self.loginButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [self.loginButton setBackgroundImage:buttonImageHighlight forState:UIControlStateHighlighted];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self updateStatus];
+    
+    // In case there is a lingering password
+    [[FetchHelper sharedInstance] clearUsernamePassword];
+    [[FetchHelper sharedInstance] getSystemInfo];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self newVersionCheck];
+    
+//    self.debug1.text = [DataStoreSingleton sharedInstance].debugDisplayText1;
+//    self.debug2.text = [DataStoreSingleton sharedInstance].debugDisplayText2;
+
+}
+
+- (void)updateStatus
+{
+    if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
+    {
+        self.onlineStatus.text = @"Connected to internet";
+        self.onlineStatus.textColor = [UIColor blueColor];
+    }
+    else
+    {
+        self.onlineStatus.text = @"Not connected to internet";
+        self.onlineStatus.textColor = [UIColor redColor];
+    }
+
+    if( [DataStoreSingleton sharedInstance].isJunkNetLive == YES )
+    {
+        self.junknetStatus.text = @"JunkNet is currently online";
+        self.junknetStatus.textColor = [UIColor blueColor];
+    }
+    else
+    {
+        self.junknetStatus.text = @"JunkNet is currently offline";
+        self.junknetStatus.textColor = [UIColor redColor];
+    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+# pragma mark - Data Rendering
+
+- (NSString *)storedUsername
+{
+    UserDefaultsSingleton *defaults = [UserDefaultsSingleton sharedInstance];
+    NSString *username = [defaults getUserLogin];
+    
+    return username;
+}
+
+# pragma mark - UITextField Delegate Methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.usernameTF)
+    {
+        [self.usernameTF resignFirstResponder];
+        [self.passwordTF becomeFirstResponder];
+    }
+    else
+    {
+        [self.passwordTF resignFirstResponder];
+        [self loginWasPressed:nil];
+    }
+    return NO;
+}
+
+# pragma mark - UITableViewDataSource Methods
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 2;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"";
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITextField *tv = nil;
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (cell == nil)
+    {
+        NSArray *objects = [[NSBundle mainBundle] loadNibNamed:@"LoginTableViewCell" owner:self options:nil];
+        cell = (UITableViewCell*)[objects objectAtIndex:0];
+    }
+    
+    if (!tv) { tv = (UITextField*)[cell viewWithTag:1];}
+    
+    if (indexPath.row == 0)
+    {
+        tv.placeholder = @"Username";
+        
+        tv.delegate = self;
+        
+        self.usernameTF = tv;
+        
+        NSString *username = [self storedUsername];
+        if (username) {
+            tv.text = username;
+        } else {
+            [self.usernameTF becomeFirstResponder];
+        }
+    }
+    else
+    {
+        tv.placeholder = @"Password";
+        tv.secureTextEntry = YES;
+        tv.delegate = self;
+        tv.returnKeyType = UIReturnKeyDone;
+        self.passwordTF = tv;
+        
+        if ([self storedUsername])
+        {
+            [tv becomeFirstResponder];
+        }
+        else
+        {
+            // No big deal. the other one will be first responder
+        }
+    }
+    
+    return cell;
+}
+
+# pragma mark - Login/Logout
+
+- (void)loginSuccess
+{
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [self.loginButton setEnabled:YES];
+
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+- (void)loginFailed
+{
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+    UIAlertView *failedLoginAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [failedLoginAlert show];
+    
+    [self.loginButton setEnabled:YES];
+}
+
+#pragma mark - Deal With Response
+
+# pragma mark - Button IBActions
+- (IBAction)loginWasPressed:(id)sender
+{
+    [self.loginButton setEnabled:NO];
+    
+    [self.usernameTF resignFirstResponder];
+    
+    NSString *username = self.usernameTF.text;
+    NSString *password = self.passwordTF.text;
+    
+    [[FetchHelper sharedInstance] login:username withPassword:password];
+}
+
+# pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if( actionSheet.tag == 1 )
+    {
+        if (buttonIndex == 0)
+        {
+            NSString* launchUrl = [[DataStoreSingleton sharedInstance].appUpgradeInfo objectForKey:@"applicationURL"];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: launchUrl]];
+        }
+        return;
+    }
+}
+
+-(void)newVersionCheck
+{
+    [[FetchHelper sharedInstance] checkAppUpgrade];
+}
+
+-(void)presentUpgradeMenu
+{
+   
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:[NSString stringWithFormat:@"A newer version of JunkNet Mobile is available.  Would you like to upgrade?"]
+                                  delegate:self
+                                  cancelButtonTitle:@"No"
+                                  destructiveButtonTitle:@"Yes!"
+                                  otherButtonTitles:nil];
+    actionSheet.tag = 1;
+    [actionSheet showInView:self.view];
+}
+
+
+@end

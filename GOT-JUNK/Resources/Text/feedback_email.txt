@@ -1,0 +1,7 @@
+Hey guys, 
+
+[my message here] 
+
+User ID: %@ 
+App Version: %@ 
+iOS Version: %@ 

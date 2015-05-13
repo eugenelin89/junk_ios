@@ -1,0 +1,28 @@
+PODS:
+  - AFNetworking (1.1.0)
+  - CupertinoYankee (0.1.1)
+  - MBProgressHUD (0.5)
+  - MSCollectionViewCalendarLayout (0.1.3):
+    - CupertinoYankee (~> 0.1)
+  - Reachability (3.1.1)
+  - SBJson (3.1.1)
+  - UIColor-Utilities (1.0.1)
+
+DEPENDENCIES:
+  - AFNetworking (~> 1.1.0)
+  - MBProgressHUD (= 0.5)
+  - MSCollectionViewCalendarLayout
+  - Reachability (~> 3.1.0)
+  - SBJson (~> 3.1.1)
+  - UIColor-Utilities
+
+SPEC CHECKSUMS:
+  AFNetworking: e1ee63e577c68e1d5004ccedb7367eda41f65943
+  CupertinoYankee: b07873e724c2c5c1a249c555a5bd3d508c04e0de
+  MBProgressHUD: 3e5cc03a9f318a2ed8da3fd47690003112e6e867
+  MSCollectionViewCalendarLayout: 10ca29578b0dd9b8586b1beed3ab479a3788b4b5
+  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
+  SBJson: 2d3fad36907ed74a3d77dbeaab0747f382eafc1c
+  UIColor-Utilities: 3f13aebe447f5e19c8d3aa18c194c53116b23537
+
+COCOAPODS: 0.34.4
