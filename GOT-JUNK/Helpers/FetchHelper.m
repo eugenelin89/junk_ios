@@ -1927,6 +1927,22 @@
 
         [self clearChannels];
     }
+    
+    
+    // If execution reaches this point, the error is none of the above,
+    // and, we need to assume it is either server down or no connection, both triggers Offline Mode.
+    // Assume no connection.
+    // There are many types of error associated with server down or no connection.
+    // Interpreting the error based on error message is a bad idea.
+    // TODO: REFACTORING NEEDED.
+    if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
+    {
+        [DataStoreSingleton sharedInstance].isInternetLive = NO;
+        dispatch_async( dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedNoInternet" object:nil];
+        });
+    }
+    
 }
 
 
