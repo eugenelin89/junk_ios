@@ -1908,6 +1908,7 @@
     {
         return;
     }
+    
 
     [DataStoreSingleton sharedInstance].debugDisplayText1 = method;
     
