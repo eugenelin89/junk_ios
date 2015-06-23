@@ -262,6 +262,8 @@
 		CB5893FF1B3A050100C9F709 /* CoreDataStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB5893FD1B3A050100C9F709 /* CoreDataStore.xcdatamodeld */; };
 		CB5894051B3A059700C9F709 /* CDJob.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5894041B3A059700C9F709 /* CDJob.m */; };
 		CB5894081B3A05D700C9F709 /* CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5894071B3A05D700C9F709 /* CDRoute.m */; };
+		CB58940E1B3A0AB600C9F709 /* CDJob+GotJunk.m in Sources */ = {isa = PBXBuildFile; fileRef = CB58940D1B3A0AB600C9F709 /* CDJob+GotJunk.m */; };
+		CB5894111B3A1A0100C9F709 /* CDRoute+GotJunk.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5894101B3A1A0100C9F709 /* CDRoute+GotJunk.m */; };
 		E17723BC1522BDF296F07F61 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F768C695B88026F944EDD2 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -627,6 +629,10 @@
 		CB5894041B3A059700C9F709 /* CDJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDJob.m; path = CoreDataStore/CDJob.m; sourceTree = "<group>"; };
 		CB5894061B3A05D700C9F709 /* CDRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDRoute.h; path = CoreDataStore/CDRoute.h; sourceTree = "<group>"; };
 		CB5894071B3A05D700C9F709 /* CDRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDRoute.m; path = CoreDataStore/CDRoute.m; sourceTree = "<group>"; };
+		CB58940C1B3A0AB600C9F709 /* CDJob+GotJunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDJob+GotJunk.h"; path = "CoreDataStore/CDJob+GotJunk.h"; sourceTree = "<group>"; };
+		CB58940D1B3A0AB600C9F709 /* CDJob+GotJunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDJob+GotJunk.m"; path = "CoreDataStore/CDJob+GotJunk.m"; sourceTree = "<group>"; };
+		CB58940F1B3A1A0100C9F709 /* CDRoute+GotJunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDRoute+GotJunk.h"; path = "CoreDataStore/CDRoute+GotJunk.h"; sourceTree = "<group>"; };
+		CB5894101B3A1A0100C9F709 /* CDRoute+GotJunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDRoute+GotJunk.m"; path = "CoreDataStore/CDRoute+GotJunk.m"; sourceTree = "<group>"; };
 		F96F8057550944CB709C73BF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1237,6 +1243,10 @@
 				CB5894071B3A05D700C9F709 /* CDRoute.m */,
 				CB5894031B3A059700C9F709 /* CDJob.h */,
 				CB5894041B3A059700C9F709 /* CDJob.m */,
+				CB58940C1B3A0AB600C9F709 /* CDJob+GotJunk.h */,
+				CB58940D1B3A0AB600C9F709 /* CDJob+GotJunk.m */,
+				CB58940F1B3A1A0100C9F709 /* CDRoute+GotJunk.h */,
+				CB5894101B3A1A0100C9F709 /* CDRoute+GotJunk.m */,
 			);
 			name = CoreDataStore;
 			sourceTree = "<group>";
@@ -1571,6 +1581,7 @@
 				90ED95501A13ED2000D747F1 /* EditContactViewController.m in Sources */,
 				90B761D919F6E57D00B61D33 /* APIObjectConversionHelper.m in Sources */,
 				9065268D1A1BB73900651456 /* NoConnectionViewController.m in Sources */,
+				CB5894111B3A1A0100C9F709 /* CDRoute+GotJunk.m in Sources */,
 				90ED95911A13EE3800D747F1 /* JNStatusViewController.m in Sources */,
 				CB5894081B3A05D700C9F709 /* CDRoute.m in Sources */,
 				90B762D319F6E57D00B61D33 /* main.m in Sources */,
@@ -1578,6 +1589,7 @@
 				90B761DB19F6E57D00B61D33 /* HTTPClientSingleton.m in Sources */,
 				90B761F719F6E57D00B61D33 /* Route.m in Sources */,
 				90ED95601A13ED2000D747F1 /* MJJobDetailViewController.m in Sources */,
+				CB58940E1B3A0AB600C9F709 /* CDJob+GotJunk.m in Sources */,
 				90ED95581A13ED2000D747F1 /* MJCopyMoveViewController.m in Sources */,
 				90B761F019F6E57D00B61D33 /* LoadTypeSize.m in Sources */,
 				90ED95461A13ED2000D747F1 /* MJResourceListViewController.m in Sources */,
