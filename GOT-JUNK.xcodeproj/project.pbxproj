@@ -259,6 +259,9 @@
 		90ED95911A13EE3800D747F1 /* JNStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90ED958F1A13EE3800D747F1 /* JNStatusViewController.m */; };
 		90ED95921A13EE3800D747F1 /* JNStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90ED95901A13EE3800D747F1 /* JNStatusViewController.xib */; };
 		90ED95951A13F9F200D747F1 /* JunkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90ED95941A13F9F200D747F1 /* JunkViewController.m */; };
+		CB5893FF1B3A050100C9F709 /* CoreDataStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB5893FD1B3A050100C9F709 /* CoreDataStore.xcdatamodeld */; };
+		CB5894051B3A059700C9F709 /* CDJob.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5894041B3A059700C9F709 /* CDJob.m */; };
+		CB5894081B3A05D700C9F709 /* CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5894071B3A05D700C9F709 /* CDRoute.m */; };
 		E17723BC1522BDF296F07F61 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F768C695B88026F944EDD2 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -619,6 +622,11 @@
 		90ED95901A13EE3800D747F1 /* JNStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JNStatusViewController.xib; sourceTree = "<group>"; };
 		90ED95931A13F9F200D747F1 /* JunkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JunkViewController.h; sourceTree = "<group>"; };
 		90ED95941A13F9F200D747F1 /* JunkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JunkViewController.m; sourceTree = "<group>"; };
+		CB5893FE1B3A050100C9F709 /* CoreDataStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataStore.xcdatamodel; sourceTree = "<group>"; };
+		CB5894031B3A059700C9F709 /* CDJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDJob.h; path = CoreDataStore/CDJob.h; sourceTree = "<group>"; };
+		CB5894041B3A059700C9F709 /* CDJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDJob.m; path = CoreDataStore/CDJob.m; sourceTree = "<group>"; };
+		CB5894061B3A05D700C9F709 /* CDRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDRoute.h; path = CoreDataStore/CDRoute.h; sourceTree = "<group>"; };
+		CB5894071B3A05D700C9F709 /* CDRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDRoute.m; path = CoreDataStore/CDRoute.m; sourceTree = "<group>"; };
 		F96F8057550944CB709C73BF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -757,6 +765,7 @@
 		90B7607719F6E57D00B61D33 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CB5893FC1B3A04CE00C9F709 /* CoreDataStore */,
 				90B7607819F6E57D00B61D33 /* DataStoreSingleton.h */,
 				90B7607919F6E57D00B61D33 /* DataStoreSingleton.m */,
 				90B7607A19F6E57D00B61D33 /* DateHelper.h */,
@@ -1220,6 +1229,18 @@
 			path = StatusSettings;
 			sourceTree = "<group>";
 		};
+		CB5893FC1B3A04CE00C9F709 /* CoreDataStore */ = {
+			isa = PBXGroup;
+			children = (
+				CB5893FD1B3A050100C9F709 /* CoreDataStore.xcdatamodeld */,
+				CB5894061B3A05D700C9F709 /* CDRoute.h */,
+				CB5894071B3A05D700C9F709 /* CDRoute.m */,
+				CB5894031B3A059700C9F709 /* CDJob.h */,
+				CB5894041B3A059700C9F709 /* CDJob.m */,
+			);
+			name = CoreDataStore;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1504,6 +1525,7 @@
 			files = (
 				90ED95731A13ED2000D747F1 /* LoginViewController.m in Sources */,
 				90B761DE19F6E57D00B61D33 /* NSNull+JSON.m in Sources */,
+				CB5894051B3A059700C9F709 /* CDJob.m in Sources */,
 				90ED95401A13ED2000D747F1 /* MJExpenseAccountsTableViewController.m in Sources */,
 				90ED95621A13ED2000D747F1 /* MJJobPaymentAusViewController.m in Sources */,
 				90B761D819F6E57D00B61D33 /* APIDataConversionHelper.m in Sources */,
@@ -1550,6 +1572,7 @@
 				90B761D919F6E57D00B61D33 /* APIObjectConversionHelper.m in Sources */,
 				9065268D1A1BB73900651456 /* NoConnectionViewController.m in Sources */,
 				90ED95911A13EE3800D747F1 /* JNStatusViewController.m in Sources */,
+				CB5894081B3A05D700C9F709 /* CDRoute.m in Sources */,
 				90B762D319F6E57D00B61D33 /* main.m in Sources */,
 				90B761F819F6E57D00B61D33 /* TaxType.m in Sources */,
 				90B761DB19F6E57D00B61D33 /* HTTPClientSingleton.m in Sources */,
@@ -1576,6 +1599,7 @@
 				90ED95641A13ED2000D747F1 /* MJJobPaymentDetailViewController.m in Sources */,
 				90B761EC19F6E57D00B61D33 /* ExpenseAccount.m in Sources */,
 				90B761F419F6E57D00B61D33 /* PaymentMethod.m in Sources */,
+				CB5893FF1B3A050100C9F709 /* CoreDataStore.xcdatamodeld in Sources */,
 				90ED95561A13ED2000D747F1 /* MJAdjustJobViewController.m in Sources */,
 				90B761DC19F6E57D00B61D33 /* JSONParserHelper.m in Sources */,
 				90B762CF19F6E57D00B61D33 /* AppDelegate.m in Sources */,
@@ -1899,6 +1923,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		CB5893FD1B3A050100C9F709 /* CoreDataStore.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CB5893FE1B3A050100C9F709 /* CoreDataStore.xcdatamodel */,
+			);
+			currentVersion = CB5893FE1B3A050100C9F709 /* CoreDataStore.xcdatamodel */;
+			name = CoreDataStore.xcdatamodeld;
+			path = CoreDataStore/CoreDataStore.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 90BB14AC19F593CF005715E4 /* Project object */;
 }
