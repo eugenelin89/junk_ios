@@ -92,7 +92,7 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayJob) name:@"needToDisplayJob" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedNoInternet) name:@"FetchFailedNoInternet" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedServerDown) name:@"FetchFailedServerDown" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:@"FetchFailedServerDown" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedSessionExpired) name:@"FetchFailedSessionExpired" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"FetchLoginSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DefaultFranchiseNameChanged" object:nil];
@@ -592,23 +592,16 @@ static const int NumMenusInSection0 = 7;
 
 - (void)fetchFailedNoInternet
 {
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-/*
-    if (alert == nil)
-    {
-        alert = [[UIAlertView alloc] initWithTitle:@"You are in offline mode.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-        alert.tag = -1;
-        [alert show];
-    }
+    //[MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    //NoConnectionViewController *noc = [[NoConnectionViewController alloc] init];
+    //[self presentViewController:noc animated:YES completion:nil];
     
-    [self.navigationItem.rightBarButtonItem setEnabled:NO];
-*/
-    NoConnectionViewController *noc = [[NoConnectionViewController alloc] init];
-    [self presentViewController:noc animated:YES completion:nil];
+    // In the case of no internet, Enter offline mode.
+    [self enterOfflineMode];
 
 }
 
-- (void)fetchFailedServerDown
+- (void)enterOfflineMode
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
@@ -624,7 +617,7 @@ static const int NumMenusInSection0 = 7;
         
         if (alert == nil)
         {
-            alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unavailable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+            alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
             alert.tag = -1;
             [alert show];
         }
