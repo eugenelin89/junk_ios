@@ -8,14 +8,15 @@
 
 #import "CDJob+GotJunk.h"
 #import "CDRoute+GotJunk.h"
+#import "../job.h"
 
 @implementation CDJob (GotJunk)
 
-+(CDJob*) jobInfo:(NSDictionary *)jobDictionary inManagedObjectContext:(NSManagedObjectContext*)context
++(CDJob*) jobInfo:(Job *)job inManagedObjectContext:(NSManagedObjectContext*)context
 {
-    CDJob *job = nil;
+    CDJob *cdjob = nil;
     
-    NSNumber *jobID = jobDictionary[@"jobID"];
+    NSNumber *jobID = job.jobID;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDJob"];
     request.predicate = [NSPredicate predicateWithFormat:@"jobID = %@", jobID];
     
@@ -27,26 +28,30 @@
     }else if([matches count]){
         // Update Job
         
-        job = [matches lastObject];
+        cdjob = [matches lastObject];
     
     }else{
         // create it in DB
-        job = [NSEntityDescription insertNewObjectForEntityForName:@"Job" inManagedObjectContext:context];
-        job.jobID = jobID;
-        job.clientName = jobDictionary[@"clientName"];
-        job.jobDate = jobDictionary[@"jobDate"];
+        cdjob = [NSEntityDescription insertNewObjectForEntityForName:@"CDJob" inManagedObjectContext:context];
+        cdjob.jobID = jobID;
+        cdjob.clientName = job.clientName;
+        cdjob.jobDate = job.jobDate;
         
-        NSNumber *routeID = jobDictionary[@"routeID"];
-        job.route = [CDRoute routeWithID:routeID inManagedObjectContext:context];
+        //NSNumber *routeID =
+        //job.route = [CDRoute routeWithID:routeID inManagedObjectContext:context];
         
         
     }
     
-    return job;
+    return cdjob;
 }
 
 +(void) loadJobsFromArray:(NSArray *)jobs inManagedObjectContext:(NSManagedObjectContext*)context
 {
+    // will need to fix this.  testing for now.
+    for(NSDictionary *job in jobs){
+        [self jobInfo:job inManagedObjectContext:context];
+    }
 }
 
 @end

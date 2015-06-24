@@ -16,10 +16,12 @@
 #import "APIObjectConversionHelper.h"
 #import "DateHelper.h"
 #import "MapPoint.h"
+#import "CoreDataStore/CDJob+GotJunk.h"
 
 @implementation DataStoreSingleton
 {
     int currentNotificationPageNumber;
+    UIManagedDocument * _document;
 }
 
 @synthesize currentLookupMode = _currentLookupMode;
@@ -59,10 +61,41 @@
         _sharedInstance.isInternetLive = YES;
         _sharedInstance.isUserLoggedIn = YES;
         _sharedInstance->currentNotificationPageNumber = 0;
+        
+        [_sharedInstance prepareCoreDataStore];
+        
 
     });
 
     return _sharedInstance;
+}
+
+-(void)prepareCoreDataStore
+{
+    self.managedObjectContext = nil;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *documentDir = [[fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask] firstObject];
+    NSURL *url = [documentDir URLByAppendingPathComponent:@"junkstore.md"];
+    _document = [[UIManagedDocument alloc] initWithFileURL:url];
+    
+    if([[NSFileManager defaultManager] fileExistsAtPath:[url path]]){
+        [_document openWithCompletionHandler:^(BOOL success) {
+            [self documentIsReady];
+        }];
+    }else{
+        [_document saveToURL:url
+           forSaveOperation:UIDocumentSaveForCreating
+          completionHandler:^(BOOL success) {
+              [self documentIsReady];
+        }];
+    }
+}
+
+-(void)documentIsReady
+{
+    if(_document.documentState ==  UIDocumentStateNormal){
+        self.managedObjectContext = _document.managedObjectContext;
+    }
 }
 
 - (BOOL)isOffline
@@ -514,6 +547,10 @@
 {
     NSArray *jobListArray = [self jobsFromJsonString:responseString];
     [self mergeJobs:jobListArray];
+    
+    //TEST
+    [CDJob loadJobsFromArray:jobListArray inManagedObjectContext:self.managedObjectContext];
+    
     
     return jobListArray;
 }
