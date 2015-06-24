@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "Expense.h"
 #import "PaymentMethod.h"
 #import "Lookup.h"
@@ -17,6 +18,8 @@
 @class Job;
 
 @interface DataStoreSingleton : NSObject
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong) NSMutableArray *loadTypeSizeList;
 @property (nonatomic, strong) NSMutableArray *lookupList;

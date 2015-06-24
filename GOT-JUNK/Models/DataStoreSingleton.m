@@ -59,6 +59,7 @@
         _sharedInstance.isInternetLive = YES;
         _sharedInstance.isUserLoggedIn = YES;
         _sharedInstance->currentNotificationPageNumber = 0;
+
     });
 
     return _sharedInstance;
