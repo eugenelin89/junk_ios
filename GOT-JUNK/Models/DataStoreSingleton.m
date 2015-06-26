@@ -209,6 +209,11 @@
     return _routeJobs;
 }
 
+-(void) setRouteJobs:(NSMutableDictionary *)routeJobs
+{
+    _routeJobs = routeJobs;
+}
+
 - (Job *)pushJob;
 {
     if (!_pushJob) {
@@ -258,14 +263,26 @@
     return _notificationList;
 }
 
+-(NSArray *)jobList
+{
+    return _jobList;
+}
+
 
 - (void)setJobList:(NSArray *)jobList
 {
+    // store in core data, but do it on a seperate thread.
+    [self runAsync:^{
+        [CDJob loadJobsFromArray:jobList inManagedObjectContext:self.managedObjectContext];
+    }];
+    
     _jobList = jobList;
     
-    [self setJobLocations];
+    [self setJobLocations]; // why are we doing this here?
 
 }
+
+
 - (void)setCurrentJobPaymentID:(NSNumber *)jobID
 {
     _currentJobPaymentID = jobID;
@@ -548,12 +565,9 @@
     NSArray *jobListArray = [self jobsFromJsonString:responseString];
     [self mergeJobs:jobListArray];
     
-    //TEST
-    [CDJob loadJobsFromArray:jobListArray inManagedObjectContext:self.managedObjectContext];
-    
-    
     return jobListArray;
 }
+
 
 - (NSArray *)jobsFromJsonString:(NSString *)jsonString
 {
@@ -596,6 +610,7 @@
     newJob.numOfJobs = [dict objectForKey:@"numOfJobs"];
     newJob.pickupAddress = [NSString stringWithFormat:@"#%@ %@\n%@, %@",[[dict objectForKey:@"pickupAptNo"] capitalizedString], [[dict objectForKey:@"pickupStreet"] capitalizedString],[[dict objectForKey:@"pickupCity"] capitalizedString],[[dict objectForKey:@"pickupState"] capitalizedString]];
     newJob.jobID               = [dict objectForKey:@"jobID"];
+    newJob.routeID             = [dict objectForKey:@"routeID"];
     newJob.contactID           = [dict objectForKey:@"contactID"];
     newJob.promiseTime         = [dict objectForKey:@"promiseTime"];
     newJob.jobStartTime        = [dict objectForKey:@"jobStartTime"];
@@ -854,5 +869,12 @@
     
     return nil;
 }
+
+-(void)runAsync:(void (^)(void))asyncBlock
+{
+    dispatch_queue_t bq = dispatch_queue_create("async block",NULL);
+    dispatch_async(bq,asyncBlock);
+}
+
 
 @end

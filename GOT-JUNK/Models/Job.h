@@ -100,6 +100,7 @@ typedef NSUInteger JobType;
 @property (nonatomic, strong) MapPoint *mapPoint;
 @property (nonatomic, strong) NSNumber *dispatchID;
 @property (nonatomic, strong) NSNumber *isDispatchAccepted;
+@property (nonatomic, strong) NSNumber *routeID;
 
 - (BOOL)isBookoff;
 - (void)parseOutLocationComments;

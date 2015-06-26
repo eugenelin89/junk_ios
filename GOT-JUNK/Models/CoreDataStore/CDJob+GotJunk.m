@@ -27,21 +27,20 @@
         // handle error
     }else if([matches count]){
         // Update Job
-        
+        NSLog(@"Already exists: %@", job.jobID);
         cdjob = [matches lastObject];
-    
     }else{
         // create it in DB
+        NSLog(@"Adding Job ID: %@", job.jobID);
         cdjob = [NSEntityDescription insertNewObjectForEntityForName:@"CDJob" inManagedObjectContext:context];
-        cdjob.jobID = jobID;
-        cdjob.clientName = job.clientName;
-        cdjob.jobDate = job.jobDate;
-        
-        //NSNumber *routeID =
-        //job.route = [CDRoute routeWithID:routeID inManagedObjectContext:context];
-        
-        
     }
+    
+    cdjob.jobID = jobID;
+    cdjob.clientName = job.clientName;
+    cdjob.jobDate = job.jobDate;
+    cdjob.route = [CDRoute routeWithID:job.routeID inManagedObjectContext:context];
+    
+
     
     return cdjob;
 }
@@ -52,6 +51,9 @@
     for(NSDictionary *job in jobs){
         [self jobInfo:job inManagedObjectContext:context];
     }
+    
+    NSLog(@"Finished adding jobs to Core Data\n\n\n");
+
 }
 
 @end

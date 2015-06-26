@@ -25,6 +25,7 @@
     }else if(![matches count]){
         // insert
         route = [NSEntityDescription insertNewObjectForEntityForName:@"CDRoute" inManagedObjectContext:context];
+        route.routeID = routeID;
     }else{
         // update
         route = [matches lastObject];
