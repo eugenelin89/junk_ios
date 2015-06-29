@@ -272,9 +272,9 @@
 - (void)setJobList:(NSArray *)jobList
 {
     // store in core data, but do it on a seperate thread.
-    [self runAsync:^{
+    //[self runAsync:^{
         [CDJob loadJobsFromArray:jobList inManagedObjectContext:self.managedObjectContext];
-    }];
+    //}];
     
     _jobList = jobList;
     
