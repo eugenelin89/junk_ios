@@ -259,7 +259,8 @@
 		90ED95911A13EE3800D747F1 /* JNStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90ED958F1A13EE3800D747F1 /* JNStatusViewController.m */; };
 		90ED95921A13EE3800D747F1 /* JNStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90ED95901A13EE3800D747F1 /* JNStatusViewController.xib */; };
 		90ED95951A13F9F200D747F1 /* JunkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90ED95941A13F9F200D747F1 /* JunkViewController.m */; };
-		CB0042C41B3E275200855424 /* CDJob.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0042C31B3E275200855424 /* CDJob.m */; };
+		CB4860641B41B14A001D011D /* CDMapPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4860631B41B14A001D011D /* CDMapPoint.m */; };
+		CB4860671B41B1C6001D011D /* CDJob.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4860661B41B1C6001D011D /* CDJob.m */; };
 		CB5893FF1B3A050100C9F709 /* CoreDataStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB5893FD1B3A050100C9F709 /* CoreDataStore.xcdatamodeld */; };
 		CB5894081B3A05D700C9F709 /* CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5894071B3A05D700C9F709 /* CDRoute.m */; };
 		CB58940E1B3A0AB600C9F709 /* CDJob+GotJunk.m in Sources */ = {isa = PBXBuildFile; fileRef = CB58940D1B3A0AB600C9F709 /* CDJob+GotJunk.m */; };
@@ -624,8 +625,10 @@
 		90ED95901A13EE3800D747F1 /* JNStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JNStatusViewController.xib; sourceTree = "<group>"; };
 		90ED95931A13F9F200D747F1 /* JunkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JunkViewController.h; sourceTree = "<group>"; };
 		90ED95941A13F9F200D747F1 /* JunkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JunkViewController.m; sourceTree = "<group>"; };
-		CB0042C21B3E275200855424 /* CDJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDJob.h; path = CoreDataStore/CDJob.h; sourceTree = "<group>"; };
-		CB0042C31B3E275200855424 /* CDJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDJob.m; path = CoreDataStore/CDJob.m; sourceTree = "<group>"; };
+		CB4860621B41B14A001D011D /* CDMapPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDMapPoint.h; path = CoreDataStore/CDMapPoint.h; sourceTree = "<group>"; };
+		CB4860631B41B14A001D011D /* CDMapPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDMapPoint.m; path = CoreDataStore/CDMapPoint.m; sourceTree = "<group>"; };
+		CB4860651B41B1C6001D011D /* CDJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDJob.h; path = CoreDataStore/CDJob.h; sourceTree = "<group>"; };
+		CB4860661B41B1C6001D011D /* CDJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDJob.m; path = CoreDataStore/CDJob.m; sourceTree = "<group>"; };
 		CB5893FE1B3A050100C9F709 /* CoreDataStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataStore.xcdatamodel; sourceTree = "<group>"; };
 		CB5894061B3A05D700C9F709 /* CDRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDRoute.h; path = CoreDataStore/CDRoute.h; sourceTree = "<group>"; };
 		CB5894071B3A05D700C9F709 /* CDRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDRoute.m; path = CoreDataStore/CDRoute.m; sourceTree = "<group>"; };
@@ -1238,9 +1241,11 @@
 		CB5893FC1B3A04CE00C9F709 /* CoreDataStore */ = {
 			isa = PBXGroup;
 			children = (
+				CB4860651B41B1C6001D011D /* CDJob.h */,
+				CB4860661B41B1C6001D011D /* CDJob.m */,
 				CB5893FD1B3A050100C9F709 /* CoreDataStore.xcdatamodeld */,
-				CB0042C21B3E275200855424 /* CDJob.h */,
-				CB0042C31B3E275200855424 /* CDJob.m */,
+				CB4860621B41B14A001D011D /* CDMapPoint.h */,
+				CB4860631B41B14A001D011D /* CDMapPoint.m */,
 				CB5894061B3A05D700C9F709 /* CDRoute.h */,
 				CB5894071B3A05D700C9F709 /* CDRoute.m */,
 				CB58940C1B3A0AB600C9F709 /* CDJob+GotJunk.h */,
@@ -1581,6 +1586,7 @@
 				90B761D919F6E57D00B61D33 /* APIObjectConversionHelper.m in Sources */,
 				9065268D1A1BB73900651456 /* NoConnectionViewController.m in Sources */,
 				CB5894111B3A1A0100C9F709 /* CDRoute+GotJunk.m in Sources */,
+				CB4860671B41B1C6001D011D /* CDJob.m in Sources */,
 				90ED95911A13EE3800D747F1 /* JNStatusViewController.m in Sources */,
 				CB5894081B3A05D700C9F709 /* CDRoute.m in Sources */,
 				90B762D319F6E57D00B61D33 /* main.m in Sources */,
@@ -1605,7 +1611,6 @@
 				90ED95441A13ED2000D747F1 /* MJExpensesTableViewController.m in Sources */,
 				90B761EE19F6E57D00B61D33 /* Franchise.m in Sources */,
 				90ED95801A13ED2000D747F1 /* LookupTableViewController.m in Sources */,
-				CB0042C41B3E275200855424 /* CDJob.m in Sources */,
 				90ED954A1A13ED2000D747F1 /* FranchiseListViewController.m in Sources */,
 				90ED95701A13ED2000D747F1 /* SendInvoiceViewController.m in Sources */,
 				90ED95641A13ED2000D747F1 /* MJJobPaymentDetailViewController.m in Sources */,
@@ -1619,6 +1624,7 @@
 				90ED95291A13ED2000D747F1 /* MJJobCell.m in Sources */,
 				905E76D01ADE48140048D894 /* MJNotificationCell.m in Sources */,
 				90B761F619F6E57D00B61D33 /* Resource.m in Sources */,
+				CB4860641B41B14A001D011D /* CDMapPoint.m in Sources */,
 				90B761E419F6E57D00B61D33 /* ValidateHelper.m in Sources */,
 				90ED95341A13ED2000D747F1 /* MJEnvironmentalDetailViewController.m in Sources */,
 				90ED95751A13ED2000D747F1 /* OfflineLoginViewController.m in Sources */,

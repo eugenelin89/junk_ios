@@ -78,7 +78,7 @@
         <relationship name="mapPoint" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMapPoint" inverseName="job" inverseEntity="CDMapPoint" syncable="YES"/>
         <relationship name="route" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDRoute" inverseName="jobs" inverseEntity="CDRoute" syncable="YES"/>
     </entity>
-    <entity name="CDMapPoint" syncable="YES">
+    <entity name="CDMapPoint" representedClassName="CDMapPoint" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
@@ -95,6 +95,6 @@
     <elements>
         <element name="CDJob" positionX="-63" positionY="-18" width="128" height="1183"/>
         <element name="CDRoute" positionX="169" positionY="-9" width="128" height="88"/>
-        <element name="CDMapPoint" positionX="-308" positionY="128" width="128" height="148"/>
+        <element name="CDMapPoint" positionX="-288" positionY="-18" width="128" height="148"/>
     </elements>
 </model>

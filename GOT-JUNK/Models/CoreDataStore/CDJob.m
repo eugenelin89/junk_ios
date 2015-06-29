@@ -2,11 +2,12 @@
 //  CDJob.m
 //  GOT-JUNK
 //
-//  Created by Eugene Lin on 2015-06-26.
+//  Created by Eugene Lin on 2015-06-29.
 //  Copyright (c) 2015 David Block. All rights reserved.
 //
 
 #import "CDJob.h"
+#import "CDMapPoint.h"
 #import "CDRoute.h"
 
 
@@ -87,5 +88,6 @@
 @dynamic zoneFontColor;
 @dynamic zoneName;
 @dynamic route;
+@dynamic mapPoint;
 
 @end
