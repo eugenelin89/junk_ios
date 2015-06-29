@@ -8,6 +8,7 @@
 
 #import "CDJob+GotJunk.h"
 #import "CDRoute+GotJunk.h"
+#import "CDMapPoint+GotJunk.h"
 #import "../job.h"
 
 @implementation CDJob (GotJunk)
@@ -38,9 +39,7 @@
     cdjob.jobID = jobID;
     cdjob.clientName = job.clientName;
     cdjob.jobDate = job.jobDate;
-    cdjob.route = [CDRoute routeWithID:job.routeID inManagedObjectContext:context];
     
-
     cdjob.callAheadStatus = job.callAheadStatus;
     cdjob.callAheadTime = job.callAheadTime;
     cdjob.clientCompany = job.clientCompany;
@@ -114,7 +113,8 @@
     cdjob.zoneFontColor = job.zoneFontColor;
     cdjob.zoneName = job.zoneName;
 
-
+    cdjob.route = [CDRoute routeWithID:job.routeID inManagedObjectContext:context];
+    cdjob.mapPoint = [CDMapPoint mapPoint:job.mapPoint WithCDJob:cdjob inManagedObjectContext:context];
     
     return cdjob;
 }

@@ -261,6 +261,7 @@
 		90ED95951A13F9F200D747F1 /* JunkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90ED95941A13F9F200D747F1 /* JunkViewController.m */; };
 		CB4860641B41B14A001D011D /* CDMapPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4860631B41B14A001D011D /* CDMapPoint.m */; };
 		CB4860671B41B1C6001D011D /* CDJob.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4860661B41B1C6001D011D /* CDJob.m */; };
+		CB48606A1B41B42D001D011D /* CDMapPoint+GotJunk.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4860691B41B42D001D011D /* CDMapPoint+GotJunk.m */; };
 		CB5893FF1B3A050100C9F709 /* CoreDataStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB5893FD1B3A050100C9F709 /* CoreDataStore.xcdatamodeld */; };
 		CB5894081B3A05D700C9F709 /* CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5894071B3A05D700C9F709 /* CDRoute.m */; };
 		CB58940E1B3A0AB600C9F709 /* CDJob+GotJunk.m in Sources */ = {isa = PBXBuildFile; fileRef = CB58940D1B3A0AB600C9F709 /* CDJob+GotJunk.m */; };
@@ -629,6 +630,8 @@
 		CB4860631B41B14A001D011D /* CDMapPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDMapPoint.m; path = CoreDataStore/CDMapPoint.m; sourceTree = "<group>"; };
 		CB4860651B41B1C6001D011D /* CDJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDJob.h; path = CoreDataStore/CDJob.h; sourceTree = "<group>"; };
 		CB4860661B41B1C6001D011D /* CDJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDJob.m; path = CoreDataStore/CDJob.m; sourceTree = "<group>"; };
+		CB4860681B41B42D001D011D /* CDMapPoint+GotJunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDMapPoint+GotJunk.h"; path = "CoreDataStore/CDMapPoint+GotJunk.h"; sourceTree = "<group>"; };
+		CB4860691B41B42D001D011D /* CDMapPoint+GotJunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDMapPoint+GotJunk.m"; path = "CoreDataStore/CDMapPoint+GotJunk.m"; sourceTree = "<group>"; };
 		CB5893FE1B3A050100C9F709 /* CoreDataStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataStore.xcdatamodel; sourceTree = "<group>"; };
 		CB5894061B3A05D700C9F709 /* CDRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDRoute.h; path = CoreDataStore/CDRoute.h; sourceTree = "<group>"; };
 		CB5894071B3A05D700C9F709 /* CDRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDRoute.m; path = CoreDataStore/CDRoute.m; sourceTree = "<group>"; };
@@ -1252,6 +1255,8 @@
 				CB58940D1B3A0AB600C9F709 /* CDJob+GotJunk.m */,
 				CB58940F1B3A1A0100C9F709 /* CDRoute+GotJunk.h */,
 				CB5894101B3A1A0100C9F709 /* CDRoute+GotJunk.m */,
+				CB4860681B41B42D001D011D /* CDMapPoint+GotJunk.h */,
+				CB4860691B41B42D001D011D /* CDMapPoint+GotJunk.m */,
 			);
 			name = CoreDataStore;
 			sourceTree = "<group>";
@@ -1555,6 +1560,7 @@
 				90B761E219F6E57D00B61D33 /* UnitConversionHelper.m in Sources */,
 				90ED95361A13ED2000D747F1 /* MJEnvironmentalJobDetailsCell.m in Sources */,
 				90ED95541A13ED2000D747F1 /* JobPhoneListViewController.m in Sources */,
+				CB48606A1B41B42D001D011D /* CDMapPoint+GotJunk.m in Sources */,
 				90ED95281A13ED2000D747F1 /* MJCollectionViewCalendarLayout.m in Sources */,
 				90ED955A1A13ED2000D747F1 /* MJJobCancelReasonsViewController.m in Sources */,
 				90B761F219F6E57D00B61D33 /* MapPoint.m in Sources */,
