@@ -114,6 +114,7 @@
     cdjob.zoneName = job.zoneName;
 
     cdjob.route = [CDRoute routeWithID:job.routeID inManagedObjectContext:context];
+    [cdjob.route addJobsObject:cdjob];
 
     
     return cdjob;
