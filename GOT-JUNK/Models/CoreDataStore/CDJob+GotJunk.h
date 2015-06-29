@@ -7,10 +7,11 @@
 //
 
 #import "CDJob.h"
+#import "../Job.h"
 
 @interface CDJob (GotJunk)
 
-+(CDJob*) jobInfo:(NSDictionary *)jobDictionary inManagedObjectContext:(NSManagedObjectContext*)context;
++(CDJob*) job:(Job *)job inManagedObjectContext:(NSManagedObjectContext*)context;
 
 +(void) loadJobsFromArray:(NSArray *)jobs inManagedObjectContext:(NSManagedObjectContext*)context;
 

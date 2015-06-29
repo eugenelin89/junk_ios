@@ -8,7 +8,9 @@
 
 #import "CDMapPoint.h"
 #import "../MapPoint.h"
+#import "../Job.h"
 
 @interface CDMapPoint (GotJunk)
-+(CDMapPoint *) mapPoint:(MapPoint *)mapPoint WithCDJob:(CDJob*)job inManagedObjectContext:(NSManagedObjectContext*)context;
++(CDMapPoint *) mapPoint:(MapPoint *)mapPoint withCDJob:(CDJob*)job inManagedObjectContext:(NSManagedObjectContext*)context;
++(CDMapPoint *) mapPoint:(MapPoint *)mapPoint withJob:(Job*)job inManagedObjectContext:(NSManagedObjectContext*)context;
 @end

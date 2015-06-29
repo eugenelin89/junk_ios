@@ -13,7 +13,7 @@
 
 @implementation CDJob (GotJunk)
 
-+(CDJob*) jobInfo:(Job *)job inManagedObjectContext:(NSManagedObjectContext*)context
++(CDJob*) job:(Job *)job inManagedObjectContext:(NSManagedObjectContext*)context
 {
     CDJob *cdjob = nil;
     
@@ -114,7 +114,7 @@
     cdjob.zoneName = job.zoneName;
 
     cdjob.route = [CDRoute routeWithID:job.routeID inManagedObjectContext:context];
-    cdjob.mapPoint = [CDMapPoint mapPoint:job.mapPoint WithCDJob:cdjob inManagedObjectContext:context];
+
     
     return cdjob;
 }
@@ -122,8 +122,8 @@
 +(void) loadJobsFromArray:(NSArray *)jobs inManagedObjectContext:(NSManagedObjectContext*)context
 {
     // will need to fix this.  testing for now.
-    for(NSDictionary *job in jobs){
-        [self jobInfo:job inManagedObjectContext:context];
+    for(Job *job in jobs){
+        [self job:job inManagedObjectContext:context];
     }
     
     NSLog(@"Finished adding jobs to Core Data\n\n\n");
