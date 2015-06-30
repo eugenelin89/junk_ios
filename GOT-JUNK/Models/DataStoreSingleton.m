@@ -97,6 +97,7 @@
     if(_document.documentState ==  UIDocumentStateNormal){
         self.managedObjectContext = _document.managedObjectContext;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"CoreDataReady" object:nil];
+        NSLog(@"\n\n *** CORE DATA READY! ***\n\n");
     }
 }
 

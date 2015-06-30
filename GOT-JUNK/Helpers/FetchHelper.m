@@ -269,7 +269,7 @@
 
     [self sendNotification:@"FetchLoginSuccess"];
 
-    //[self getAllCachingData]; // now call getAllCachingData thru notification CoreDataReady
+    [self getAllCachingData];
 }
 
 - (void)getSystemInfo
@@ -1280,7 +1280,7 @@
 {
     @try
     {
-        
+        NSLog(@"GET ALL CACHING DATA");
         isCaching = YES;
     
         [self fetchRouteList];
