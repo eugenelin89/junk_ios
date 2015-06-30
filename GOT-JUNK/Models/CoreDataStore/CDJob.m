@@ -2,7 +2,7 @@
 //  CDJob.m
 //  GOT-JUNK
 //
-//  Created by Eugene Lin on 2015-06-29.
+//  Created by Eugene Lin on 2015-06-30.
 //  Copyright (c) 2015 David Block. All rights reserved.
 //
 
@@ -87,7 +87,8 @@
 @dynamic zoneColor;
 @dynamic zoneFontColor;
 @dynamic zoneName;
-@dynamic route;
+@dynamic routeID;
 @dynamic mapPoint;
+@dynamic route;
 
 @end

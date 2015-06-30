@@ -64,6 +64,7 @@
         <attribute name="programNotes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="promiseTime" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="promoCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="routeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="subTotal" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="taxAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="taxID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -93,8 +94,8 @@
         <relationship name="jobs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDJob" inverseName="route" inverseEntity="CDJob" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CDJob" positionX="-63" positionY="-18" width="128" height="1183"/>
-        <element name="CDRoute" positionX="169" positionY="-9" width="128" height="88"/>
+        <element name="CDJob" positionX="-63" positionY="-18" width="128" height="1200"/>
         <element name="CDMapPoint" positionX="-288" positionY="-18" width="128" height="148"/>
+        <element name="CDRoute" positionX="169" positionY="-9" width="128" height="88"/>
     </elements>
 </model>
