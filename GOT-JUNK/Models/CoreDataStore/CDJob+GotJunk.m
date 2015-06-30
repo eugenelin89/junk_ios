@@ -30,17 +30,21 @@
         // Update Job
         NSLog(@"Already exists: %@", job.jobID);
         cdjob = [matches lastObject];
+        if([cdjob.routeID integerValue] != [job.routeID integerValue]){
+            // this job is switching route.  need to remove this job from route
+            CDRoute * oldRoute = [CDRoute getRouteWithID:cdjob.routeID inManagedObjectContext:context];
+            [oldRoute removeJobsObject:cdjob];
+        }
     }else{
         // create it in DB
         NSLog(@"Adding Job ID: %@", job.jobID);
         cdjob = [NSEntityDescription insertNewObjectForEntityForName:@"CDJob" inManagedObjectContext:context];
+        cdjob.jobID = jobID;
     }
     
-    cdjob.jobID = jobID;
     cdjob.routeID = job.routeID;
     cdjob.clientName = job.clientName;
     cdjob.jobDate = job.jobDate;
-    
     cdjob.callAheadStatus = job.callAheadStatus;
     cdjob.callAheadTime = job.callAheadTime;
     cdjob.clientCompany = job.clientCompany;
