@@ -408,6 +408,7 @@
 - (void)addJobsList:(NSArray*)jobListArray forRoute:(NSNumber*)routeID;
 {
     [self.routeJobs setObject:jobListArray forKey:routeID];
+    [CDRoute addJobs:jobListArray toRouteWithID:routeID inManagedObjectContext:self.managedObjectContext];
 }
 
 - (Enviro *)mapEnviro:(NSDictionary *)dict

@@ -7,7 +7,9 @@
 //
 
 #import "CDRoute+GotJunk.h"
+#import "CDJob+GotJunk.h"
 #import "../Route.h"
+#import "../Job.h"
 
 @implementation CDRoute (GotJunk)
 
@@ -79,6 +81,18 @@
         [CDRoute route:route inManagedObjectContext:context];
     }
 }
+
++(void)addJobs:(NSArray *)jobs toRouteWithID:(NSNumber *)jobID inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    CDRoute *cdRoute = [CDRoute getRouteWithID:jobID inManagedObjectContext:context];
+    if(cdRoute){
+        for(Job *job in jobs){
+            [cdRoute addJobsObject:[CDJob job:job inManagedObjectContext:context]];
+        }
+    }
+}
+
+
 
 +(CDRoute *) getRouteWithID:(NSNumber*)routeID inManagedObjectContext:(NSManagedObjectContext*) context
 {
