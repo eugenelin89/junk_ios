@@ -11,6 +11,8 @@
 @interface CDRoute (GotJunk)
 +(CDRoute *) routeWithID:(NSNumber*)routeID inManagedObjectContext:(NSManagedObjectContext*)context;
 
++(CDRoute  *) routeWithID:(NSNumber*)routeID withName:(NSString*)routeName inManagedObjectContext:(NSManagedObjectContext *)context;
+
 +(void) loadRoutesFromArray:(NSArray *)routes inManagedObjectContext:(NSManagedObjectContext*)context;
 
 +(CDRoute *) getRouteWithID:(NSNumber*)routeID inManagedObjectContext:(NSManagedObjectContext*) context;

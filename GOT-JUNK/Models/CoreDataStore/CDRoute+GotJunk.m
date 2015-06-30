@@ -74,6 +74,13 @@
     return route;
 }
 
++(CDRoute  *) routeWithID:(NSNumber*)routeID withName:(NSString*)routeName inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    CDRoute *cdRoute = [CDRoute routeWithID:routeID inManagedObjectContext:context];
+    cdRoute.routeName = routeName;
+    return cdRoute;
+}
+
 +(void) loadRoutesFromArray:(NSArray *)routes inManagedObjectContext:(NSManagedObjectContext*)context
 {
     for(Route* route in routes){
