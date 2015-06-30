@@ -113,10 +113,12 @@
     cdjob.zoneFontColor = job.zoneFontColor;
     cdjob.zoneName = job.zoneName;
 
-    cdjob.route = [CDRoute routeWithID:job.routeID inManagedObjectContext:context];
-    [cdjob.route addJobsObject:cdjob];
-
     
+    CDRoute *cdRoute = [CDRoute getRouteWithID:job.routeID inManagedObjectContext:context];
+    if(cdRoute){
+        [cdRoute addJobsObject:cdjob];
+    }
+
     return cdjob;
 }
 

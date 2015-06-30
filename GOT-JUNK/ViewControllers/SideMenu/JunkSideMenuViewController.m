@@ -106,7 +106,7 @@ static const int NumMenusInSection0 = 7;
     
     jobListRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:FETCH_JOBS_REFRESH_INTERVAL target:self selector:@selector(fetchJobListForDefaultRouteAndCurrentDate) userInfo:nil repeats:YES];
     
-    [[FetchHelper sharedInstance] getAllCachingData];
+    //[[FetchHelper sharedInstance] getAllCachingData];
 
     franchiseIndex_debug_testing = 0;
     //[self refreshResourcesList_debug_testing];

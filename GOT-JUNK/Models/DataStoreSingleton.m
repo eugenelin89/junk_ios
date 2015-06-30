@@ -17,6 +17,7 @@
 #import "DateHelper.h"
 #import "MapPoint.h"
 #import "CoreDataStore/CDJob+GotJunk.h"
+#import "CoreDataStore/CDRoute+GotJunk.h"
 
 @implementation DataStoreSingleton
 {
@@ -95,6 +96,7 @@
 {
     if(_document.documentState ==  UIDocumentStateNormal){
         self.managedObjectContext = _document.managedObjectContext;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CoreDataReady" object:nil];
     }
 }
 
@@ -281,6 +283,12 @@
     //}];
 }
 
+-(void)setRouteList:(NSArray *)routeList
+{
+    _routeList = routeList;
+    [CDRoute loadRoutesFromArray:routeList inManagedObjectContext:self.managedObjectContext];
+    
+}
 
 - (void)setCurrentJobPaymentID:(NSNumber *)jobID
 {

@@ -62,6 +62,8 @@
 
       isCaching = NO;
       isFetching = NO;
+      
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllCachingData) name:@"CoreDataReady" object:nil];
   }
 
   return self;
@@ -267,7 +269,7 @@
 
     [self sendNotification:@"FetchLoginSuccess"];
 
-    [self getAllCachingData];
+    //[self getAllCachingData]; // now call getAllCachingData thru notification CoreDataReady
 }
 
 - (void)getSystemInfo
