@@ -11,6 +11,38 @@
 
 @implementation CDRoute (GotJunk)
 
+
++(CDRoute *) route:(Route*)route inManagedObjectContext:(NSManagedObjectContext*)context
+{
+    CDRoute *cdRoute = nil;
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDRoute"];
+    request.predicate = [NSPredicate predicateWithFormat:@"routeID = %@", route.routeID];
+    
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    
+    if(!matches || [matches count]>1){
+        // handle error
+        NSLog(@"Error querying route.");
+        
+    }else if(![matches count]){
+        // insert
+        NSLog(@"Adding new route: %@", route.routeID);
+        
+        cdRoute = [NSEntityDescription insertNewObjectForEntityForName:@"CDRoute" inManagedObjectContext:context];
+        cdRoute.routeID = route.routeID;
+        cdRoute.routeName = route.routeName;
+    }else{
+        // update
+        NSLog(@"Route: %@ already exists", route.routeID);
+        
+        cdRoute = [matches lastObject];
+    }
+
+    return cdRoute;
+}
+
 +(CDRoute *) routeWithID:(NSNumber*)routeID inManagedObjectContext:(NSManagedObjectContext*)context
 {
     CDRoute *route = nil;
@@ -38,15 +70,13 @@
         route = [matches lastObject];
     }
     
-    
     return route;
 }
 
 +(void) loadRoutesFromArray:(NSArray *)routes inManagedObjectContext:(NSManagedObjectContext*)context
 {
     for(Route* route in routes){
-        CDRoute*  cdroute = [CDRoute routeWithID:route.routeID inManagedObjectContext:context];
-        cdroute.routeName = route.routeName;
+        [CDRoute route:route inManagedObjectContext:context];
     }
 }
 

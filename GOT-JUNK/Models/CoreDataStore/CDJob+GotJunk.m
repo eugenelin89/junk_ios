@@ -37,6 +37,7 @@
     }
     
     cdjob.jobID = jobID;
+    cdjob.routeID = job.routeID;
     cdjob.clientName = job.clientName;
     cdjob.jobDate = job.jobDate;
     
