@@ -31,16 +31,15 @@
     }else if(![matches count]){
         // insert
         NSLog(@"Adding new route: %@", route.routeID);
-        
         cdRoute = [NSEntityDescription insertNewObjectForEntityForName:@"CDRoute" inManagedObjectContext:context];
-        cdRoute.routeID = route.routeID;
-        cdRoute.routeName = route.routeName;
+
     }else{
         // update
         NSLog(@"Route: %@ already exists", route.routeID);
-        
         cdRoute = [matches lastObject];
     }
+    cdRoute.routeID = route.routeID;
+    cdRoute.routeName = route.routeName;
 
     return cdRoute;
 }

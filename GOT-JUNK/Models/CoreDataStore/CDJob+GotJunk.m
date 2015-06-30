@@ -115,10 +115,9 @@
     cdjob.zoneName = job.zoneName;
 
     
-    CDRoute *cdRoute = [CDRoute getRouteWithID:job.routeID inManagedObjectContext:context];
-    if(cdRoute){
-        [cdRoute addJobsObject:cdjob];
-    }
+    CDRoute *cdRoute = [CDRoute routeWithID:job.routeID inManagedObjectContext:context];
+    [cdRoute addJobsObject:cdjob];
+    
 
     return cdjob;
 }
