@@ -91,11 +91,17 @@
     <entity name="CDRoute" representedClassName="CDRoute" syncable="YES">
         <attribute name="routeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="routeName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="assignedTo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDUser" inverseName="assignedRoutes" inverseEntity="CDUser" syncable="YES"/>
         <relationship name="jobs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDJob" inverseName="route" inverseEntity="CDJob" syncable="YES"/>
+    </entity>
+    <entity name="CDUser" representedClassName="CDUser" syncable="YES">
+        <attribute name="userID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="assignedRoutes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDRoute" inverseName="assignedTo" inverseEntity="CDRoute" syncable="YES"/>
     </entity>
     <elements>
         <element name="CDJob" positionX="-63" positionY="-18" width="128" height="1198"/>
         <element name="CDMapPoint" positionX="-288" positionY="-18" width="128" height="148"/>
-        <element name="CDRoute" positionX="169" positionY="-9" width="128" height="88"/>
+        <element name="CDRoute" positionX="169" positionY="-9" width="128" height="103"/>
+        <element name="CDUser" positionX="349" positionY="-7" width="128" height="73"/>
     </elements>
 </model>
