@@ -249,9 +249,7 @@
         Franchise * franchise = [[Franchise alloc] init];
         franchise.franchiseName = franchiseName;
         franchise.franchiseID = defaultFranchiseID;
-        [DataStoreSingleton sharedInstance].permissions= permissions;
-        [DataStoreSingleton sharedInstance].assignedRoutes= tempArray;
-        [DataStoreSingleton sharedInstance].currentFranchise= franchise;
+
         
         UserDefaultsSingleton *defaults = [UserDefaultsSingleton sharedInstance];
         [defaults setUserSessionID:sessionID];
@@ -263,6 +261,10 @@
         [defaults setUserDefaultRouteName:defaultRouteName];
         [defaults setUserDefaultFranchiseID:defaultFranchiseID];
         [defaults setUserLogin: username];
+        
+        [DataStoreSingleton sharedInstance].permissions= permissions;
+        [DataStoreSingleton sharedInstance].assignedRoutes= tempArray;
+        [DataStoreSingleton sharedInstance].currentFranchise= franchise;
     }
     
     [DataStoreSingleton sharedInstance].isUserLoggedIn = YES;

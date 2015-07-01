@@ -10,6 +10,8 @@
 #import "CDRoute+GotJunk.h"
 #import "CDMapPoint+GotJunk.h"
 #import "../job.h"
+//#import "CDUser+GotJunk.h"
+//#import "UserDefaultsSingleton.h"
 
 @implementation CDJob (GotJunk)
 
@@ -123,6 +125,8 @@
     [cdRoute addJobsObject:cdjob];
     
 
+    //CDUser * cdUser = [CDUser userWithID:[[UserDefaultsSingleton sharedInstance] getUserID] inManagedObjectContext:context]; TEST
+    
     return cdjob;
 }
 

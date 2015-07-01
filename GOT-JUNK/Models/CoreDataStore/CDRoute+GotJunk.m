@@ -8,7 +8,6 @@
 
 #import "CDRoute+GotJunk.h"
 #import "CDJob+GotJunk.h"
-#import "../Route.h"
 #import "../Job.h"
 
 @implementation CDRoute (GotJunk)

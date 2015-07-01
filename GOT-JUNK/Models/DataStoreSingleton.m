@@ -18,6 +18,8 @@
 #import "MapPoint.h"
 #import "CoreDataStore/CDJob+GotJunk.h"
 #import "CoreDataStore/CDRoute+GotJunk.h"
+#import "UserDefaultsSingleton.h"
+#import "CoreDataStore/CDUser+GotJunk.h"
 
 @implementation DataStoreSingleton
 {
@@ -49,6 +51,7 @@
 @synthesize notificationList = _notificationList;
 @synthesize currentJob = _currentJob;
 @synthesize filterRoute = _filterRoute;
+@synthesize assignedRoutes = _assignedRoutes;
 
 + (DataStoreSingleton *)sharedInstance
 {
@@ -196,6 +199,17 @@
     }
     return _assignedRoutes;
 }
+
+-(void) setAssignedRoutes:(NSArray *)assignedRoutes
+{
+    _assignedRoutes = assignedRoutes;
+    
+    [CDUser assignRoutes:assignedRoutes toUserWithID:[[UserDefaultsSingleton sharedInstance] getUserID] inManagedObjectContext:self.managedObjectContext];
+    
+    
+    
+}
+
 - (NSDictionary *)expensesDict;
 {
     if (!_expensesDict) {

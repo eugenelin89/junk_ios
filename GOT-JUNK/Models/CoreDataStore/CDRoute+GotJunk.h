@@ -7,8 +7,12 @@
 //
 
 #import "CDRoute.h"
+#import "../Route.h"
 
 @interface CDRoute (GotJunk)
+
++(CDRoute *) route:(Route*)route inManagedObjectContext:(NSManagedObjectContext*)context;
+
 +(CDRoute *) routeWithID:(NSNumber*)routeID inManagedObjectContext:(NSManagedObjectContext*)context;
 
 +(CDRoute  *) routeWithID:(NSNumber*)routeID withName:(NSString*)routeName inManagedObjectContext:(NSManagedObjectContext *)context;
