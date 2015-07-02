@@ -7,8 +7,19 @@
 //
 
 #import "Job.h"
+#import "CoreDataStore/CDMapPoint+GotJunk.h"
+#import "DataStoreSingleton.h"
 
 @implementation Job
+
+
+-(void)setMapPoint:(MapPoint *)mapPoint
+{
+    _mapPoint = mapPoint;
+
+    [CDMapPoint mapPoint:mapPoint withJob:self inManagedObjectContext:[DataStoreSingleton sharedInstance].managedObjectContext];
+    
+}
 
 - (BOOL)isBookoff
 {

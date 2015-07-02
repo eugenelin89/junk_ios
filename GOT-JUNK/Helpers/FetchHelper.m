@@ -62,6 +62,8 @@
 
       isCaching = NO;
       isFetching = NO;
+      
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllCachingData) name:@"CoreDataReady" object:nil];
   }
 
   return self;
@@ -247,9 +249,7 @@
         Franchise * franchise = [[Franchise alloc] init];
         franchise.franchiseName = franchiseName;
         franchise.franchiseID = defaultFranchiseID;
-        [DataStoreSingleton sharedInstance].permissions= permissions;
-        [DataStoreSingleton sharedInstance].assignedRoutes= tempArray;
-        [DataStoreSingleton sharedInstance].currentFranchise= franchise;
+
         
         UserDefaultsSingleton *defaults = [UserDefaultsSingleton sharedInstance];
         [defaults setUserSessionID:sessionID];
@@ -261,6 +261,10 @@
         [defaults setUserDefaultRouteName:defaultRouteName];
         [defaults setUserDefaultFranchiseID:defaultFranchiseID];
         [defaults setUserLogin: username];
+        
+        [DataStoreSingleton sharedInstance].permissions= permissions;
+        [DataStoreSingleton sharedInstance].assignedRoutes= tempArray;
+        [DataStoreSingleton sharedInstance].currentFranchise= franchise;
     }
     
     [DataStoreSingleton sharedInstance].isUserLoggedIn = YES;
@@ -1278,7 +1282,7 @@
 {
     @try
     {
-        
+        NSLog(@"GET ALL CACHING DATA");
         isCaching = YES;
     
         [self fetchRouteList];

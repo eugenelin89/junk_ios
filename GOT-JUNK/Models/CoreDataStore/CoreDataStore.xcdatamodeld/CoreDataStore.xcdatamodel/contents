@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="14A261i" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CDJob" representedClassName="CDJob" syncable="YES">
+        <attribute name="callAheadStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="callAheadTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="clientCompany" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="clientEmail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="clientName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="clientTypeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactCell" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactCellAreaCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactCellExt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactFax" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactFaxAreaCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactFaxExt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactHomeAreaCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactHomeExt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactHomePhone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="contactPagerAreaCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactPagerExt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactPagerPhone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactPhonePref" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactPhonePrefID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="contactWorkAreaCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactWorkExt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactWorkPhone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="discount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="dispatchAccepted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="dispatchID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="dispatchMessage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="invoiceNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isCashedOut" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isCentrallyBilled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isDispatchAccepted" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
+        <attribute name="isEnviroRequired" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="jobComments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="jobDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="jobDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="jobEndTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="jobID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="jobStartTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="jobStartTimeOriginal" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="jobType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="junkCharge" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="junkLocationComments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nameOfLastTTUsed" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="npsComment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="npsValue" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="numOfJobs" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="onSiteContactAreaCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="onSiteContactExt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="onSiteContactID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="onSiteContactPhone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="onSiteContactPhonePref" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="onSiteContactPhonePrefID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="paymentID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="pickupAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pickupCompany" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pickupCountry" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="programDiscount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="programDiscountType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="programNotes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="promiseTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="promoCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="routeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="subTotal" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="taxAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="taxID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="taxType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="total" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="totalSpent" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zoneColor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zoneFontColor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zoneName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mapPoint" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDMapPoint" inverseName="job" inverseEntity="CDMapPoint" syncable="YES"/>
+        <relationship name="route" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDRoute" inverseName="jobs" inverseEntity="CDRoute" syncable="YES"/>
+    </entity>
+    <entity name="CDMapPoint" representedClassName="CDMapPoint" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="resourceTypeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="job" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDJob" inverseName="mapPoint" inverseEntity="CDJob" syncable="YES"/>
+    </entity>
+    <entity name="CDRoute" representedClassName="CDRoute" syncable="YES">
+        <attribute name="routeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="routeName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="assignedTo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDUser" inverseName="assignedRoutes" inverseEntity="CDUser" syncable="YES"/>
+        <relationship name="jobs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDJob" inverseName="route" inverseEntity="CDJob" syncable="YES"/>
+    </entity>
+    <entity name="CDUser" representedClassName="CDUser" syncable="YES">
+        <attribute name="userID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="assignedRoutes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDRoute" inverseName="assignedTo" inverseEntity="CDRoute" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CDJob" positionX="-63" positionY="-18" width="128" height="1198"/>
+        <element name="CDMapPoint" positionX="-288" positionY="-18" width="128" height="148"/>
+        <element name="CDRoute" positionX="169" positionY="-9" width="128" height="103"/>
+        <element name="CDUser" positionX="349" positionY="-7" width="128" height="73"/>
+    </elements>
+</model>

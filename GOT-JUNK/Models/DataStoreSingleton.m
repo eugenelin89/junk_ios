@@ -16,10 +16,15 @@
 #import "APIObjectConversionHelper.h"
 #import "DateHelper.h"
 #import "MapPoint.h"
+#import "CoreDataStore/CDJob+GotJunk.h"
+#import "CoreDataStore/CDRoute+GotJunk.h"
+#import "UserDefaultsSingleton.h"
+#import "CoreDataStore/CDUser+GotJunk.h"
 
 @implementation DataStoreSingleton
 {
     int currentNotificationPageNumber;
+    UIManagedDocument * _document;
 }
 
 @synthesize currentLookupMode = _currentLookupMode;
@@ -46,6 +51,7 @@
 @synthesize notificationList = _notificationList;
 @synthesize currentJob = _currentJob;
 @synthesize filterRoute = _filterRoute;
+@synthesize assignedRoutes = _assignedRoutes;
 
 + (DataStoreSingleton *)sharedInstance
 {
@@ -59,9 +65,43 @@
         _sharedInstance.isInternetLive = YES;
         _sharedInstance.isUserLoggedIn = YES;
         _sharedInstance->currentNotificationPageNumber = 0;
+        
+        [_sharedInstance prepareCoreDataStore];
+        
+
     });
 
     return _sharedInstance;
+}
+
+-(void)prepareCoreDataStore
+{
+    self.managedObjectContext = nil;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *documentDir = [[fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask] firstObject];
+    NSURL *url = [documentDir URLByAppendingPathComponent:@"junkstore.md"];
+    _document = [[UIManagedDocument alloc] initWithFileURL:url];
+    
+    if([[NSFileManager defaultManager] fileExistsAtPath:[url path]]){
+        [_document openWithCompletionHandler:^(BOOL success) {
+            [self documentIsReady];
+        }];
+    }else{
+        [_document saveToURL:url
+           forSaveOperation:UIDocumentSaveForCreating
+          completionHandler:^(BOOL success) {
+              [self documentIsReady];
+        }];
+    }
+}
+
+-(void)documentIsReady
+{
+    if(_document.documentState ==  UIDocumentStateNormal){
+        self.managedObjectContext = _document.managedObjectContext;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CoreDataReady" object:nil];
+        NSLog(@"\n\n *** CORE DATA READY! ***\n\n");
+    }
 }
 
 - (BOOL)isOffline
@@ -159,6 +199,17 @@
     }
     return _assignedRoutes;
 }
+
+-(void) setAssignedRoutes:(NSArray *)assignedRoutes
+{
+    _assignedRoutes = assignedRoutes;
+    
+    [CDUser assignRoutes:assignedRoutes toUserWithID:[[UserDefaultsSingleton sharedInstance] getUserID] inManagedObjectContext:self.managedObjectContext];
+    
+    
+    
+}
+
 - (NSDictionary *)expensesDict;
 {
     if (!_expensesDict) {
@@ -173,6 +224,11 @@
         _routeJobs = [[NSMutableDictionary alloc] init];
     }
     return _routeJobs;
+}
+
+-(void) setRouteJobs:(NSMutableDictionary *)routeJobs
+{
+    _routeJobs = routeJobs;
 }
 
 - (Job *)pushJob;
@@ -224,14 +280,31 @@
     return _notificationList;
 }
 
+-(NSArray *)jobList
+{
+    return _jobList;
+}
+
 
 - (void)setJobList:(NSArray *)jobList
 {
     _jobList = jobList;
     
     [self setJobLocations];
-
+    
+    // store in core data, but do it on a seperate thread.
+    //[self runAsync:^{
+    [CDJob loadJobsFromArray:jobList inManagedObjectContext:self.managedObjectContext];
+    //}];
 }
+
+-(void)setRouteList:(NSArray *)routeList
+{
+    _routeList = routeList;
+    [CDRoute loadRoutesFromArray:routeList inManagedObjectContext:self.managedObjectContext];
+    
+}
+
 - (void)setCurrentJobPaymentID:(NSNumber *)jobID
 {
     _currentJobPaymentID = jobID;
@@ -350,6 +423,7 @@
 - (void)addJobsList:(NSArray*)jobListArray forRoute:(NSNumber*)routeID;
 {
     [self.routeJobs setObject:jobListArray forKey:routeID];
+    [CDRoute addJobs:jobListArray toRouteWithID:routeID inManagedObjectContext:self.managedObjectContext];
 }
 
 - (Enviro *)mapEnviro:(NSDictionary *)dict
@@ -517,6 +591,7 @@
     return jobListArray;
 }
 
+
 - (NSArray *)jobsFromJsonString:(NSString *)jsonString
 {
     NSError *err = nil;
@@ -558,6 +633,7 @@
     newJob.numOfJobs = [dict objectForKey:@"numOfJobs"];
     newJob.pickupAddress = [NSString stringWithFormat:@"#%@ %@\n%@, %@",[[dict objectForKey:@"pickupAptNo"] capitalizedString], [[dict objectForKey:@"pickupStreet"] capitalizedString],[[dict objectForKey:@"pickupCity"] capitalizedString],[[dict objectForKey:@"pickupState"] capitalizedString]];
     newJob.jobID               = [dict objectForKey:@"jobID"];
+    newJob.routeID             = [dict objectForKey:@"routeID"];
     newJob.contactID           = [dict objectForKey:@"contactID"];
     newJob.promiseTime         = [dict objectForKey:@"promiseTime"];
     newJob.jobStartTime        = [dict objectForKey:@"jobStartTime"];
@@ -816,5 +892,12 @@
     
     return nil;
 }
+
+-(void)runAsync:(void (^)(void))asyncBlock
+{
+    dispatch_queue_t bq = dispatch_queue_create("async block",NULL);
+    dispatch_async(bq,asyncBlock);
+}
+
 
 @end

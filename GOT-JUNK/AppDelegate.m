@@ -51,6 +51,8 @@
     [self setLocationCoordinates];
     
     [self setWindows];
+    
+    [DataStoreSingleton sharedInstance]; // make sure DataStoreSingleton gets initialized.
 
     return YES;
 }
