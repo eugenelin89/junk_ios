@@ -20,6 +20,13 @@
 #import "CoreDataStore/CDRoute+GotJunk.h"
 #import "UserDefaultsSingleton.h"
 #import "CoreDataStore/CDUser+GotJunk.h"
+#import "Mode.h"
+#import "StandbyMode.h"
+
+@interface DataStoreSingleton()
+@property (nonatomic, strong) id<Mode> mode;
+
+@end
 
 @implementation DataStoreSingleton
 {
@@ -52,6 +59,7 @@
 @synthesize currentJob = _currentJob;
 @synthesize filterRoute = _filterRoute;
 @synthesize assignedRoutes = _assignedRoutes;
+@synthesize mode = _mode;
 
 + (DataStoreSingleton *)sharedInstance
 {
@@ -67,6 +75,8 @@
         _sharedInstance->currentNotificationPageNumber = 0;
         
         [_sharedInstance prepareCoreDataStore];
+        
+        _mode = [[StandbyMode alloc] init]; // initialize as Standby Mode.
         
 
     });
