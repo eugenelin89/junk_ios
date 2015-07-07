@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#define ACTIVE_NOTIFICATION "ACTIVE_NOTIFICATION"
+#define STANDBY_NOTIFICATION "STANDBY_NOTIFICATION"
+#define CACHED_NOTIFICATION "CACHED_NOTIFICATION"
+#define OFFLINE_NOTIFICATION "OFFLINE_NOTIFICATION"
+
 @protocol Mode
 -(id<Mode>) loggedIn;
 -(id<Mode>)loggedOut;

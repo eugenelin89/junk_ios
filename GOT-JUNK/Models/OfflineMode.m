@@ -16,6 +16,7 @@
 {
     [super init];
     // Send Notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:OFFLINE_NOTIFICATION object:nil];
 }
 
 -(id<Mode>)loggedIn
