@@ -7,6 +7,8 @@
 //
 
 #import "CachedMode.h"
+#import "ActiveMode.h"
+#import "OfflineMode.h"
 
 @implementation CachedMode
 
@@ -18,21 +20,21 @@
 
 -(id<Mode>)loggedIn
 {
-    
+    return self;
 }
 
 -(id<Mode>)loggedOut
 {
-    
+    return [[OfflineMode alloc] init];
 }
 
 -(id<Mode>)reconnect
 {
-    
+    return [[ActiveMode alloc] init];
 }
 
 -(id<Mode>)disconnect
 {
-    
+    return self;
 }
 @end
