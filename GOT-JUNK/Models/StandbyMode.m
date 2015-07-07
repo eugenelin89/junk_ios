@@ -7,6 +7,8 @@
 //
 
 #import "StandbyMode.h"
+#import "ActiveMode.h"
+#import "OfflineMode.h"
 
 @implementation StandbyMode
 
@@ -18,21 +20,21 @@
 
 -(id<Mode>)loggedIn
 {
-    
+    return [[ActiveMode alloc] init];
 }
 
 -(id<Mode>)loggedOut
 {
-    
+    return self;
 }
 
 -(id<Mode>)reconnect
 {
-    
+    return self;
 }
 
 -(id<Mode>)disconnect
 {
-    
+    return [[OfflineMode alloc] init];
 }
 @end
