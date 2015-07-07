@@ -13,10 +13,21 @@
 #define CACHED_NOTIFICATION "CACHED_NOTIFICATION"
 #define OFFLINE_NOTIFICATION "OFFLINE_NOTIFICATION"
 
+typedef enum {
+    ActiveModeType = 0,
+    StandbyModeType,
+    CachedModeType,
+    OfflineModeType
+} ModeType;
+
 @protocol Mode
+
+@property(nonatomic, readonly) ModeType modeType;
+
 -(id<Mode>) loggedIn;
 -(id<Mode>)loggedOut;
 -(id<Mode>)reconnect;
 -(id<Mode>)disconnect;
+
 
 @end

@@ -10,5 +10,5 @@
 #import "Mode.h"
 
 @interface ActiveMode : NSObject <Mode>
-
+@property(nonatomic, readonly) ModeType modeType;
 @end

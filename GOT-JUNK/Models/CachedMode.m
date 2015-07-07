@@ -10,6 +10,10 @@
 #import "ActiveMode.h"
 #import "OfflineMode.h"
 
+@interface CachedMode()
+@property(nonatomic, readwrite) ModeType modeType;
+@end
+
 @implementation CachedMode
 
 -(instancetype)init
@@ -17,6 +21,7 @@
     [super init];
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:CACHED_NOTIFICATION object:nil];
+    self.modeType = CachedModeType;
 }
 
 -(id<Mode>)loggedIn

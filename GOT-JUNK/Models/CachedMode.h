@@ -10,5 +10,5 @@
 #import "Mode.h"
 
 @interface CachedMode : NSObject<Mode>
-
+@property(nonatomic, readonly) ModeType modeType;
 @end

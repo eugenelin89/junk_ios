@@ -10,5 +10,5 @@
 #import "Mode.h"
 
 @interface OfflineMode : NSObject <Mode>
-
+@property(nonatomic, readonly) ModeType modeType;
 @end

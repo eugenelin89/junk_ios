@@ -10,6 +10,10 @@
 #import "StandbyMode.h"
 #import "CachedMode.h"
 
+@interface ActiveMode()
+@property(nonatomic, readwrite) ModeType modeType;
+@end
+
 @implementation ActiveMode
 
 -(instancetype)init
@@ -17,6 +21,7 @@
     [super init];
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:ACTIVE_NOTIFICATION object:nil];
+    self.modeType = ActiveModeType;
 }
 
 -(id<Mode>)loggedIn

@@ -10,5 +10,5 @@
 #import "Mode.h"
 
 @interface StandbyMode : NSObject <Mode>
-
+@property(nonatomic, readonly) ModeType modeType;
 @end
