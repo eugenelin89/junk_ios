@@ -18,10 +18,11 @@
 
 -(instancetype)init
 {
-    [super init];
+    self = [super init];
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:OFFLINE_NOTIFICATION object:nil];
     self.modeType = OfflineModeType;
+    return self;
 }
 
 -(id<Mode>)loggedIn
@@ -37,7 +38,7 @@
 
 -(id<Mode>)reconnect
 {
-    return [[[StandbyMode] alloc] init];
+    return [[StandbyMode alloc] init];
 }
 
 -(id<Mode>)disconnect

@@ -18,10 +18,11 @@
 
 -(instancetype)init
 {
-    [super init];
+    self = [super init];
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:ACTIVE_NOTIFICATION object:nil];
     self.modeType = ActiveModeType;
+    return self;
 }
 
 -(id<Mode>)loggedIn
@@ -41,7 +42,7 @@
 
 -(id<Mode>)disconnect
 {
-    return [[CachedMode alloc] int];
+    return [[CachedMode alloc] init];
 }
 
 

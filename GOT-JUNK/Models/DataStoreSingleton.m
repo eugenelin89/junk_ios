@@ -21,7 +21,7 @@
 #import "UserDefaultsSingleton.h"
 #import "CoreDataStore/CDUser+GotJunk.h"
 #import "Mode.h"
-#import "StandbyMode.h"
+#import "ActiveMode.h"
 
 @interface DataStoreSingleton()
 @property (nonatomic, strong) id<Mode> mode;
@@ -68,7 +68,7 @@
     dispatch_once(&onceToken, ^
     {
         _sharedInstance = [[DataStoreSingleton alloc] init];
-    
+        _sharedInstance.mode = [[ActiveMode alloc] init]; // initialize as Active Mode.
         _sharedInstance.isJunkNetLive = YES;
         _sharedInstance.isInternetLive = YES;
         _sharedInstance.isUserLoggedIn = YES;
@@ -76,7 +76,7 @@
         
         [_sharedInstance prepareCoreDataStore];
         
-        _mode = [[StandbyMode alloc] init]; // initialize as Standby Mode.
+        
         
 
     });
@@ -341,6 +341,16 @@
         _filterRoute = [[Route alloc] init];
     }
     return _filterRoute;
+}
+
+-(void) setIsUserLoggedIn:(BOOL)isUserLoggedIn
+{
+    _isUserLoggedIn = isUserLoggedIn;
+    if(isUserLoggedIn){
+        self.mode = [self.mode loggedIn];
+    }else{
+        self.mode = [self.mode loggedOut];
+    }
 }
 
 - (void)mergeJobs:(NSArray *)jobs

@@ -18,10 +18,11 @@
 
 -(instancetype)init
 {
-    [super init];
+    self = [super init];
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:CACHED_NOTIFICATION object:nil];
     self.modeType = CachedModeType;
+    return self;
 }
 
 -(id<Mode>)loggedIn
