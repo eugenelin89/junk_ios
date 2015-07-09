@@ -33,7 +33,7 @@
         // Custom initialization
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshRouteList) name:@"FetchRouteListComplete" object:nil];
     
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedNoInternet) name:@"FetchTestFailed" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchInternetUp) name:@"FetchTestSuccess" object:nil];
     
         [DataStoreSingleton sharedInstance].filterRoute = nil;
@@ -78,7 +78,7 @@
     
     if( [DataStoreSingleton sharedInstance].isInternetLive == NO || [DataStoreSingleton sharedInstance].isJunkNetLive == NO )
     {
-        [self fetchFailedNoInternet];
+        [self disconnected];
     }
     
     self.title = [[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseName];
@@ -100,7 +100,7 @@
     [self setButtonState:YES];
 }
 
-- (void)fetchFailedNoInternet
+- (void)disconnected
 {
     [self setButtonState:NO];
 }

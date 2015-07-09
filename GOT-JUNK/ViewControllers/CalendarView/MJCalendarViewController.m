@@ -79,7 +79,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshJobListAndShowAlert) name:@"FetchJobListCompleteShowAlert" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startRefresh) name:@"MustRefreshJobsList" object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedNoInternet) name:@"FetchFailedNoInternet" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedServerAlreadyDown) name:@"FetchFailedServerAlreadyDown" object:nil];
         
         
@@ -253,7 +253,7 @@
     [self setButtonState:YES];
 }
 
-- (void)fetchFailedNoInternet
+- (void)disconnected
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     

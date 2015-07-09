@@ -91,7 +91,7 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showDispatchAlerts) name:@"FetchJobListCompleteShowAlert" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayJob) name:@"needToDisplayJob" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedNoInternet) name:@"FetchFailedNoInternet" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:@"FetchFailedServerDown" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedSessionExpired) name:@"FetchFailedSessionExpired" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"FetchLoginSuccess" object:nil];
@@ -590,7 +590,7 @@ static const int NumMenusInSection0 = 7;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
-- (void)fetchFailedNoInternet
+- (void)disconnected
 {
     //[MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     //NoConnectionViewController *noc = [[NoConnectionViewController alloc] init];
