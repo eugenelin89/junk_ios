@@ -1880,7 +1880,7 @@
         if( !dataStore.isConnected )
         {
             dispatch_async( dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchTestSuccess" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:RECONNECTED_NOTIFICATION object:nil];
             });
             dataStore.isUserLoggedIn = YES;
             dataStore.isConnected = YES;

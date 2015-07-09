@@ -34,7 +34,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshRouteList) name:@"FetchRouteListComplete" object:nil];
     
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchInternetUp) name:@"FetchTestSuccess" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
     
         [DataStoreSingleton sharedInstance].filterRoute = nil;
         requiresBackAfterSelection = NO;
@@ -95,7 +95,7 @@
     requiresBackAfterSelection = requiresBack;
 }
 
-- (void)fetchInternetUp
+- (void)reconnected
 {
     [self setButtonState:YES];
 }

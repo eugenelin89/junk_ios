@@ -25,8 +25,7 @@
 {
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchInternetUp) name:@"FetchInternetUp" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchInternetUp) name:@"FetchTestSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -51,7 +50,7 @@
 }
 */
 
--(void)fetchInternetUp
+-(void)reconnected
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }

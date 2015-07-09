@@ -83,7 +83,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedServerAlreadyDown) name:@"FetchFailedServerAlreadyDown" object:nil];
         
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchInternetUp) name:@"FetchTestSuccess" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
         
         MJCollectionViewCalendarLayout *automationLayout = (MJCollectionViewCalendarLayout *)self.collectionView.collectionViewLayout;
         [automationLayout registerClass:[MSGridline class]  forDecorationViewOfKind:@"MSGridLine"];
@@ -248,7 +248,7 @@
     [self setButtonState:![[DataStoreSingleton sharedInstance] isOffline]];
 }
 
-- (void)fetchInternetUp
+- (void)reconnected
 {
     [self setButtonState:YES];
 }

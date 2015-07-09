@@ -32,8 +32,7 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchServerUp) name:@"FetchServerUp" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchServerUp) name:@"FetchTestSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
 
     self.countAttempts = 0;
     self.loginTableView.backgroundColor = [UIColor clearColor];
@@ -48,7 +47,7 @@
     
 }
 
-- (void)fetchServerUp
+- (void)reconnected
 {
     [self dismissViewControllerAnimated:NO completion:nil];
 }

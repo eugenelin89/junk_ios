@@ -44,10 +44,8 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchTestSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchServerUp" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:DISCONNECTED_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchInternetUp" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:RECONNECTED_NOTIFICATION object:nil];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNewVersion) name:@"UpdateAvailable" object:nil];
 
     //Instantiate a location object.
