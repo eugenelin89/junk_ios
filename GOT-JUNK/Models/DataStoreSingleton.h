@@ -61,9 +61,8 @@
 
 @property (nonatomic, strong) Job *pushJob;
 @property (nonatomic, strong) NSMutableDictionary *routeJobs;
-@property (nonatomic) BOOL isJunkNetLive;
-@property (nonatomic) BOOL isInternetLive;
 @property (nonatomic) BOOL isUserLoggedIn;
+@property (nonatomic) BOOL isConnected;
 @property (nonatomic, strong) NSString *paymentErrors;
 @property (nonatomic, strong) NSDictionary *appUpgradeInfo;
 
@@ -84,7 +83,6 @@
 - (void)getJobListForCachedCurrentRoute;
 - (void)addJobsList:(NSArray*)jobListArray forRoute:(NSNumber*)routeID;
 - (void)clearRouteJobs;
-- (BOOL)isOffline;
 
 - (void)parseEnviroDict:(NSString*)responseString;
 - (void)parseExpenseDict:(NSString*)responseString;

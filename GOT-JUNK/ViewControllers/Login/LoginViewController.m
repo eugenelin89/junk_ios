@@ -87,27 +87,17 @@
 
 - (void)updateStatus
 {
-    if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
+    if( [DataStoreSingleton sharedInstance].isConnected == YES )
     {
-        self.onlineStatus.text = @"Connected to internet";
+        self.onlineStatus.text = @"Connected to JunkNet";
         self.onlineStatus.textColor = [UIColor blueColor];
     }
     else
     {
-        self.onlineStatus.text = @"Not connected to internet";
+        self.onlineStatus.text = @"Not connected to JunkNet";
         self.onlineStatus.textColor = [UIColor redColor];
     }
 
-    if( [DataStoreSingleton sharedInstance].isJunkNetLive == YES )
-    {
-        self.junknetStatus.text = @"JunkNet is currently online";
-        self.junknetStatus.textColor = [UIColor blueColor];
-    }
-    else
-    {
-        self.junknetStatus.text = @"JunkNet is currently offline";
-        self.junknetStatus.textColor = [UIColor redColor];
-    }
 }
 
 - (void)didReceiveMemoryWarning

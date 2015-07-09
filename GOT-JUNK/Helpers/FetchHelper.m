@@ -1877,15 +1877,13 @@
     {
         DataStoreSingleton *dataStore = [DataStoreSingleton sharedInstance];
         
-        if( dataStore.isJunkNetLive == NO || dataStore.isInternetLive == NO || dataStore.isUserLoggedIn == NO )
+        if( !dataStore.isConnected )
         {
             dispatch_async( dispatch_get_main_queue(), ^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchTestSuccess" object:nil];
             });
-            dataStore.isInternetLive = YES;
-            dataStore.isJunkNetLive = YES;
             dataStore.isUserLoggedIn = YES;
-            
+            dataStore.isConnected = YES;
             //[self getAllCachingData];
         }
     }
@@ -1950,11 +1948,6 @@
     
 }
 
-
-- (BOOL)isAllowFetching
-{
-    return [DataStoreSingleton sharedInstance].isJunkNetLive == YES && [DataStoreSingleton sharedInstance].isInternetLive == YES;
-}
 
 - (BOOL)checkInternetError:(NSError*)error forMessage:(NSString*)messasge
 {

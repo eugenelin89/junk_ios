@@ -50,8 +50,7 @@
 @synthesize currentJobPaymentID = _currentJobPaymentID;
 @synthesize pushJob = _pushJob;
 @synthesize routeJobs = _routeJobs;
-@synthesize isJunkNetLive = _isJunkNetLive;
-@synthesize isInternetLive = _isInternetLive;
+@synthesize isConnected = _isConnected;
 @synthesize isUserLoggedIn = _isUserLoggedIn;
 @synthesize debugDisplayText1 = _debugDisplayText1;
 @synthesize debugDisplayText2 = _debugDisplayText2;
@@ -69,8 +68,7 @@
     {
         _sharedInstance = [[DataStoreSingleton alloc] init];
         _sharedInstance.mode = [[ActiveMode alloc] init]; // initialize as Active Mode.
-        _sharedInstance.isJunkNetLive = YES;
-        _sharedInstance.isInternetLive = YES;
+        _sharedInstance.isConnected = YES;
         _sharedInstance.isUserLoggedIn = YES;
         _sharedInstance->currentNotificationPageNumber = 0;
         
@@ -114,10 +112,7 @@
     }
 }
 
-- (BOOL)isOffline
-{
-    return self.isInternetLive == NO || self.isJunkNetLive == NO;
-}
+
 
 - (NSMutableArray *)mapPointsList
 {
