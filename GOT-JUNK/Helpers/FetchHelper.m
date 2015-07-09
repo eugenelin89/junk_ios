@@ -1965,14 +1965,6 @@
         return YES;
     }
     
-    if( [DataStoreSingleton sharedInstance].isInternetLive == NO )
-    {
-        [DataStoreSingleton sharedInstance].isInternetLive = YES;
-        dispatch_async( dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchInternetUp" object:nil];
-        });
-    }
-
     return NO;
 }
 
@@ -1991,15 +1983,7 @@
         }
         return YES;
     }
-    
-    if( [DataStoreSingleton sharedInstance].isJunkNetLive == NO )
-    {
-        [DataStoreSingleton sharedInstance].isJunkNetLive = YES;
-        dispatch_async( dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchServerUp" object:nil];
-        });
-    }
-    
+        
     return NO;
 }
 
