@@ -92,7 +92,6 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayJob) name:@"needToDisplayJob" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:@"FetchFailedServerDown" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedSessionExpired) name:@"FetchFailedSessionExpired" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"FetchLoginSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DefaultFranchiseNameChanged" object:nil];
