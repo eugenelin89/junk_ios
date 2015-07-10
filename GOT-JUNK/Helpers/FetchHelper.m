@@ -63,7 +63,7 @@
       isCaching = NO;
       isFetching = NO;
       
-      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllCachingData) name:@"CoreDataReady" object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllCachingData) name:COREDATAREADY_NOTIFICATION object:nil];
   }
 
   return self;
@@ -122,22 +122,19 @@
 
                         if (operation.responseString)
                         {
+                            [DataStoreSingleton sharedInstance].isUserLoggedIn = YES;
                             [self loginSucceededWithResponseString:operation.responseString andUsername:username];
                         }
                         else
                         {
-                            NSLog(@"login error: %@", operation.responseString);
-                        
-                            [self sendNotification:LOGGEDOUT_NOTIFICATION];
+                            [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
                         }
                     }
                  failure:^(AFHTTPRequestOperation *operation, NSError *error)
                     {
                         [self endNetworkActivity];
-                        
-                        NSLog(@"login error: %@", operation.responseString);
-                        
-                        [self sendNotification:LOGGEDOUT_NOTIFICATION];
+                        [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
+
                     }];
 }
 
@@ -267,9 +264,9 @@
         [DataStoreSingleton sharedInstance].currentFranchise= franchise;
     }
     
-    [DataStoreSingleton sharedInstance].isUserLoggedIn = YES;
+    
 
-    [self sendNotification:LOGGEDIN_NOTIFICATION];
+    
 
     [self getAllCachingData];
 }
@@ -1356,7 +1353,6 @@
             [DataStoreSingleton sharedInstance].debugDisplayText1 = @"getAndPerformSessionIDActions";
             
             [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
         }
         
         return nil;
@@ -1879,9 +1875,7 @@
         
         if( !dataStore.isConnected )
         {
-            dispatch_async( dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:RECONNECTED_NOTIFICATION object:nil];
-            });
+            
             dataStore.isUserLoggedIn = YES;
             dataStore.isConnected = YES;
             //[self getAllCachingData];
@@ -1896,13 +1890,11 @@
     
     if(operation.response.statusCode == 401 || operation.response.statusCode == 403){
         // session issue, user logged out
-        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
         [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
         [self clearChannels];
         
     }else{
         // Cannot connect to JunkNet
-        [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECTED_NOTIFICATION object:nil];
         [DataStoreSingleton sharedInstance].isConnected = NO;
         
     }

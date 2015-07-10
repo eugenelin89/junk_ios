@@ -107,7 +107,7 @@
 {
     if(_document.documentState ==  UIDocumentStateNormal){
         self.managedObjectContext = _document.managedObjectContext;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"CoreDataReady" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:COREDATAREADY_NOTIFICATION object:nil];
         NSLog(@"\n\n *** CORE DATA READY! ***\n\n");
     }
 }
@@ -343,8 +343,22 @@
     _isUserLoggedIn = isUserLoggedIn;
     if(isUserLoggedIn){
         self.mode = [self.mode loggedIn];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDIN_NOTIFICATION object:nil];
     }else{
         self.mode = [self.mode loggedOut];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
+    }
+}
+
+-(void) setIsConnected:(BOOL)isConnected
+{
+    _isConnected = isConnected;
+    if(isConnected){
+        self.mode = [self.mode reconnect];
+        [[NSNotificationCenter defaultCenter] postNotificationName:RECONNECTED_NOTIFICATION object:nil];
+    }else{
+        self.mode = [self.mode disconnect];
+        [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECTED_NOTIFICATION object:nil];
     }
 }
 
