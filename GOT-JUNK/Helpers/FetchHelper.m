@@ -128,7 +128,7 @@
                         {
                             NSLog(@"login error: %@", operation.responseString);
                         
-                            [self sendNotification:@"FetchLoginFailed"];
+                            [self sendNotification:LOGGEDOUT_NOTIFICATION];
                         }
                     }
                  failure:^(AFHTTPRequestOperation *operation, NSError *error)
@@ -137,7 +137,7 @@
                         
                         NSLog(@"login error: %@", operation.responseString);
                         
-                        [self sendNotification:@"FetchLoginFailed"];
+                        [self sendNotification:LOGGEDOUT_NOTIFICATION];
                     }];
 }
 
@@ -269,7 +269,7 @@
     
     [DataStoreSingleton sharedInstance].isUserLoggedIn = YES;
 
-    [self sendNotification:@"FetchLoginSuccess"];
+    [self sendNotification:LOGGEDIN_NOTIFICATION];
 
     [self getAllCachingData];
 }
@@ -1356,7 +1356,7 @@
             [DataStoreSingleton sharedInstance].debugDisplayText1 = @"getAndPerformSessionIDActions";
             
             [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedSessionExpired" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
         }
         
         return nil;
@@ -1894,124 +1894,24 @@
     [self endNetworkActivity];
     //NSLog(@"%@ %@", method, operation.responseString);
     
-    if( [self checkInternetError:error forMessage:@"The Internet connection appears to be offline."] == YES )
-    {
-        return;
-    }
-    if( [self checkInternetError:error forMessage:@"The request timed out."] == YES )
-    {
-        return;
-    }
-    if( [self checkJunkNetError:error forMessage:@"The network connection was lost."] == YES )
-    {
-        return;
-    }
-    if( [self checkJunkNetError:error forMessage:@"Could not connect to the server."] == YES )
-    {
-        return;
-    }
-    
-
-    [DataStoreSingleton sharedInstance].debugDisplayText1 = method;
-    
-    if( [self checkSessionError:error forMessage:@"Expected status code in (200-299), got 403"] == YES )
-    {
-        return;
-    }
-    if( [self checkSessionError:error forMessage:@"Expected status code in (200-299), got 401"] == YES )
-    {
-        return;
-    }
-    
-    NSString *reason = operation.responseString;
-    if( [reason isEqualToString:@"\"Unauthorized Request\""] == YES )
-    {
-        NSLog(@"checkFailedError: %@", reason);
-
+    if(operation.response.statusCode == 401 || operation.response.statusCode == 403){
+        // session issue, user logged out
+        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
+        [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
         [self clearChannels];
-    }
-    
-    
-    // If execution reaches this point, the error is none of the above,
-    // and, we need to assume it is either server down or no connection, both triggers Offline Mode.
-    // Assume no connection.
-    // There are many types of error associated with server down or no connection.
-    // Interpreting the error based on error message is a bad idea.
-    // TODO: REFACTORING NEEDED.
-    if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
-    {
-        [DataStoreSingleton sharedInstance].isInternetLive = NO;
-        dispatch_async( dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedNoInternet" object:nil];
-        });
-    }
-    
-}
-
-
-- (BOOL)checkInternetError:(NSError*)error forMessage:(NSString*)messasge
-{
-    NSString *errorCause = [error.userInfo objectForKey:@"NSLocalizedDescription"];
-    if( [errorCause isEqualToString:messasge] == YES )
-    {
-        NSLog(@"checkInternetError: errorCause: %@", errorCause);
-        if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
-        {
-            [DataStoreSingleton sharedInstance].isInternetLive = NO;
-            dispatch_async( dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedNoInternet" object:nil];
-            });
-        }
-        return YES;
-    }
-    
-    return NO;
-}
-
-- (BOOL)checkJunkNetError:(NSError*)error forMessage:(NSString*)messasge
-{
-    NSString *errorCause = [error.userInfo objectForKey:@"NSLocalizedDescription"];
-    if( [errorCause isEqualToString:messasge] == YES )
-    {
-        NSLog(@"checkJunkNetError: errorCause: %@", errorCause);
-        if( [DataStoreSingleton sharedInstance].isJunkNetLive == YES )
-        {
-            [DataStoreSingleton sharedInstance].isJunkNetLive = NO;
-            dispatch_async( dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedServerDown" object:nil];
-            });
-        }
-        return YES;
-    }
         
-    return NO;
-}
-
-- (BOOL)checkSessionError:(NSError*)error forMessage:(NSString*)message
-{
-    NSString *errorCause = [error.userInfo objectForKey:@"NSLocalizedDescription"];
-    if( [errorCause isEqualToString:message] == YES )
-    {
-        NSLog(@"checkSessionError: errorCause: %@", errorCause);
-        if( [DataStoreSingleton sharedInstance].isUserLoggedIn == YES )
-        {
-            [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
-            
-            [self clearChannels];
-
-            dispatch_async( dispatch_get_main_queue(), ^{
-                
-                //[DataStoreSingleton sharedInstance].debugDisplayText1 = @"checkSessionError";
-                [DataStoreSingleton sharedInstance].debugDisplayText2 = message;
-
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedSessionExpired" object:nil];
-            });
-        }
-        return YES;
+    }else{
+        // Cannot connect to JunkNet
+        [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECTED_NOTIFICATION object:nil];
+        [DataStoreSingleton sharedInstance].isConnected = NO;
+        
     }
-    
-    return NO;
 }
+
+
+
+
+
 
 ///=================================================================================
 

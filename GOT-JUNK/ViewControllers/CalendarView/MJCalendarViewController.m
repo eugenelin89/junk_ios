@@ -430,7 +430,7 @@
     {
         [DataStoreSingleton sharedInstance].debugDisplayText1 = @"getJobListForCurrentRoute";
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedSessionExpired" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
         return;
     }
   

@@ -92,8 +92,8 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayJob) name:@"needToDisplayJob" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedSessionExpired) name:@"FetchFailedSessionExpired" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"FetchLoginSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionExpired) name:LOGGEDOUT_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:LOGGEDIN_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DefaultFranchiseNameChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DefaultRouteNameChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logOut) name:@"LogoutRequest" object:nil];
@@ -623,7 +623,7 @@ static const int NumMenusInSection0 = 7;
     }
 }
 
-- (void)fetchFailedSessionExpired
+- (void)sessionExpired
 {
     if( self.menuContainerViewController == nil )
     {
