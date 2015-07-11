@@ -11,6 +11,7 @@
 #import "DateHelper.h"
 #import "FetchHelper.h"
 #import "Route.h"
+#import "Mode.h"
 
 @interface LoginViewController ()
 
@@ -49,6 +50,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:RECONNECTED_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentUpgradeMenu) name:@"UpdateAvailable" object:nil];
     
+    // Mode Notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterActiveMode) name:ACTIVE_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterStandbyMode) name:STANDBY_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterCachedMode) name:CACHED_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:OFFLINE_NOTIFICATION object:nil];
+    
+    
     [Flurry logEvent:@"Login Controller"];
     self.loginTableView.backgroundColor = [UIColor clearColor];
     UIImage *buttonImage = [[UIImage imageNamed:@"button-green.png"]
@@ -80,6 +88,24 @@
 //    self.debug1.text = [DataStoreSingleton sharedInstance].debugDisplayText1;
 //    self.debug2.text = [DataStoreSingleton sharedInstance].debugDisplayText2;
 
+}
+
+-(void)enterOfflineMode
+{
+    NSLog(@"LoginViewController enters Offline Mode");
+    
+}
+-(void)enterCachedMode
+{
+    NSLog(@"LoginViewController enters Cached Mode");
+}
+-(void)enterActiveMode
+{
+    NSLog(@"LoginViewController enters Active Mode");
+}
+-(void)enterStandbyMode
+{
+    NSLog(@"LoginViewController enters Standby Mode");
 }
 
 - (void)updateStatus
