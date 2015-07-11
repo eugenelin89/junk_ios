@@ -93,28 +93,23 @@
 
 - (void)updateStatus
 {
-    if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
+    if( [DataStoreSingleton sharedInstance].isConnected )
     {
         self.imageView.hidden = NO;
         self.imageViewEx.hidden = YES;
-    }
-    else
-    {
-        self.imageView.hidden = YES;
-        self.imageViewEx.hidden = NO;
-    }
-    
-    if( [DataStoreSingleton sharedInstance].isJunkNetLive == YES )
-    {
+        
         self.imageView2.hidden = NO;
         self.imageView2Ex.hidden = YES;
     }
     else
     {
+        self.imageView.hidden = YES;
+        self.imageViewEx.hidden = NO;
+        
         self.imageView2Ex.hidden = NO;
         self.imageView2.hidden = YES;
     }
-    
+        
     if([CLLocationManager locationServicesEnabled] &&
        [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined)
     {

@@ -12,6 +12,7 @@
 #import "FetchHelper.h"
 #import "Route.h"
 #import "Mode.h"
+#import "OfflineLoginViewController.h"
 
 @interface LoginViewController ()
 
@@ -93,6 +94,11 @@
 -(void)enterOfflineMode
 {
     NSLog(@"LoginViewController enters Offline Mode");
+    OfflineLoginViewController *vc = [[OfflineLoginViewController alloc] init];
+    vc.delegate = self;
+    [self presentViewController:vc animated:YES completion:^{
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }];
     
 }
 -(void)enterCachedMode
@@ -102,6 +108,7 @@
 -(void)enterActiveMode
 {
     NSLog(@"LoginViewController enters Active Mode");
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 -(void)enterStandbyMode
 {

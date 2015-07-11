@@ -65,7 +65,8 @@
     }
     else
     {
-        if ([DataStoreSingleton sharedInstance].routeList && [[DataStoreSingleton sharedInstance].routeList count] > 0 && [[DataStoreSingleton sharedInstance] isOffline] )
+        if ([DataStoreSingleton sharedInstance].routeList && [[DataStoreSingleton sharedInstance].routeList count] > 0
+            && ![DataStoreSingleton sharedInstance].isConnected)
         {
             self.routeList = [DataStoreSingleton sharedInstance].routeList;
             [self.routeListTableView reloadData];
@@ -76,7 +77,7 @@
         }
     }
     
-    if( [DataStoreSingleton sharedInstance].isInternetLive == NO || [DataStoreSingleton sharedInstance].isJunkNetLive == NO )
+    if( ![DataStoreSingleton sharedInstance].isConnected )
     {
         [self disconnected];
     }
@@ -183,7 +184,7 @@
         // empty out the list of expenses
         [DataStoreSingleton sharedInstance].expensesDict = nil;
         
-        if( [[DataStoreSingleton sharedInstance] isOffline] )
+        if( ![DataStoreSingleton sharedInstance].isConnected )
         {
             // get the joblist from the currentRoute
             [[DataStoreSingleton sharedInstance] getJobListForCachedCurrentRoute];

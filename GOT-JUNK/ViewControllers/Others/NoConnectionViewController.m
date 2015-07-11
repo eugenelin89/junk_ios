@@ -8,6 +8,7 @@
 
 #import "NoConnectionViewController.h"
 #import "FetchHelper.h"
+#import "DataStoreSingleton.h"
 
 @interface NoConnectionViewController ()
 
