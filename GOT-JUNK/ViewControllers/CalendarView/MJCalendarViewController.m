@@ -120,7 +120,8 @@
     
     @try
     {
-        if ( ([DataStoreSingleton sharedInstance].jobList && [[DataStoreSingleton sharedInstance].jobList count] > 0 ) || [[DataStoreSingleton sharedInstance] isOffline] )
+        if ( ([DataStoreSingleton sharedInstance].jobList && [[DataStoreSingleton sharedInstance].jobList count] > 0 )
+            || ![DataStoreSingleton sharedInstance].isConnected )
         {
             self.jobList = [DataStoreSingleton sharedInstance].jobList;
             [self sortArray];
@@ -245,7 +246,7 @@
 
 - (void)updateState
 {
-    [self setButtonState:![[DataStoreSingleton sharedInstance] isOffline]];
+    [self setButtonState:[DataStoreSingleton sharedInstance].isConnected];
 }
 
 - (void)reconnected
@@ -434,7 +435,7 @@
         return;
     }
   
-    if ([[DataStoreSingleton sharedInstance] isOffline] == YES)
+    if (![DataStoreSingleton sharedInstance].isConnected )
     {
         return;
     }

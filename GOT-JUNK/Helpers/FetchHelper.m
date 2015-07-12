@@ -516,7 +516,7 @@
 
 - (void)fetchExpensesByRoute:(int)routeID onDate:(NSDate *)date
 {
-    if( [self isAllowFetching] == NO )
+    if(![DataStoreSingleton sharedInstance].isConnected)
     {
         [self sendNotification:@"FetchExpensesListComplete"];
         return;
@@ -652,7 +652,7 @@
 
 - (void)fetchRouteList:(NSDate*)date
 {
-    if( [self isAllowFetching] == NO )
+    if(![DataStoreSingleton sharedInstance].isConnected)
     {
         [self sendNotification:@"FetchRouteListComplete"];
         return;

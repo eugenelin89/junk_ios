@@ -96,14 +96,14 @@
     NSLog(@"LoginViewController enters Offline Mode");
     OfflineLoginViewController *vc = [[OfflineLoginViewController alloc] init];
     vc.delegate = self;
-    [self presentViewController:vc animated:YES completion:^{
-        [self dismissViewControllerAnimated:NO completion:nil];
-    }];
+    
+    [self presentViewController:vc animated:YES completion:nil];
     
 }
 -(void)enterCachedMode
 {
     NSLog(@"LoginViewController enters Cached Mode");
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 -(void)enterActiveMode
 {

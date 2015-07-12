@@ -636,6 +636,7 @@ static const int NumMenusInSection0 = 7;
         return;
     }
     
+    NSLog(@"Session Expired, Show Login Screen");
     [self showLoginScreen];
     
     if( [[UserDefaultsSingleton sharedInstance] isFirstTimeInstall] == YES )
