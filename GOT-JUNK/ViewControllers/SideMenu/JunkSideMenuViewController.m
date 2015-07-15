@@ -102,6 +102,8 @@ static const int NumMenusInSection0 = 7;
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:LOGGEDIN_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterStandbyMode) name:STANDBY_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterActiveMode) name:ACTIVE_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:OFFLINE_NOTIFICATION object:nil];
+
 
     
     // initiate the notifications
