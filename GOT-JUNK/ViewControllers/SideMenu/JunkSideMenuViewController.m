@@ -101,6 +101,7 @@ static const int NumMenusInSection0 = 7;
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:LOGGEDIN_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterStandbyMode) name:STANDBY_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterActiveMode) name:ACTIVE_NOTIFICATION object:nil];
 
     
     // initiate the notifications
@@ -614,6 +615,16 @@ static const int NumMenusInSection0 = 7;
 
 - (void)enterOfflineMode
 {
+    
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[LoginViewController  class]]){
+        [self dismissViewControllerAnimated:YES completion:^{
+            NSLog(@"LoginViewContrller dismissed");
+            [self enterOfflineMode];
+        }];
+    }
+    
+    
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     if( [[UserDefaultsSingleton sharedInstance] isOfflineAuthorized] == NO )
@@ -663,6 +674,20 @@ static const int NumMenusInSection0 = 7;
         [alert show];
     }
 }
+
+-(void)enterActiveMode
+{
+    // We can only enter Active Mode thru Standby Mode or Cached Mode.
+    // If we are in Standby Mode, we need to lift the login screen.
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[LoginViewController class]]){
+        [self dismissViewControllerAnimated:YES completion:^{
+            NSLog(@"LoginViewContrller dismissed");
+        }];
+    }
+}
+
+
 
 - (void)refreshTable
 {

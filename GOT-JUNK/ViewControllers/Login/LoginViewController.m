@@ -52,11 +52,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:RECONNECTED_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentUpgradeMenu) name:@"UpdateAvailable" object:nil];
     
-    // Mode Notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterActiveMode) name:ACTIVE_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterStandbyMode) name:STANDBY_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterCachedMode) name:CACHED_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:OFFLINE_NOTIFICATION object:nil];
+
     
     
     [Flurry logEvent:@"Login Controller"];
@@ -92,30 +88,6 @@
 
 }
 
--(void)enterOfflineMode
-{
-    //NSLog(@"LoginViewController enters Offline Mode");
-
-    //[self.delegate enterOfflineMode];
-    
-    //[self.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
-    
-    
-}
--(void)enterCachedMode
-{
-    NSLog(@"LoginViewController enters Cached Mode");
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
--(void)enterActiveMode
-{
-    NSLog(@"LoginViewController enters Active Mode");
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
--(void)enterStandbyMode
-{
-    NSLog(@"LoginViewController enters Standby Mode");
-}
 
 - (void)updateStatus
 {
@@ -241,7 +213,7 @@
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [self.loginButton setEnabled:YES];
 
-    [self dismissViewControllerAnimated:NO completion:nil];
+    //Dismissal of LoginViewControler should be handled by its presenting view controller.
 }
 
 - (void)loginFailed
