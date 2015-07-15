@@ -100,7 +100,7 @@ static const int NumMenusInSection0 = 7;
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionExpired) name:LOGGEDOUT_NOTIFICATION object:nil];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:LOGGEDIN_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionExpired) name:STANDBY_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterStandbyMode) name:STANDBY_NOTIFICATION object:nil];
 
     
     // initiate the notifications
@@ -635,7 +635,7 @@ static const int NumMenusInSection0 = 7;
     }
 }
 
-- (void)sessionExpired
+- (void)enterStandbyMode
 {
     if( self.menuContainerViewController == nil )
     {
