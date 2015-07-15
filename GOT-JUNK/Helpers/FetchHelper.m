@@ -1890,8 +1890,9 @@
     
     if(operation.response.statusCode == 401 || operation.response.statusCode == 403){
         // session issue, user logged out
+        [DataStoreSingleton sharedInstance].isConnected = YES; // 401/403 means we are connected. Note we need to do this first to move us to StandbyMode
         [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
-        [DataStoreSingleton sharedInstance].isConnected = YES; // 401/403 means we are connected.
+        
         [self clearChannels];
         
     }else{

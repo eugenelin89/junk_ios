@@ -15,7 +15,7 @@
 #import "OfflineLoginViewController.h"
 
 @interface LoginViewController ()
-
+@property (strong, nonatomic) UIActionSheet *upgradeActionSheet;
 @end
 
 @implementation LoginViewController
@@ -24,6 +24,7 @@
 @synthesize usernameTF = _usernameTF;
 @synthesize passwordTF = _passwordTF;
 @synthesize loginButton = _loginButton;
+@synthesize upgradeActionSheet = _upgradeActionSheet;
 
 #pragma mark - Initialization
 
@@ -86,6 +87,12 @@
 //    self.debug1.text = [DataStoreSingleton sharedInstance].debugDisplayText1;
 //    self.debug2.text = [DataStoreSingleton sharedInstance].debugDisplayText2;
 
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.upgradeActionSheet dismissWithClickedButtonIndex:0 animated:NO];
+    [super viewWillAppear:animated];
 }
 
 
@@ -264,14 +271,14 @@
 -(void)presentUpgradeMenu
 {
    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+    self.upgradeActionSheet = [[UIActionSheet alloc]
                                   initWithTitle:[NSString stringWithFormat:@"A newer version of JunkNet Mobile is available.  Would you like to upgrade?"]
                                   delegate:self
                                   cancelButtonTitle:@"No"
                                   destructiveButtonTitle:@"Yes!"
                                   otherButtonTitles:nil];
-    actionSheet.tag = 1;
-    [actionSheet showInView:self.view];
+    self.upgradeActionSheet.tag = 1;
+    [self.upgradeActionSheet showInView:self.view];
 }
 
 

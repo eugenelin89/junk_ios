@@ -650,6 +650,7 @@ static const int NumMenusInSection0 = 7;
 
 - (void)enterStandbyMode
 {
+    /*
     if( self.menuContainerViewController == nil )
     {
         return;
@@ -675,6 +676,22 @@ static const int NumMenusInSection0 = 7;
         alert.tag = -1;
         [alert show];
     }
+    */
+    
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[OfflineLoginViewController class]]){
+        // We are transitioning from Offline Mode
+        // Dismiss Offline Login View Controller first
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self showLoginScreen];
+        }];
+    }else{
+        // We are transitioning from Active Mode
+        // Display Login Screen
+        [self showLoginScreen];
+    
+    }
+    
 }
 
 -(void)enterActiveMode
