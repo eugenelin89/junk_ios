@@ -205,8 +205,8 @@
    {
        [[UserDefaultsSingleton sharedInstance] storeOfflineKey:username];
        [[UserDefaultsSingleton sharedInstance] offlineModeEnabled];
-
-       [self dismissViewControllerAnimated:NO completion:nil];
+       [DataStoreSingleton sharedInstance].isUserLoggedIn = YES;
+       [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
    }
     else
     {

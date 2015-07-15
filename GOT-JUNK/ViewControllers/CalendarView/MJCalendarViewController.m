@@ -429,9 +429,11 @@
 {
     if ([[UserDefaultsSingleton sharedInstance] didUserLogout] == YES)
     {
+        [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
         [DataStoreSingleton sharedInstance].debugDisplayText1 = @"getJobListForCurrentRoute";
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
+    
         return;
     }
   

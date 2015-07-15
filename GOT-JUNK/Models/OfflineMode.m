@@ -19,6 +19,8 @@
 -(instancetype)init
 {
     self = [super init];
+    NSLog(@"ENTER OFFLINE MODE");
+
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:OFFLINE_NOTIFICATION object:nil];
     self.modeType = OfflineModeType;

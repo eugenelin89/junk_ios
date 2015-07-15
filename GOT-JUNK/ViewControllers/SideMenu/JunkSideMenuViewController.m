@@ -29,6 +29,7 @@
 #import "OfflineLoginViewController.h"
 #import "NoConnectionViewController.h"
 #import "MJNotificationsTableViewController.h"
+#import "Mode.h"
 
 static const NSTimeInterval FETCH_JOBS_REFRESH_INTERVAL = 30;
 //static const NSTimeInterval MINUTE = 60.0;
@@ -91,13 +92,15 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showDispatchAlerts) name:@"FetchJobListCompleteShowAlert" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayJob) name:@"needToDisplayJob" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionExpired) name:LOGGEDOUT_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:LOGGEDIN_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DefaultFranchiseNameChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DefaultRouteNameChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logOut) name:@"LogoutRequest" object:nil];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshResourcesList_debug_testing) name:@"FetchResourcesListComplete2" object:nil];
+    
+    // Mode Transitioning Notifications
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionExpired) name:LOGGEDOUT_NOTIFICATION object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:LOGGEDIN_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionExpired) name:STANDBY_NOTIFICATION object:nil];
 
     
     // initiate the notifications
@@ -571,13 +574,22 @@ static const int NumMenusInSection0 = 7;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)transitionToOfflinMode
+{
+    [self dismissViewControllerAnimated:NO completion:^{
+        [self showOfflineScreen];
+    }];
+}
+
 - (void)showOfflineScreen
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     OfflineLoginViewController *vc = [[OfflineLoginViewController alloc] init];
     vc.delegate = self;
-    [self presentViewController:vc animated:YES completion:nil];
+    [self presentViewController:vc animated:YES completion:^{
+        NSLog(@"Offline View Launched.");
+    }];
 }
 
 - (void)showLoginScreen

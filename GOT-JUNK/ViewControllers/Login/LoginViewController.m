@@ -44,7 +44,8 @@
     
     NSLog(@"LoginViewController view did load");
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:LOGGEDOUT_NOTIFICATION object:nil];
+    // Mode Transition Notifications
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:LOGGEDOUT_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:LOGGEDIN_NOTIFICATION object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:DISCONNECTED_NOTIFICATION object:nil];
@@ -93,11 +94,12 @@
 
 -(void)enterOfflineMode
 {
-    NSLog(@"LoginViewController enters Offline Mode");
-    OfflineLoginViewController *vc = [[OfflineLoginViewController alloc] init];
-    vc.delegate = self;
+    //NSLog(@"LoginViewController enters Offline Mode");
+
+    //[self.delegate enterOfflineMode];
     
-    [self presentViewController:vc animated:YES completion:nil];
+    //[self.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
+    
     
 }
 -(void)enterCachedMode

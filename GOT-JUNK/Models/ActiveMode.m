@@ -19,6 +19,7 @@
 -(instancetype)init
 {
     self = [super init];
+    NSLog(@"ENTER ACTIVE MODE");
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:ACTIVE_NOTIFICATION object:nil];
     self.modeType = ActiveModeType;
