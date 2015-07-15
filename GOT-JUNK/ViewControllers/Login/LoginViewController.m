@@ -11,9 +11,11 @@
 #import "DateHelper.h"
 #import "FetchHelper.h"
 #import "Route.h"
+#import "Mode.h"
+#import "OfflineLoginViewController.h"
 
 @interface LoginViewController ()
-
+@property (strong, nonatomic) UIActionSheet *upgradeActionSheet;
 @end
 
 @implementation LoginViewController
@@ -22,6 +24,7 @@
 @synthesize usernameTF = _usernameTF;
 @synthesize passwordTF = _passwordTF;
 @synthesize loginButton = _loginButton;
+@synthesize upgradeActionSheet = _upgradeActionSheet;
 
 #pragma mark - Initialization
 
@@ -42,15 +45,16 @@
     
     NSLog(@"LoginViewController view did load");
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:@"FetchLoginFailed" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"FetchLoginSuccess" object:nil];
+    // Mode Transition Notifications
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:LOGGEDOUT_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:LOGGEDIN_NOTIFICATION object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchTestSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchServerUp" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchFailedServerDown" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchFailedNoInternet" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchInternetUp" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:DISCONNECTED_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:RECONNECTED_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentUpgradeMenu) name:@"UpdateAvailable" object:nil];
+    
+
+    
     
     [Flurry logEvent:@"Login Controller"];
     self.loginTableView.backgroundColor = [UIColor clearColor];
@@ -85,29 +89,26 @@
 
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.upgradeActionSheet dismissWithClickedButtonIndex:0 animated:NO];
+    [super viewWillAppear:animated];
+}
+
+
 - (void)updateStatus
 {
-    if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
+    if( [DataStoreSingleton sharedInstance].isConnected == YES )
     {
-        self.onlineStatus.text = @"Connected to internet";
+        self.onlineStatus.text = @"Connected to JunkNet";
         self.onlineStatus.textColor = [UIColor blueColor];
     }
     else
     {
-        self.onlineStatus.text = @"Not connected to internet";
+        self.onlineStatus.text = @"Not connected to JunkNet";
         self.onlineStatus.textColor = [UIColor redColor];
     }
 
-    if( [DataStoreSingleton sharedInstance].isJunkNetLive == YES )
-    {
-        self.junknetStatus.text = @"JunkNet is currently online";
-        self.junknetStatus.textColor = [UIColor blueColor];
-    }
-    else
-    {
-        self.junknetStatus.text = @"JunkNet is currently offline";
-        self.junknetStatus.textColor = [UIColor redColor];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -219,7 +220,7 @@
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [self.loginButton setEnabled:YES];
 
-    [self dismissViewControllerAnimated:NO completion:nil];
+    //Dismissal of LoginViewControler should be handled by its presenting view controller.
 }
 
 - (void)loginFailed
@@ -270,14 +271,14 @@
 -(void)presentUpgradeMenu
 {
    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+    self.upgradeActionSheet = [[UIActionSheet alloc]
                                   initWithTitle:[NSString stringWithFormat:@"A newer version of JunkNet Mobile is available.  Would you like to upgrade?"]
                                   delegate:self
                                   cancelButtonTitle:@"No"
                                   destructiveButtonTitle:@"Yes!"
                                   otherButtonTitles:nil];
-    actionSheet.tag = 1;
-    [actionSheet showInView:self.view];
+    self.upgradeActionSheet.tag = 1;
+    [self.upgradeActionSheet showInView:self.view];
 }
 
 

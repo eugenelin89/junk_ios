@@ -50,8 +50,7 @@
 @synthesize currentJobPaymentID = _currentJobPaymentID;
 @synthesize pushJob = _pushJob;
 @synthesize routeJobs = _routeJobs;
-@synthesize isJunkNetLive = _isJunkNetLive;
-@synthesize isInternetLive = _isInternetLive;
+@synthesize isConnected = _isConnected;
 @synthesize isUserLoggedIn = _isUserLoggedIn;
 @synthesize debugDisplayText1 = _debugDisplayText1;
 @synthesize debugDisplayText2 = _debugDisplayText2;
@@ -69,8 +68,7 @@
     {
         _sharedInstance = [[DataStoreSingleton alloc] init];
         _sharedInstance.mode = [[ActiveMode alloc] init]; // initialize as Active Mode.
-        _sharedInstance.isJunkNetLive = YES;
-        _sharedInstance.isInternetLive = YES;
+        _sharedInstance.isConnected = YES;
         _sharedInstance.isUserLoggedIn = YES;
         _sharedInstance->currentNotificationPageNumber = 0;
         
@@ -109,15 +107,12 @@
 {
     if(_document.documentState ==  UIDocumentStateNormal){
         self.managedObjectContext = _document.managedObjectContext;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"CoreDataReady" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:COREDATAREADY_NOTIFICATION object:nil];
         NSLog(@"\n\n *** CORE DATA READY! ***\n\n");
     }
 }
 
-- (BOOL)isOffline
-{
-    return self.isInternetLive == NO || self.isJunkNetLive == NO;
-}
+
 
 - (NSMutableArray *)mapPointsList
 {
@@ -348,8 +343,22 @@
     _isUserLoggedIn = isUserLoggedIn;
     if(isUserLoggedIn){
         self.mode = [self.mode loggedIn];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDIN_NOTIFICATION object:nil];
     }else{
         self.mode = [self.mode loggedOut];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
+    }
+}
+
+-(void) setIsConnected:(BOOL)isConnected
+{
+    _isConnected = isConnected;
+    if(isConnected){
+        self.mode = [self.mode reconnect];
+        [[NSNotificationCenter defaultCenter] postNotificationName:RECONNECTED_NOTIFICATION object:nil];
+    }else{
+        self.mode = [self.mode disconnect];
+        [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECTED_NOTIFICATION object:nil];
     }
 }
 

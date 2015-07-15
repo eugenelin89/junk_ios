@@ -19,6 +19,7 @@
 -(instancetype)init
 {
     self = [super init];
+    NSLog(@"ENTER STANDBY MODE");
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:STANDBY_NOTIFICATION object:nil];
     self.modeType = StandbyModeType;
