@@ -620,28 +620,21 @@ static const int NumMenusInSection0 = 7;
 - (void)enterOfflineMode
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
     
-    if( [[UserDefaultsSingleton sharedInstance] isOfflineAuthorized] == NO )
-    {
-        UIViewController *pvc = self.presentedViewController;
-        if([pvc isKindOfClass:[LoginViewController  class]]){
-            [self dismissViewControllerAnimated:YES completion:^{
-                NSLog(@"LoginViewContrller dismissed");
-                [self showOfflineScreen];
-            }];
-        }else{
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[LoginViewController  class]]){
+        [self dismissViewControllerAnimated:YES completion:^{
+            NSLog(@"LoginViewContrller dismissed");
             [self showOfflineScreen];
-        }
+        }];
     }else{
+        [self showOfflineScreen];
+    }
+    
+    if( [[UserDefaultsSingleton sharedInstance] isOfflineAuthorized]  )
+    {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedServerAlreadyDown" object:nil];
-        
-        // The alert should actually be showing in Cached Mode.
-        if (alert == nil)
-        {
-            alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-            alert.tag = -1;
-            [alert show];
-        }
     }
      
 }
@@ -706,12 +699,18 @@ static const int NumMenusInSection0 = 7;
 
 -(void)enterCachedMode
 {
-    NSLog(@"Enter Cached Mode");
     UIViewController *pvc = self.presentedViewController;
     if([pvc isKindOfClass:[OfflineLoginViewController class]]){
         [self dismissViewControllerAnimated:YES completion:^{
-        
+            
+             if (alert == nil)
+             {
+                 alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+                 alert.tag = -1;
+                 [alert show];
+             }
         }];
+        
     }
 }
 
