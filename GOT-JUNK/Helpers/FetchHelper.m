@@ -1349,10 +1349,7 @@
     {
         if( [DataStoreSingleton sharedInstance].isUserLoggedIn == YES )
         {
-            
             [DataStoreSingleton sharedInstance].debugDisplayText1 = @"getAndPerformSessionIDActions";
-            
-            [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
         }
         
         return nil;
