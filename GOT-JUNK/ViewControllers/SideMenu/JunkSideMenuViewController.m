@@ -603,6 +603,7 @@ static const int NumMenusInSection0 = 7;
     LoginViewController *vc = [[LoginViewController alloc] init];
     vc.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
+    
 }
 
 - (void)disconnected
@@ -618,28 +619,23 @@ static const int NumMenusInSection0 = 7;
 
 - (void)enterOfflineMode
 {
-    
-    UIViewController *pvc = self.presentedViewController;
-    if([pvc isKindOfClass:[LoginViewController  class]]){
-        [self dismissViewControllerAnimated:YES completion:^{
-            NSLog(@"LoginViewContrller dismissed");
-            [self enterOfflineMode];
-        }];
-    }
-    
-    
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     if( [[UserDefaultsSingleton sharedInstance] isOfflineAuthorized] == NO )
     {
-        [self showOfflineScreen];
-        
-        return;
-    }
-    else
-    {
+        UIViewController *pvc = self.presentedViewController;
+        if([pvc isKindOfClass:[LoginViewController  class]]){
+            [self dismissViewControllerAnimated:YES completion:^{
+                NSLog(@"LoginViewContrller dismissed");
+                [self showOfflineScreen];
+            }];
+        }else{
+            [self showOfflineScreen];
+        }
+    }else{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedServerAlreadyDown" object:nil];
         
+        // The alert should actually be showing in Cached Mode.
         if (alert == nil)
         {
             alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
@@ -647,6 +643,7 @@ static const int NumMenusInSection0 = 7;
             [alert show];
         }
     }
+     
 }
 
 - (void)enterStandbyMode
@@ -710,6 +707,12 @@ static const int NumMenusInSection0 = 7;
 -(void)enterCachedMode
 {
     NSLog(@"Enter Cached Mode");
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[OfflineLoginViewController class]]){
+        [self dismissViewControllerAnimated:YES completion:^{
+        
+        }];
+    }
 }
 
 
