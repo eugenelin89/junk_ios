@@ -702,18 +702,22 @@ static const int NumMenusInSection0 = 7;
     UIViewController *pvc = self.presentedViewController;
     if([pvc isKindOfClass:[OfflineLoginViewController class]]){
         [self dismissViewControllerAnimated:YES completion:^{
-            
-             if (alert == nil)
-             {
-                 alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-                 alert.tag = -1;
-                 [alert show];
-             }
+            [self displayCachedModeAlert];
         }];
-        
+    }else{
+        [self displayCachedModeAlert];        
     }
 }
 
+-(void)displayCachedModeAlert
+{
+    if (alert == nil)
+    {
+        alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        alert.tag = -1;
+        [alert show];
+    }
+}
 
 
 - (void)refreshTable
