@@ -146,6 +146,7 @@
 +(NSArray *)jobsInManagedContext:(NSManagedObjectContext*)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDJob"];
+    request.predicate = [NSPredicate predicateWithFormat:@"jobDate > %@", [DataStoreSingleton sharedInstance].currentDate];
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
     NSMutableArray *tempArray;
@@ -252,7 +253,7 @@
             }
 
             
-            NSLog(@"aJob: %@", aJob);
+            NSLog(@"aJob: %@", aJob.routeID);
             [tempArray addObject:aJob];
 
         }
