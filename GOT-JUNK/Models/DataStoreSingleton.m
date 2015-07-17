@@ -287,6 +287,9 @@
 
 -(NSArray *)jobList
 {
+    if(!_jobList && self.managedObjectContext){
+        _jobList = [CDJob jobsInManagedContext:self.managedObjectContext];
+    }
     return _jobList;
 }
 

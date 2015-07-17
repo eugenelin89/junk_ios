@@ -10,6 +10,8 @@
 #import "CDRoute+GotJunk.h"
 #import "CDMapPoint+GotJunk.h"
 #import "../job.h"
+#import "../DataStoreSingleton.h"
+#import "../MapPoint.h"
 //#import "CDUser+GotJunk.h"
 //#import "UserDefaultsSingleton.h"
 
@@ -140,5 +142,124 @@
     NSLog(@"Finished adding jobs to Core Data\n\n\n");
 
 }
+
++(NSArray *)jobsInManagedContext:(NSManagedObjectContext*)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDJob"];
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    NSMutableArray *tempArray;
+    
+    if(!matches || error){
+        // Handle Error
+        NSLog(@"ERROR retrieving jobs from core data: %@", error);
+    }else{
+        NSLog(@"Retrieved %d jobs from core data", [matches count]);
+        tempArray = [[NSMutableArray alloc] initWithCapacity:[matches count]];
+        for(CDJob *cdjob in matches){
+            // Convert each job into a JOB object and add to the array
+            
+            //NSArray *keys = [[[cdjob entity] attributesByName] allKeys];
+            //NSDictionary *dict = [cdjob dictionaryWithValuesForKeys:keys];
+            
+            
+            Job *aJob = [[Job alloc] init];
+            aJob.jobID = cdjob.jobID;
+            aJob.routeID = cdjob.routeID;
+            aJob.clientName = cdjob.clientName;
+            aJob.jobDate = cdjob.jobDate;
+            aJob.callAheadStatus = cdjob.callAheadStatus;
+            aJob.callAheadTime = cdjob.callAheadTime;
+            aJob.clientCompany = cdjob.clientCompany;
+            aJob.clientEmail = cdjob.clientEmail;
+            aJob.clientTypeID = cdjob.clientTypeID;
+            aJob.comments = cdjob.comments;
+            aJob.contactCell = cdjob.contactCell;
+            aJob.contactCellAreaCode = cdjob.contactCellAreaCode;
+            aJob.contactCellExt = cdjob.contactCellExt;
+            aJob.contactFax = cdjob.contactFax;
+            aJob.contactFaxAreaCode = cdjob.contactFaxAreaCode;
+            aJob.contactFaxExt = cdjob.contactFaxExt;
+            aJob.contactHomeAreaCode = cdjob.contactHomeAreaCode;
+            aJob.contactHomeExt = cdjob.contactHomeExt;
+            aJob.contactHomePhone = cdjob.contactHomePhone;
+            aJob.contactID = cdjob.contactID;
+            aJob.contactPagerAreaCode = cdjob.contactPagerAreaCode;
+            aJob.contactPagerExt = cdjob.contactPagerExt;
+            aJob.contactPagerPhone = cdjob.contactPagerPhone;
+            aJob.contactPhonePref = cdjob.contactPhonePref;
+            aJob.contactPhonePrefID = cdjob.contactPhonePrefID;
+            aJob.contactWorkAreaCode = cdjob.contactWorkAreaCode;
+            aJob.contactWorkExt = cdjob.contactWorkExt;
+            aJob.contactWorkPhone = cdjob.contactWorkPhone;
+            aJob.discount = cdjob.discount;
+            aJob.dispatchAccepted = [cdjob.dispatchAccepted boolValue];
+            aJob.dispatchID = cdjob.dispatchID;
+            aJob.dispatchMessage = cdjob.dispatchMessage;
+            aJob.invoiceNumber = cdjob.invoiceNumber;
+            aJob.isCashedOut = [cdjob.isCashedOut boolValue];
+            aJob.isCentrallyBilled = [cdjob.isCentrallyBilled boolValue];
+            aJob.isDispatchAccepted = cdjob.isDispatchAccepted;
+            aJob.isEnviroRequired = [cdjob.isEnviroRequired boolValue];
+            aJob.jobComments = cdjob.jobComments;
+            aJob.jobDate = cdjob.jobDate;
+            aJob.jobDuration = [cdjob.jobDuration stringValue];//[NSNumber numberWithInt:[job.jobDuration integerValue]];
+            aJob.jobEndTime = cdjob.jobEndTime;
+            aJob.jobStartTime = cdjob.jobStartTime;
+            aJob.jobStartTimeOriginal = cdjob.jobStartTimeOriginal;
+            aJob.jobType = cdjob.jobType;
+            aJob.junkCharge = cdjob.junkCharge;
+            aJob.junkLocationComments = cdjob.junkLocationComments;
+            aJob.nameOfLastTTUsed = cdjob.nameOfLastTTUsed;
+            aJob.npsComment = cdjob.npsComment;
+            aJob.npsValue = cdjob.npsValue;
+            aJob.numOfJobs = cdjob.numOfJobs;
+            aJob.onSiteContactAreaCode = cdjob.onSiteContactAreaCode;
+            aJob.onSiteContactExt = cdjob.onSiteContactExt;
+            aJob.onSiteContactID = cdjob.onSiteContactID;
+            aJob.onSiteContactPhone = cdjob.onSiteContactPhone;
+            aJob.onSiteContactPhonePref = cdjob.onSiteContactPhonePref;
+            aJob.onSiteContactPhonePrefID = [cdjob.onSiteContactPhonePrefID stringValue];//[NSNumber numberWithInt: [job.onSiteContactPhonePrefID integerValue]];
+            aJob.paymentID = cdjob.paymentID;
+            aJob.pickupAddress = cdjob.pickupAddress;
+            aJob.pickupCompany = cdjob.pickupCompany;
+            aJob.pickupCountry = cdjob.pickupCountry;
+            aJob.programDiscount = cdjob.programDiscount;
+            aJob.programDiscountType = cdjob.programDiscountType;
+            aJob.programNotes = cdjob.programNotes;
+            aJob.promiseTime = cdjob.promiseTime;
+            aJob.promoCode = cdjob.promoCode;
+            aJob.subTotal = cdjob.subTotal;
+            aJob.taxAmount = cdjob.taxAmount;
+            aJob.taxID = cdjob.taxID;
+            aJob.taxType = cdjob.taxType;
+            aJob.total = [cdjob.total stringValue];//[NSNumber numberWithInt:[job.total integerValue]];
+            aJob.totalSpent = cdjob.totalSpent;
+            aJob.typeID = cdjob.typeID;
+            aJob.zipCode = cdjob.zipCode;
+            aJob.zoneColor = cdjob.zoneColor;
+            aJob.zoneFontColor = cdjob.zoneFontColor;
+            aJob.zoneName = cdjob.zoneName;
+            
+            // Look for MapPoint
+            
+            if(cdjob.mapPoint){
+                MapPoint* mapPoint = [[MapPoint alloc] initWithName:cdjob.mapPoint.name
+                                       address:cdjob.mapPoint.address
+                                    coordinate:CLLocationCoordinate2DMake([cdjob.mapPoint.latitude doubleValue], [cdjob.mapPoint.longitude doubleValue])
+                                 andResourceID:[cdjob.mapPoint.resourceTypeID intValue]];
+                aJob.mapPoint = mapPoint;
+            }
+
+            
+            NSLog(@"aJob: %@", aJob);
+            [tempArray addObject:aJob];
+
+        }
+    }
+    return tempArray;
+}
+
+
 
 @end

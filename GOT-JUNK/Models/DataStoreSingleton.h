@@ -104,6 +104,7 @@
 - (void)incrementCurrentNotificationPageNumber;
 - (int)getCurrentNotificationPageNumber;
 - (Job*)getJob:(int)jobId;
+- (Job*)mapJob:(NSDictionary*)dict; // Map a NSDictionary to Job
 
 
 @end
