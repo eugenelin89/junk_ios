@@ -287,8 +287,8 @@
 
 -(NSArray *)jobList
 {
-    if(!_jobList && self.managedObjectContext){
-        _jobList = [CDJob jobsInManagedContext:self.managedObjectContext];
+    if((!_jobList || _jobList.count == 0) && self.managedObjectContext){
+        _jobList = [CDJob jobsForDate:self.currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:self.managedObjectContext];
     }
     return _jobList;
 }

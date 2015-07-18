@@ -21,6 +21,6 @@
  */
 +(void) loadJobsFromArray:(NSArray *)jobs inManagedObjectContext:(NSManagedObjectContext*)context;
 
-+(NSArray *)jobsInManagedContext:(NSManagedObjectContext*)context;
++(NSArray *)jobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID InManagedContext:(NSManagedObjectContext*)context;
 
 @end

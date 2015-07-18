@@ -143,10 +143,20 @@
 
 }
 
-+(NSArray *)jobsInManagedContext:(NSManagedObjectContext*)context
++(NSArray *)jobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID InManagedContext:(NSManagedObjectContext*)context
 {
+    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    [cal setTimeZone:[NSTimeZone systemTimeZone]];
+    NSDateComponents * comp = [cal components:( NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:date];
+    [comp setMinute:0];
+    [comp setHour:0];
+    NSDate *todayStart = [cal dateFromComponents:comp];
+    [comp setMinute:59];
+    [comp setHour:23];
+    NSDate *todayEnd = [cal dateFromComponents:comp];
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDJob"];
-    request.predicate = [NSPredicate predicateWithFormat:@"jobDate > %@", [DataStoreSingleton sharedInstance].currentDate];
+    request.predicate = [NSPredicate predicateWithFormat:@"jobDate >= %@ AND jobDate <= %@ AND routeID = %@", todayStart, todayEnd, routeID];
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
     NSMutableArray *tempArray;
