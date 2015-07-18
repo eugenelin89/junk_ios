@@ -32,6 +32,7 @@
 #import "Enviro.h"
 #import "Flurry.h"
 #import "Notification.h"
+#import "CDJob+GotJunk.h"
 
 @implementation FetchHelper
 {
@@ -594,6 +595,8 @@
                         [self checkFailedError:operation withError:error callingMethod:@"fetchJobListForRoute: "];
                         
                         NSLog(@"fetchJobListForRoute failed: %@", operation.responseString);
+                        
+                        [DataStoreSingleton sharedInstance].jobList = [CDJob jobsForDate:[DataStoreSingleton sharedInstance].currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:[DataStoreSingleton sharedInstance].managedObjectContext];
                     }];
     
 }
