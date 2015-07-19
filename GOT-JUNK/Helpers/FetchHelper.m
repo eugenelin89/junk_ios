@@ -251,6 +251,7 @@
         
         UserDefaultsSingleton *defaults = [UserDefaultsSingleton sharedInstance];
         [defaults setUserSessionID:sessionID];
+        [defaults cacheSessionID];//cache sessionID in case OfflineMode -> CacheMode -> ActiveMode
         [defaults setUserID:userID];
         [defaults setUserPermissions:permissions];
         [defaults setUserFullName:fullName];
