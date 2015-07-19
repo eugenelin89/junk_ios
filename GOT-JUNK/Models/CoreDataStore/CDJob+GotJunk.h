@@ -23,4 +23,6 @@
 
 +(NSArray *)jobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID InManagedContext:(NSManagedObjectContext*)context;
 
++(Job *) toJobWithCDJob:(CDJob *)cdjob;
+
 @end

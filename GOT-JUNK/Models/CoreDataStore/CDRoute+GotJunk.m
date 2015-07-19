@@ -132,10 +132,26 @@
             Route *aRoute = [[Route alloc] init];
             aRoute.routeID = cdroute.routeID;
             aRoute.routeName = cdroute.routeName;
+            aRoute.jobsInRoute = [NSNumber numberWithInt: cdroute.jobs.count];
             [tempArray addObject:aRoute];
         }
     }
     return tempArray;
+}
+
++(NSDictionary*)routeJobsInManagedObjectContext:(NSManagedObjectContext*)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDRoute"];
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    for(CDRoute *cdroute in matches){
+        for(CDJob *cdjob in cdroute.jobs){
+            // conver cdjob to Job object
+            dic[cdroute.routeID] = [CDJob toJobWithCDJob:cdjob];
+        }
+    }
+    return dic;
 }
 
 
