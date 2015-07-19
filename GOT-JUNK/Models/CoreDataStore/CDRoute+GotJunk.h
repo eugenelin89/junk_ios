@@ -23,4 +23,6 @@
 
 +(void)addJobs:(NSArray *)jobs toRouteWithID:(NSNumber *)jobID inManagedObjectContext:(NSManagedObjectContext*)context;
 
++(NSArray *)routesInManagedObjectContext:(NSManagedObjectContext*) context;
+
 @end

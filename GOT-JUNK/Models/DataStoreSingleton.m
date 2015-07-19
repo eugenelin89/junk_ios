@@ -287,7 +287,13 @@
 
 -(NSArray *)jobList
 {
-    return _jobList;
+    NSArray *result;
+    if(!_jobList && self.managedObjectContext){
+        result = [CDJob jobsForDate:self.currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:self.managedObjectContext];
+    }else{
+        result = _jobList;
+    }
+    return result;
 }
 
 
@@ -301,6 +307,17 @@
     //[self runAsync:^{
     [CDJob loadJobsFromArray:jobList inManagedObjectContext:self.managedObjectContext];
     //}];
+}
+
+-(NSArray *)routeList
+{
+    NSArray *result;
+    if(!_routeList && self.managedObjectContext){
+        result = [CDRoute routesInManagedObjectContext:self.managedObjectContext];
+    }else{
+        result = _routeList;
+    }
+    return result;
 }
 
 -(void)setRouteList:(NSArray *)routeList

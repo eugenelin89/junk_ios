@@ -596,7 +596,7 @@
                         
                         NSLog(@"fetchJobListForRoute failed: %@", operation.responseString);
                         
-                        [DataStoreSingleton sharedInstance].jobList = [CDJob jobsForDate:[DataStoreSingleton sharedInstance].currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:[DataStoreSingleton sharedInstance].managedObjectContext];
+                        
                     }];
     
 }

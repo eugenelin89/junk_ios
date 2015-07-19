@@ -9,6 +9,7 @@
 #import "CDRoute+GotJunk.h"
 #import "CDJob+GotJunk.h"
 #import "../Job.h"
+#import "../Route.h"
 
 @implementation CDRoute (GotJunk)
 
@@ -115,6 +116,26 @@
     }
     
     return route;
+}
+
++(NSArray *)routesInManagedObjectContext:(NSManagedObjectContext*) context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDRoute"];
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    NSMutableArray *tempArray;
+    if(!matches || error){
+        // handle error
+    }else{
+        tempArray = [[NSMutableArray alloc] initWithCapacity:matches.count];
+        for(CDRoute* cdroute in matches){
+            Route *aRoute = [[Route alloc] init];
+            aRoute.routeID = cdroute.routeID;
+            aRoute.routeName = cdroute.routeName;
+            [tempArray addObject:aRoute];
+        }
+    }
+    return tempArray;
 }
 
 
