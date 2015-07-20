@@ -135,6 +135,7 @@
                     {
                         [self endNetworkActivity];
                         [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:LOGINFAILED_NOTIFICATION object:nil];
 
                     }];
 }

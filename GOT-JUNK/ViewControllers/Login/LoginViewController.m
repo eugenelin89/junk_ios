@@ -46,7 +46,7 @@
     NSLog(@"LoginViewController view did load");
     
     // Mode Transition Notifications
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:LOGGEDOUT_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:LOGINFAILED_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:LOGGEDIN_NOTIFICATION object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:DISCONNECTED_NOTIFICATION object:nil];
