@@ -627,8 +627,10 @@
 - (NSDictionary*)getUserObject
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    
-    [dict setObject:[self getUserSessionID] forKey:@"sessionID"];
+    if([self getUserSessionID]){
+        //could cause: Uncaught exception: *** setObjectForKey: object cannot be nil (key: sessionID)
+        [dict setObject:[self getUserSessionID] forKey:@"sessionID"];
+    }
     [dict setObject:[self getUserID] forKey:@"userID"];
     [dict setObject:[self getUserPermissions] forKey:@"permissions"];
     [dict setObject:[self getUserFullName] forKey:@"fullName"];
