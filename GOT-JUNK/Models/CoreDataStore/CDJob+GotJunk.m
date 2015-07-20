@@ -147,6 +147,23 @@
 +(void)deleteJobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID inManagedContext:(NSManagedObjectContext*)context
 {
 
+    NSDate *todayStart = [DateHelper dayStart:date];
+    NSDate *todayEnd = [DateHelper dayEnd:date];
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDJob"];
+    request.predicate = [NSPredicate predicateWithFormat:@"jobDate >= %@ AND jobDate <= %@ AND routeID = %@", todayStart, todayEnd, routeID];
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    
+    if(!matches || error){
+        // Handle Error
+        NSLog(@"ERROR retrieving jobs from core data (deleteJobsForDate): %@", error);
+    }else{
+        // remove them all
+        for(CDJob* job in matches){
+            [context deleteObject:job];
+        }
+    }
     
 }
 
@@ -163,7 +180,7 @@
     
     if(!matches || error){
         // Handle Error
-        NSLog(@"ERROR retrieving jobs from core data: %@", error);
+        NSLog(@"ERROR retrieving jobs from core data (jobsForDate): %@", error);
     }else{
         NSLog(@"Retrieved %d jobs from core data", [matches count]);
         tempArray = [[NSMutableArray alloc] initWithCapacity:[matches count]];

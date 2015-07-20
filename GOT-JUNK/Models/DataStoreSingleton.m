@@ -304,10 +304,9 @@
     
     [self setJobLocations];
     
-    // store in core data, but do it on a seperate thread.
-    //[self runAsync:^{
+    // store in core data
     [CDJob loadJobsFromArray:jobList inManagedObjectContext:self.managedObjectContext];
-    //}];
+    
 }
 
 -(NSArray *)routeList
@@ -435,6 +434,12 @@
     self.pushJob = nil;
     self.routeJobs = nil;
 }
+
+-(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID
+{
+    [CDJob deleteJobsForDate:date forRoute:routeID inManagedContext:self.managedObjectContext];
+}
+
 
 - (NSInteger)pendingDispatches
 {

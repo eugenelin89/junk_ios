@@ -568,6 +568,7 @@
 
                         if (operation.responseString)
                         {
+                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
                             NSArray *jobListArray = [[DataStoreSingleton sharedInstance] mergeJobsDict:operation.responseString];
                             
                             if (shouldShowAlert)
@@ -1240,6 +1241,7 @@
                         
                         if (operation.responseString)
                         {
+                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
                             [[DataStoreSingleton sharedInstance] parseJobListDict:operation.responseString routeID:routeID];
                         }
                         else
