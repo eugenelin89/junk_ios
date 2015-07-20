@@ -12,6 +12,7 @@
 #import "../job.h"
 #import "../DataStoreSingleton.h"
 #import "../MapPoint.h"
+#import "../DateHelper.h"
 //#import "CDUser+GotJunk.h"
 //#import "UserDefaultsSingleton.h"
 
@@ -143,17 +144,16 @@
 
 }
 
++(void)deleteJobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID inManagedContext:(NSManagedObjectContext*)context
+{
+
+    
+}
+
 +(NSArray *)jobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID InManagedContext:(NSManagedObjectContext*)context
 {
-    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    [cal setTimeZone:[NSTimeZone systemTimeZone]];
-    NSDateComponents * comp = [cal components:( NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:date];
-    [comp setMinute:0];
-    [comp setHour:0];
-    NSDate *todayStart = [cal dateFromComponents:comp];
-    [comp setMinute:59];
-    [comp setHour:23];
-    NSDate *todayEnd = [cal dateFromComponents:comp];
+    NSDate *todayStart = [DateHelper dayStart:date];
+    NSDate *todayEnd = [DateHelper dayEnd:date];
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDJob"];
     request.predicate = [NSPredicate predicateWithFormat:@"jobDate >= %@ AND jobDate <= %@ AND routeID = %@", todayStart, todayEnd, routeID];
@@ -268,6 +268,7 @@
     }
     return aJob;
 }
+
 
 
 

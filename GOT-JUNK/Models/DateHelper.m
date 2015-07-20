@@ -123,4 +123,28 @@
     return midnight;
 }
 
++(NSDate*)dayStart:(NSDate *)today
+{
+    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    [cal setTimeZone:[NSTimeZone systemTimeZone]];
+    NSDateComponents * comp = [cal components:( NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:today];
+    [comp setMinute:0];
+    [comp setHour:0];
+    [comp setSecond:0];
+    return [cal dateFromComponents:comp];
+}
+
++(NSDate*)dayEnd:(NSDate*)today
+{
+    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    [cal setTimeZone:[NSTimeZone systemTimeZone]];
+    NSDateComponents * comp = [cal components:( NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:today];
+    
+    [comp setMinute:59];
+    [comp setHour:23];
+    [comp setSecond:0];
+    return [cal dateFromComponents:comp];
+}
+
+
 @end
