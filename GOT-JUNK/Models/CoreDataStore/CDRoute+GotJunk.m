@@ -10,6 +10,7 @@
 #import "CDJob+GotJunk.h"
 #import "../Job.h"
 #import "../Route.h"
+#import "../DateHelper.h"
 
 @implementation CDRoute (GotJunk)
 
@@ -132,7 +133,17 @@
             Route *aRoute = [[Route alloc] init];
             aRoute.routeID = cdroute.routeID;
             aRoute.routeName = cdroute.routeName;
-            aRoute.jobsInRoute = [NSNumber numberWithInt: cdroute.jobs.count];
+            //aRoute.jobsInRoute = [NSNumber numberWithInt: cdroute.jobs.count];
+            
+            int jobCount = 0;
+            for(CDJob *job in cdroute.jobs){
+                if([DateHelper isCurrentDay:job.jobDate]){
+                    jobCount++;
+                }
+            }
+            aRoute.jobsInRoute = [NSNumber numberWithInt: jobCount];
+
+            
             [tempArray addObject:aRoute];
         }
     }

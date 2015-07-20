@@ -8,6 +8,7 @@
 
 #import "DateHelper.h"
 #import "Globals.h"
+#import "DataStoreSingleton.h"
 
 @implementation DateHelper
 
@@ -146,5 +147,16 @@
     return [cal dateFromComponents:comp];
 }
 
++(bool)isCurrentDay:(NSDate*)date
+{
+    bool result = NO;
+    NSDate *todayStart = [DateHelper dayStart:[DataStoreSingleton sharedInstance].currentDate];
+    NSDate *todayEnd = [DateHelper dayEnd:[DataStoreSingleton sharedInstance].currentDate];
+    if([todayStart compare:date] == NSOrderedAscending && [date compare:todayEnd] == NSOrderedAscending){
+        result = YES;
+    }
+    
+    return result;
+}
 
 @end
