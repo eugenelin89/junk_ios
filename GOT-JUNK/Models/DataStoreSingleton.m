@@ -225,8 +225,9 @@
 
 - (NSMutableDictionary *)routeJobs;
 {
-    if (!_routeJobs) {
+    if (!_routeJobs && self.managedObjectContext) {
         _routeJobs = [[NSMutableDictionary alloc] init];
+        //_routeJobs = [[CDRoute routeJobsInManagedObjectContext:self.managedObjectContext] mutableCopy];
     }
     return _routeJobs;
 }
@@ -287,7 +288,13 @@
 
 -(NSArray *)jobList
 {
-    return _jobList;
+    NSArray *result;
+    if(!_jobList && self.managedObjectContext){
+        result = [CDJob jobsForDate:self.currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:self.managedObjectContext];
+    }else{
+        result = _jobList;
+    }
+    return result;
 }
 
 
@@ -297,10 +304,20 @@
     
     [self setJobLocations];
     
-    // store in core data, but do it on a seperate thread.
-    //[self runAsync:^{
+    // store in core data
     [CDJob loadJobsFromArray:jobList inManagedObjectContext:self.managedObjectContext];
-    //}];
+    
+}
+
+-(NSArray *)routeList
+{
+    NSArray *result;
+    if(!_routeList && self.managedObjectContext){
+        result = [CDRoute routesInManagedObjectContext:self.managedObjectContext];
+    }else{
+        result = _routeList;
+    }
+    return result;
 }
 
 -(void)setRouteList:(NSArray *)routeList
@@ -417,6 +434,12 @@
     self.pushJob = nil;
     self.routeJobs = nil;
 }
+
+-(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID
+{
+    [CDJob deleteJobsForDate:date forRoute:routeID inManagedContext:self.managedObjectContext];
+}
+
 
 - (NSInteger)pendingDispatches
 {

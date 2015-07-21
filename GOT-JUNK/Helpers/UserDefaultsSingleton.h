@@ -53,6 +53,8 @@
 - (void)offlineModeDisabled;
 -(void)storeOfflineKey:(NSString * )myKey;
 - (void)setUserSessionID:(NSString*)sessionID;
+-(void)cacheSessionID;
+-(void)restoreSessionID;
 - (void)setUserDefaultRouteID:(NSNumber*)routeID;
 - (void)setUserDefaultFranchiseID:(NSNumber*)franchiseID;
 - (void)setUserID:(NSNumber*)userID;

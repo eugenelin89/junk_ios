@@ -11,8 +11,20 @@
 
 @interface CDJob (GotJunk)
 
+/*
+ * Loading a Job object into Core Data
+ */
 +(CDJob*) job:(Job *)job inManagedObjectContext:(NSManagedObjectContext*)context;
 
+/*
+ * Loading an array of Job objects into Core Data.
+ */
 +(void) loadJobsFromArray:(NSArray *)jobs inManagedObjectContext:(NSManagedObjectContext*)context;
+
++(NSArray *)jobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID InManagedContext:(NSManagedObjectContext*)context;
+
++(void)deleteJobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID inManagedContext:(NSManagedObjectContext*)context;
+
++(Job *) toJobWithCDJob:(CDJob *)cdjob;
 
 @end

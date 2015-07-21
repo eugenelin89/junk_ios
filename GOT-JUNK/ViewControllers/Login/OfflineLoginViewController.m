@@ -32,7 +32,7 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
 
     self.countAttempts = 0;
     self.loginTableView.backgroundColor = [UIColor clearColor];
@@ -47,10 +47,10 @@
     
 }
 
-- (void)reconnected
-{
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
+//- (void)reconnected
+//{
+//    [self dismissViewControllerAnimated:NO completion:nil];
+//}
 
 - (void)viewWillAppear:(BOOL)animated
 {

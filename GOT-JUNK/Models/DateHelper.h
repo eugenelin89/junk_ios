@@ -19,4 +19,7 @@
 + (NSDate*)dateFromMinutesSinceMidnight:(NSInteger)minutesSinceMidnight andDayAsString:(NSString*)day;
 + (int)secondsSinceMidnight;
 + (NSDate *)midnightToday;
++(NSDate*)dayStart:(NSDate *)today;
++(NSDate*)dayEnd:(NSDate *)today;
++(bool)isCurrentDay:(NSDate*)date;
 @end

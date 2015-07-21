@@ -18,6 +18,7 @@
 #define RECONNECTED_NOTIFICATION @"RECONNECTED_NOTIFICATION"         // reconnect
 #define LOGGEDOUT_NOTIFICATION @"LOGGEDOUT_NOTIFICATION"             // logged out
 #define LOGGEDIN_NOTIFICATION @"LOGGEDIN_NOTIFICATION"               // logged in
+#define LOGINFAILED_NOTIFICATION @"LOGINFAILED_NOTIFICATION"         // attempt to login failed.
 
 @class Route;
 @class Franchise;
@@ -104,6 +105,8 @@
 - (void)incrementCurrentNotificationPageNumber;
 - (int)getCurrentNotificationPageNumber;
 - (Job*)getJob:(int)jobId;
+- (Job*)mapJob:(NSDictionary*)dict; // Map a NSDictionary to Job
+-(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID;
 
 
 @end

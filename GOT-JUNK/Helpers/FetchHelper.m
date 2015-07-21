@@ -32,6 +32,7 @@
 #import "Enviro.h"
 #import "Flurry.h"
 #import "Notification.h"
+#import "CDJob+GotJunk.h"
 
 @implementation FetchHelper
 {
@@ -134,6 +135,7 @@
                     {
                         [self endNetworkActivity];
                         [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:LOGINFAILED_NOTIFICATION object:nil];
 
                     }];
 }
@@ -250,6 +252,7 @@
         
         UserDefaultsSingleton *defaults = [UserDefaultsSingleton sharedInstance];
         [defaults setUserSessionID:sessionID];
+        [defaults cacheSessionID];//cache sessionID in case OfflineMode -> CacheMode -> ActiveMode
         [defaults setUserID:userID];
         [defaults setUserPermissions:permissions];
         [defaults setUserFullName:fullName];
@@ -565,6 +568,7 @@
 
                         if (operation.responseString)
                         {
+                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
                             NSArray *jobListArray = [[DataStoreSingleton sharedInstance] mergeJobsDict:operation.responseString];
                             
                             if (shouldShowAlert)
@@ -594,6 +598,8 @@
                         [self checkFailedError:operation withError:error callingMethod:@"fetchJobListForRoute: "];
                         
                         NSLog(@"fetchJobListForRoute failed: %@", operation.responseString);
+                        
+                        
                     }];
     
 }
@@ -1235,6 +1241,7 @@
                         
                         if (operation.responseString)
                         {
+                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
                             [[DataStoreSingleton sharedInstance] parseJobListDict:operation.responseString routeID:routeID];
                         }
                         else
@@ -1349,10 +1356,7 @@
     {
         if( [DataStoreSingleton sharedInstance].isUserLoggedIn == YES )
         {
-            
             [DataStoreSingleton sharedInstance].debugDisplayText1 = @"getAndPerformSessionIDActions";
-            
-            [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
         }
         
         return nil;

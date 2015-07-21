@@ -9,6 +9,7 @@
 #import "OfflineMode.h"
 #import "CachedMode.h"
 #import "StandbyMode.h"
+#import "UserDefaultsSingleton.h"
 
 @interface OfflineMode()
 @property(nonatomic, readwrite) ModeType modeType;
@@ -30,6 +31,7 @@
 -(id<Mode>)loggedIn
 {
     // logged in via Offline Key
+    [[UserDefaultsSingleton sharedInstance] restoreSessionID]; // Restore Session ID
     return [[CachedMode alloc] init];
 }
 

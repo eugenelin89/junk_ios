@@ -82,6 +82,8 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedServerAlreadyDown) name:@"FetchFailedServerAlreadyDown" object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataReady) name:COREDATAREADY_NOTIFICATION object:nil];
+        
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
         
@@ -261,6 +263,15 @@
     [self setButtonState:NO];
     
     [self showContent];
+}
+
+-(void)coreDataReady
+{
+    // Core Data is ready, we are disconnected and jobList is empty.  Get from cache.
+    if(!self.jobList && ![DataStoreSingleton sharedInstance].isConnected){
+        self.jobList = [DataStoreSingleton sharedInstance].jobList;
+        [self sortArray];
+    }
 }
 
 - (void)fetchFailedServerAlreadyDown

@@ -103,6 +103,7 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterStandbyMode) name:STANDBY_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterActiveMode) name:ACTIVE_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:OFFLINE_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterCachedMode) name:CACHED_NOTIFICATION object:nil];
 
 
     
@@ -602,6 +603,7 @@ static const int NumMenusInSection0 = 7;
     LoginViewController *vc = [[LoginViewController alloc] init];
     vc.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
+    
 }
 
 - (void)disconnected
@@ -617,35 +619,24 @@ static const int NumMenusInSection0 = 7;
 
 - (void)enterOfflineMode
 {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
     
     UIViewController *pvc = self.presentedViewController;
     if([pvc isKindOfClass:[LoginViewController  class]]){
         [self dismissViewControllerAnimated:YES completion:^{
             NSLog(@"LoginViewContrller dismissed");
-            [self enterOfflineMode];
+            [self showOfflineScreen];
         }];
-    }
-    
-    
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    
-    if( [[UserDefaultsSingleton sharedInstance] isOfflineAuthorized] == NO )
-    {
+    }else{
         [self showOfflineScreen];
-        
-        return;
     }
-    else
+    
+    if( [[UserDefaultsSingleton sharedInstance] isOfflineAuthorized]  )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedServerAlreadyDown" object:nil];
-        
-        if (alert == nil)
-        {
-            alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-            alert.tag = -1;
-            [alert show];
-        }
     }
+     
 }
 
 - (void)enterStandbyMode
@@ -706,6 +697,27 @@ static const int NumMenusInSection0 = 7;
     }
 }
 
+-(void)enterCachedMode
+{
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[OfflineLoginViewController class]]){
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self displayCachedModeAlert];
+        }];
+    }else{
+        [self displayCachedModeAlert];        
+    }
+}
+
+-(void)displayCachedModeAlert
+{
+    if (alert == nil)
+    {
+        alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        alert.tag = -1;
+        [alert show];
+    }
+}
 
 
 - (void)refreshTable
