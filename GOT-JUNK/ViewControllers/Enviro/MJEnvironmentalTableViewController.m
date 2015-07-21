@@ -140,7 +140,7 @@ BOOL isJobListLoaded = NO;
 
 - (void)getData
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You are in offline Mode and you have no cached enviromental data" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
         [av show];
@@ -381,7 +381,7 @@ viewForHeaderInSection: (NSInteger) section
 - (void) headerTapped: (UIButton*) sender
 {
     
-    if (![[DataStoreSingleton sharedInstance] isOffline])
+    if ([DataStoreSingleton sharedInstance].isConnected)
     {
         MJEnvironmentalDetailViewController *vc = [[MJEnvironmentalDetailViewController alloc] init];
         

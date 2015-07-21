@@ -246,7 +246,7 @@
 
 -(IBAction)callStatusButtonAction:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -331,7 +331,7 @@
 
 - (IBAction)setCallStatus:(NSInteger)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -530,7 +530,7 @@
 
 - (IBAction)editEmail:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -549,7 +549,7 @@
 
 - (IBAction)pressPayment:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -634,7 +634,7 @@
 
 - (IBAction)cancelJob:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -656,7 +656,7 @@
 
 - (IBAction)pushNoteController:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -669,7 +669,7 @@
 
 - (IBAction)editJob:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }

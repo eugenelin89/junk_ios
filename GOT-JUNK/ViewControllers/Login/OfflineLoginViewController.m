@@ -32,8 +32,7 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchServerUp) name:@"FetchServerUp" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchServerUp) name:@"FetchTestSuccess" object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
 
     self.countAttempts = 0;
     self.loginTableView.backgroundColor = [UIColor clearColor];
@@ -48,10 +47,10 @@
     
 }
 
-- (void)fetchServerUp
-{
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
+//- (void)reconnected
+//{
+//    [self dismissViewControllerAnimated:NO completion:nil];
+//}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -206,8 +205,8 @@
    {
        [[UserDefaultsSingleton sharedInstance] storeOfflineKey:username];
        [[UserDefaultsSingleton sharedInstance] offlineModeEnabled];
-
-       [self dismissViewControllerAnimated:NO completion:nil];
+       [DataStoreSingleton sharedInstance].isUserLoggedIn = YES;
+       [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
    }
     else
     {

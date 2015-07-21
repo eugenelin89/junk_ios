@@ -13,6 +13,13 @@
 #import "Lookup.h"
 #import "Resource.h"
 
+#define COREDATAREADY_NOTIFICATION @"COREDATAREADY_NOTIFICATION"
+#define DISCONNECTED_NOTIFICATION @"DISCONNECTED_NOTIFICATION"       // disconnect
+#define RECONNECTED_NOTIFICATION @"RECONNECTED_NOTIFICATION"         // reconnect
+#define LOGGEDOUT_NOTIFICATION @"LOGGEDOUT_NOTIFICATION"             // logged out
+#define LOGGEDIN_NOTIFICATION @"LOGGEDIN_NOTIFICATION"               // logged in
+#define LOGINFAILED_NOTIFICATION @"LOGINFAILED_NOTIFICATION"         // attempt to login failed.
+
 @class Route;
 @class Franchise;
 @class Job;
@@ -61,9 +68,8 @@
 
 @property (nonatomic, strong) Job *pushJob;
 @property (nonatomic, strong) NSMutableDictionary *routeJobs;
-@property (nonatomic) BOOL isJunkNetLive;
-@property (nonatomic) BOOL isInternetLive;
 @property (nonatomic) BOOL isUserLoggedIn;
+@property (nonatomic) BOOL isConnected;
 @property (nonatomic, strong) NSString *paymentErrors;
 @property (nonatomic, strong) NSDictionary *appUpgradeInfo;
 
@@ -84,7 +90,6 @@
 - (void)getJobListForCachedCurrentRoute;
 - (void)addJobsList:(NSArray*)jobListArray forRoute:(NSNumber*)routeID;
 - (void)clearRouteJobs;
-- (BOOL)isOffline;
 
 - (void)parseEnviroDict:(NSString*)responseString;
 - (void)parseExpenseDict:(NSString*)responseString;
@@ -100,6 +105,8 @@
 - (void)incrementCurrentNotificationPageNumber;
 - (int)getCurrentNotificationPageNumber;
 - (Job*)getJob:(int)jobId;
+- (Job*)mapJob:(NSDictionary*)dict; // Map a NSDictionary to Job
+-(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID;
 
 
 @end

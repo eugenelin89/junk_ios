@@ -402,6 +402,33 @@
     [_userDefaults synchronize];
 }
 
+/*
+ When a user logs out, the sessionID is cleared.
+ If the user then login via offline key during a network outage, there is no longer a sessionID.  
+ And when the network is restored, the user will immediately get logged out.
+ To work around this issue, store another copy of sessionID as cachedSessionID.
+ When the user enters CACHED MODE via OfflineMode, set sessionID to be the value of cachedSessionID.
+ And when the user enters ACTIVE MODE via CACHED MODE, and if the sesseionID were still valid, the user can stay in ACTIVE MODE.
+ This is accomplised thru the following two methods:
+ -(void)cacheSessionID - store another copy of sessionID in NSUserDefault under "cachedSessionID"
+ -(void)restoreSessionID - copy value in cachedSessionID into sessionID in NSUserDefault
+ */
+-(void)cacheSessionID
+{
+    [_userDefaults setObject:[self getUserSessionID] forKey:@"cachedSessionID"];
+    [_userDefaults synchronize];
+}
+
+-(void)restoreSessionID
+{
+    if(![self getUserSessionID]){
+        NSString *cachedSessionID = [_userDefaults objectForKey:@"cachedSessionID"];
+        if(cachedSessionID){
+            [self setUserSessionID:cachedSessionID];
+        }
+    }
+}
+
 - (void)setUserDefaultRouteID:(NSNumber*)routeID
 {
     [_userDefaults setObject:routeID forKey:@"defaultRouteID"];
@@ -600,8 +627,10 @@
 - (NSDictionary*)getUserObject
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    
-    [dict setObject:[self getUserSessionID] forKey:@"sessionID"];
+    if([self getUserSessionID]){
+        //could cause: Uncaught exception: *** setObjectForKey: object cannot be nil (key: sessionID)
+        [dict setObject:[self getUserSessionID] forKey:@"sessionID"];
+    }
     [dict setObject:[self getUserID] forKey:@"userID"];
     [dict setObject:[self getUserPermissions] forKey:@"permissions"];
     [dict setObject:[self getUserFullName] forKey:@"fullName"];

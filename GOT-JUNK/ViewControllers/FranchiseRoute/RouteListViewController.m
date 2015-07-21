@@ -33,8 +33,8 @@
         // Custom initialization
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshRouteList) name:@"FetchRouteListComplete" object:nil];
     
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedNoInternet) name:@"FetchTestFailed" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchInternetUp) name:@"FetchTestSuccess" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
     
         [DataStoreSingleton sharedInstance].filterRoute = nil;
         requiresBackAfterSelection = NO;
@@ -65,7 +65,8 @@
     }
     else
     {
-        if ([DataStoreSingleton sharedInstance].routeList && [[DataStoreSingleton sharedInstance].routeList count] > 0 && [[DataStoreSingleton sharedInstance] isOffline] )
+        if ([DataStoreSingleton sharedInstance].routeList && [[DataStoreSingleton sharedInstance].routeList count] > 0
+            && ![DataStoreSingleton sharedInstance].isConnected)
         {
             self.routeList = [DataStoreSingleton sharedInstance].routeList;
             [self.routeListTableView reloadData];
@@ -76,9 +77,9 @@
         }
     }
     
-    if( [DataStoreSingleton sharedInstance].isInternetLive == NO || [DataStoreSingleton sharedInstance].isJunkNetLive == NO )
+    if( ![DataStoreSingleton sharedInstance].isConnected )
     {
-        [self fetchFailedNoInternet];
+        [self disconnected];
     }
     
     self.title = [[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseName];
@@ -95,12 +96,12 @@
     requiresBackAfterSelection = requiresBack;
 }
 
-- (void)fetchInternetUp
+- (void)reconnected
 {
     [self setButtonState:YES];
 }
 
-- (void)fetchFailedNoInternet
+- (void)disconnected
 {
     [self setButtonState:NO];
 }
@@ -183,7 +184,7 @@
         // empty out the list of expenses
         [DataStoreSingleton sharedInstance].expensesDict = nil;
         
-        if( [[DataStoreSingleton sharedInstance] isOffline] )
+        if( ![DataStoreSingleton sharedInstance].isConnected )
         {
             // get the joblist from the currentRoute
             [[DataStoreSingleton sharedInstance] getJobListForCachedCurrentRoute];
