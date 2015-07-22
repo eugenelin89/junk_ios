@@ -35,6 +35,7 @@
 @property (nonatomic, strong) NSArray *jobList;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIAlertView *av;
+@property (weak, nonatomic) IBOutlet UIButton *offlineIndicator;
 
 @end
 
@@ -131,6 +132,11 @@
         else
         {
             [self getJobListForCurrentRoute];
+        }
+        if([DataStoreSingleton sharedInstance].isConnected){
+            [self.offlineIndicator setHidden:YES];
+        }else{
+            [self.offlineIndicator setHidden:NO];
         }
     }
     @catch (NSException* exception)
@@ -254,13 +260,19 @@
 - (void)reconnected
 {
     [self setButtonState:YES];
+
+    [self.offlineIndicator setHidden: YES];
+
 }
 
 - (void)disconnected
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    
+
     [self setButtonState:NO];
+
+    [self.offlineIndicator setHidden:NO];
+    
     
     [self showContent];
 }
