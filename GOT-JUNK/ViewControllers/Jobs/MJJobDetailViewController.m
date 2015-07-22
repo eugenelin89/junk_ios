@@ -224,15 +224,17 @@
 
 - (void)loadEmail
 {
-    if (self.currentJob.clientEmail && ![self.currentJob.clientEmail isEqualToString:@""])
+    if (self.currentJob.clientEmail && ![self.currentJob.clientEmail isEqualToString:@""] && [MFMailComposeViewController canSendMail])
     {
+        
         MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
         controller.mailComposeDelegate = self;
-        
+            
         [controller setToRecipients:[NSArray arrayWithObject:self.currentJob.clientEmail]];
         [controller setSubject:@""];
         [controller setMessageBody:@"" isHTML:NO];
         [self presentViewController:controller animated:YES completion:nil];
+        
     }
 }
 
