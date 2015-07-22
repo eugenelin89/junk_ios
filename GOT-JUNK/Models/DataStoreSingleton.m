@@ -205,6 +205,7 @@
     return _assignedRoutes;
 }
 
+/*
 -(void) setAssignedRoutes:(NSArray *)assignedRoutes
 {
     _assignedRoutes = assignedRoutes;
@@ -214,6 +215,7 @@
     
     
 }
+*/
 
 - (NSDictionary *)expensesDict;
 {

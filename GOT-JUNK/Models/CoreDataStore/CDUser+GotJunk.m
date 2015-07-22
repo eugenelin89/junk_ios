@@ -41,6 +41,7 @@
     return cdUser;
 }
 
+/*
 +(void)assignRoutes:(NSArray *)routes toUserWithID:(NSNumber *)userID inManagedObjectContext:(NSManagedObjectContext *)context
 {
     CDUser *cdUser = [CDUser userWithID: userID inManagedObjectContext:context];
@@ -55,6 +56,7 @@
     }
 
 }
+*/
 
 
 @end
