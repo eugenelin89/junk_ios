@@ -25,6 +25,5 @@
 
 +(NSArray *)routesInManagedObjectContext:(NSManagedObjectContext*) context;
 
-+(NSDictionary*)routeJobsInManagedObjectContext:(NSManagedObjectContext*)context;
 
 @end
