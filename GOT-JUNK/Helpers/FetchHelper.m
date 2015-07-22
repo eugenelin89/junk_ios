@@ -72,6 +72,7 @@
 
 - (void)startNeworkActivity
 {
+    NSLog(@"*** startNetworkActivity ***");
     isFetching = YES;
     
     dispatch_async( dispatch_get_main_queue(), ^
@@ -82,6 +83,7 @@
 
 - (void)endNetworkActivity
 {
+    NSLog(@"*** endNetworkActivity ***");
     isFetching = NO;
     
     dispatch_async( dispatch_get_main_queue(), ^
@@ -442,6 +444,7 @@
                     }
                  failure:^(AFHTTPRequestOperation *operation, NSError *error)
                     {
+                        [self endNetworkActivity];
                         NSLog(@"fetchResources failed: %@", operation.responseString);
                     }];
 }
