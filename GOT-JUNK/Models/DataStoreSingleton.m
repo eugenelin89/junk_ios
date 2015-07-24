@@ -205,6 +205,7 @@
     return _assignedRoutes;
 }
 
+/*
 -(void) setAssignedRoutes:(NSArray *)assignedRoutes
 {
     _assignedRoutes = assignedRoutes;
@@ -214,6 +215,7 @@
     
     
 }
+*/
 
 - (NSDictionary *)expensesDict;
 {
@@ -227,7 +229,7 @@
 {
     if (!_routeJobs && self.managedObjectContext) {
         _routeJobs = [[NSMutableDictionary alloc] init];
-        //_routeJobs = [[CDRoute routeJobsInManagedObjectContext:self.managedObjectContext] mutableCopy];
+        
     }
     return _routeJobs;
 }

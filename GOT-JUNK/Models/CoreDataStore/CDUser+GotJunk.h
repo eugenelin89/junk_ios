@@ -12,7 +12,7 @@
 
 +(CDUser *) userWithID:(NSNumber*)routeID inManagedObjectContext:(NSManagedObjectContext*)context;
 
-+(void)assignRoutes:(NSArray *)routes toUserWithID:(NSNumber *)userID inManagedObjectContext:(NSManagedObjectContext *)context;
+//+(void)assignRoutes:(NSArray *)routes toUserWithID:(NSNumber *)userID inManagedObjectContext:(NSManagedObjectContext *)context;
 
 
 @end

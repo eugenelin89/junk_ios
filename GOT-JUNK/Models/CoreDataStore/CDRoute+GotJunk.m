@@ -137,7 +137,7 @@
             
             int jobCount = 0;
             for(CDJob *job in cdroute.jobs){
-                if([DateHelper isCurrentDay:job.jobDate]){
+                if([DateHelper isCurrentDay:job.jobDate] && [job.jobType integerValue] != JobTypeBookOff){
                     jobCount++;
                 }
             }
@@ -150,20 +150,6 @@
     return tempArray;
 }
 
-+(NSDictionary*)routeJobsInManagedObjectContext:(NSManagedObjectContext*)context
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDRoute"];
-    NSError *error;
-    NSArray *matches = [context executeFetchRequest:request error:&error];
-    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-    for(CDRoute *cdroute in matches){
-        for(CDJob *cdjob in cdroute.jobs){
-            // conver cdjob to Job object
-            dic[cdroute.routeID] = [CDJob toJobWithCDJob:cdjob];
-        }
-    }
-    return dic;
-}
 
 
 

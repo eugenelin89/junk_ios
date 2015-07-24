@@ -249,11 +249,15 @@ static const int NumMenusInSection0 = 7;
 
         if (indexPath.row == 4 )
         {
-            cell.nameLabel.text = [NSString stringWithFormat:@"%@: %@", menuTitle, [[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseName]];
+            NSString *fName = [[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseName]?[NSString stringWithFormat:@": %@",[[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseName]]:@"";
+            
+            cell.nameLabel.text = [NSString stringWithFormat:@"%@ %@", menuTitle, fName];
         }
         else if (indexPath.row == 5)
         {
-            cell.nameLabel.text = [NSString stringWithFormat:@"%@: %@", menuTitle, [[UserDefaultsSingleton sharedInstance] getUserDefaultRouteName]];
+            NSString *rName = [[UserDefaultsSingleton sharedInstance] getUserDefaultRouteName]?[NSString stringWithFormat:@": %@",[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteName]]:@"";
+            
+            cell.nameLabel.text = [NSString stringWithFormat:@"%@ %@", menuTitle, rName];
         }
     }
     else
@@ -718,6 +722,7 @@ static const int NumMenusInSection0 = 7;
         [alert show];
     }
 }
+
 
 
 - (void)refreshTable
