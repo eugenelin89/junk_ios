@@ -267,6 +267,10 @@
 		CB5893FF1B3A050100C9F709 /* CoreDataStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB5893FD1B3A050100C9F709 /* CoreDataStore.xcdatamodeld */; };
 		CB58940E1B3A0AB600C9F709 /* CDJob+GotJunk.m in Sources */ = {isa = PBXBuildFile; fileRef = CB58940D1B3A0AB600C9F709 /* CDJob+GotJunk.m */; };
 		CB5894111B3A1A0100C9F709 /* CDRoute+GotJunk.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5894101B3A1A0100C9F709 /* CDRoute+GotJunk.m */; };
+		CBB13CCB1B4B3E3200FC6B54 /* ActiveMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB13CCA1B4B3E3200FC6B54 /* ActiveMode.m */; };
+		CBB13CCF1B4B427200FC6B54 /* StandbyMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB13CCE1B4B427200FC6B54 /* StandbyMode.m */; };
+		CBB13CD21B4B43D100FC6B54 /* CachedMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB13CD11B4B43D100FC6B54 /* CachedMode.m */; };
+		CBB13CD51B4B43FC00FC6B54 /* OfflineMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB13CD41B4B43FC00FC6B54 /* OfflineMode.m */; };
 		CBE0F3EC1B42FAF60073C82D /* CDJob.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0F3EB1B42FAF60073C82D /* CDJob.m */; };
 		E17723BC1522BDF296F07F61 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F768C695B88026F944EDD2 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -643,6 +647,15 @@
 		CB58940D1B3A0AB600C9F709 /* CDJob+GotJunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDJob+GotJunk.m"; path = "CoreDataStore/CDJob+GotJunk.m"; sourceTree = "<group>"; };
 		CB58940F1B3A1A0100C9F709 /* CDRoute+GotJunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDRoute+GotJunk.h"; path = "CoreDataStore/CDRoute+GotJunk.h"; sourceTree = "<group>"; };
 		CB5894101B3A1A0100C9F709 /* CDRoute+GotJunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDRoute+GotJunk.m"; path = "CoreDataStore/CDRoute+GotJunk.m"; sourceTree = "<group>"; };
+		CBB13CC91B4B3E3200FC6B54 /* ActiveMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveMode.h; sourceTree = "<group>"; };
+		CBB13CCA1B4B3E3200FC6B54 /* ActiveMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveMode.m; sourceTree = "<group>"; };
+		CBB13CCC1B4B3E7300FC6B54 /* Mode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mode.h; sourceTree = "<group>"; };
+		CBB13CCD1B4B427200FC6B54 /* StandbyMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandbyMode.h; sourceTree = "<group>"; };
+		CBB13CCE1B4B427200FC6B54 /* StandbyMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StandbyMode.m; sourceTree = "<group>"; };
+		CBB13CD01B4B43D100FC6B54 /* CachedMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CachedMode.h; sourceTree = "<group>"; };
+		CBB13CD11B4B43D100FC6B54 /* CachedMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CachedMode.m; sourceTree = "<group>"; };
+		CBB13CD31B4B43FC00FC6B54 /* OfflineMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineMode.h; sourceTree = "<group>"; };
+		CBB13CD41B4B43FC00FC6B54 /* OfflineMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineMode.m; sourceTree = "<group>"; };
 		CBE0F3EA1B42FAF60073C82D /* CDJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDJob.h; path = CoreDataStore/CDJob.h; sourceTree = "<group>"; };
 		CBE0F3EB1B42FAF60073C82D /* CDJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDJob.m; path = CoreDataStore/CDJob.m; sourceTree = "<group>"; };
 		F96F8057550944CB709C73BF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -783,6 +796,7 @@
 		90B7607719F6E57D00B61D33 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CBB13CC81B4B3D0B00FC6B54 /* Mode */,
 				CB5893FC1B3A04CE00C9F709 /* CoreDataStore */,
 				90B7607819F6E57D00B61D33 /* DataStoreSingleton.h */,
 				90B7607919F6E57D00B61D33 /* DataStoreSingleton.m */,
@@ -1271,6 +1285,22 @@
 			name = CoreDataStore;
 			sourceTree = "<group>";
 		};
+		CBB13CC81B4B3D0B00FC6B54 /* Mode */ = {
+			isa = PBXGroup;
+			children = (
+				CBB13CCC1B4B3E7300FC6B54 /* Mode.h */,
+				CBB13CC91B4B3E3200FC6B54 /* ActiveMode.h */,
+				CBB13CCA1B4B3E3200FC6B54 /* ActiveMode.m */,
+				CBB13CCD1B4B427200FC6B54 /* StandbyMode.h */,
+				CBB13CCE1B4B427200FC6B54 /* StandbyMode.m */,
+				CBB13CD01B4B43D100FC6B54 /* CachedMode.h */,
+				CBB13CD11B4B43D100FC6B54 /* CachedMode.m */,
+				CBB13CD31B4B43FC00FC6B54 /* OfflineMode.h */,
+				CBB13CD41B4B43FC00FC6B54 /* OfflineMode.m */,
+			);
+			name = Mode;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1573,6 +1603,7 @@
 				CB48606A1B41B42D001D011D /* CDMapPoint+GotJunk.m in Sources */,
 				90ED95281A13ED2000D747F1 /* MJCollectionViewCalendarLayout.m in Sources */,
 				90ED955A1A13ED2000D747F1 /* MJJobCancelReasonsViewController.m in Sources */,
+				CBB13CCF1B4B427200FC6B54 /* StandbyMode.m in Sources */,
 				CB48019B1B435F10004C096F /* CDUser+GotJunk.m in Sources */,
 				90B761F219F6E57D00B61D33 /* MapPoint.m in Sources */,
 				90ED955E1A13ED2000D747F1 /* MJJobDetailViewCell.m in Sources */,
@@ -1593,6 +1624,7 @@
 				90B761EB19F6E57D00B61D33 /* Expense.m in Sources */,
 				90ED953C1A13ED2000D747F1 /* JNExpenseCell.m in Sources */,
 				905E76CA1ADE47F90048D894 /* Notification.m in Sources */,
+				CBB13CCB1B4B3E3200FC6B54 /* ActiveMode.m in Sources */,
 				90ED958B1A13ED2000D747F1 /* SettingsViewController.m in Sources */,
 				90ED95881A13ED2000D747F1 /* MFSideMenuContainerViewController.m in Sources */,
 				90ED95771A13ED2000D747F1 /* JunkMapViewController.m in Sources */,
@@ -1619,6 +1651,7 @@
 				90B761E519F6E57D00B61D33 /* DataStoreSingleton.m in Sources */,
 				90ED955C1A13ED2000D747F1 /* MJJobCancelViewController.m in Sources */,
 				90B761DA19F6E57D00B61D33 /* FetchHelper.m in Sources */,
+				CBB13CD21B4B43D100FC6B54 /* CachedMode.m in Sources */,
 				90B761E919F6E57D00B61D33 /* EnviroDestination.m in Sources */,
 				90ED952E1A13ED2000D747F1 /* MSGridline.m in Sources */,
 				90B761F119F6E57D00B61D33 /* Lookup.m in Sources */,
@@ -1646,6 +1679,7 @@
 				90B761E419F6E57D00B61D33 /* ValidateHelper.m in Sources */,
 				90ED95341A13ED2000D747F1 /* MJEnvironmentalDetailViewController.m in Sources */,
 				90ED95751A13ED2000D747F1 /* OfflineLoginViewController.m in Sources */,
+				CBB13CD51B4B43FC00FC6B54 /* OfflineMode.m in Sources */,
 				90ED95301A13ED2000D747F1 /* MJDestinationsListViewController.m in Sources */,
 				90ED95261A13ED2000D747F1 /* MJCalendarViewController.m in Sources */,
 			);

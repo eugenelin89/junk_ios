@@ -44,11 +44,8 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchTestSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchServerUp" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchFailedServerDown" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchFailedNoInternet" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:@"FetchInternetUp" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:DISCONNECTED_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:RECONNECTED_NOTIFICATION object:nil];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNewVersion) name:@"UpdateAvailable" object:nil];
 
     //Instantiate a location object.
@@ -96,28 +93,23 @@
 
 - (void)updateStatus
 {
-    if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
+    if( [DataStoreSingleton sharedInstance].isConnected )
     {
         self.imageView.hidden = NO;
         self.imageViewEx.hidden = YES;
-    }
-    else
-    {
-        self.imageView.hidden = YES;
-        self.imageViewEx.hidden = NO;
-    }
-    
-    if( [DataStoreSingleton sharedInstance].isJunkNetLive == YES )
-    {
+        
         self.imageView2.hidden = NO;
         self.imageView2Ex.hidden = YES;
     }
     else
     {
+        self.imageView.hidden = YES;
+        self.imageViewEx.hidden = NO;
+        
         self.imageView2Ex.hidden = NO;
         self.imageView2.hidden = YES;
     }
-    
+        
     if([CLLocationManager locationServicesEnabled] &&
        [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined)
     {

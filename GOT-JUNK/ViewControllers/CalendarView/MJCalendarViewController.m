@@ -35,6 +35,7 @@
 @property (nonatomic, strong) NSArray *jobList;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIAlertView *av;
+@property (weak, nonatomic) IBOutlet UIButton *offlineIndicator;
 
 @end
 
@@ -79,11 +80,13 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshJobListAndShowAlert) name:@"FetchJobListCompleteShowAlert" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startRefresh) name:@"MustRefreshJobsList" object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedNoInternet) name:@"FetchFailedNoInternet" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedServerAlreadyDown) name:@"FetchFailedServerAlreadyDown" object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataReady) name:COREDATAREADY_NOTIFICATION object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchInternetUp) name:@"FetchTestSuccess" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
         
         MJCollectionViewCalendarLayout *automationLayout = (MJCollectionViewCalendarLayout *)self.collectionView.collectionViewLayout;
         [automationLayout registerClass:[MSGridline class]  forDecorationViewOfKind:@"MSGridLine"];
@@ -120,7 +123,8 @@
     
     @try
     {
-        if ( ([DataStoreSingleton sharedInstance].jobList && [[DataStoreSingleton sharedInstance].jobList count] > 0 ) || [[DataStoreSingleton sharedInstance] isOffline] )
+        if ( ([DataStoreSingleton sharedInstance].jobList && [[DataStoreSingleton sharedInstance].jobList count] > 0 )
+            || ![DataStoreSingleton sharedInstance].isConnected )
         {
             self.jobList = [DataStoreSingleton sharedInstance].jobList;
             [self sortArray];
@@ -128,6 +132,11 @@
         else
         {
             [self getJobListForCurrentRoute];
+        }
+        if([DataStoreSingleton sharedInstance].isConnected){
+            [self.offlineIndicator setHidden:YES];
+        }else{
+            [self.offlineIndicator setHidden:NO];
         }
     }
     @catch (NSException* exception)
@@ -245,21 +254,36 @@
 
 - (void)updateState
 {
-    [self setButtonState:![[DataStoreSingleton sharedInstance] isOffline]];
+    [self setButtonState:[DataStoreSingleton sharedInstance].isConnected];
 }
 
-- (void)fetchInternetUp
+- (void)reconnected
 {
     [self setButtonState:YES];
+
+    [self.offlineIndicator setHidden: YES];
+
 }
 
-- (void)fetchFailedNoInternet
+- (void)disconnected
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    
+
     [self setButtonState:NO];
+
+    [self.offlineIndicator setHidden:NO];
+    
     
     [self showContent];
+}
+
+-(void)coreDataReady
+{
+    // Core Data is ready, we are disconnected and jobList is empty.  Get from cache.
+    if(!self.jobList && ![DataStoreSingleton sharedInstance].isConnected){
+        self.jobList = [DataStoreSingleton sharedInstance].jobList;
+        [self sortArray];
+    }
 }
 
 - (void)fetchFailedServerAlreadyDown
@@ -428,13 +452,15 @@
 {
     if ([[UserDefaultsSingleton sharedInstance] didUserLogout] == YES)
     {
+        [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
         [DataStoreSingleton sharedInstance].debugDisplayText1 = @"getJobListForCurrentRoute";
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedSessionExpired" object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
+    
         return;
     }
   
-    if ([[DataStoreSingleton sharedInstance] isOffline] == YES)
+    if (![DataStoreSingleton sharedInstance].isConnected )
     {
         return;
     }

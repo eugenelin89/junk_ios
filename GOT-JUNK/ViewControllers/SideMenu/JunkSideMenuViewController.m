@@ -29,6 +29,7 @@
 #import "OfflineLoginViewController.h"
 #import "NoConnectionViewController.h"
 #import "MJNotificationsTableViewController.h"
+#import "Mode.h"
 
 static const NSTimeInterval FETCH_JOBS_REFRESH_INTERVAL = 30;
 //static const NSTimeInterval MINUTE = 60.0;
@@ -91,14 +92,19 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showDispatchAlerts) name:@"FetchJobListCompleteShowAlert" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayJob) name:@"needToDisplayJob" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedNoInternet) name:@"FetchFailedNoInternet" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:@"FetchFailedServerDown" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchFailedSessionExpired) name:@"FetchFailedSessionExpired" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"FetchLoginSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DefaultFranchiseNameChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DefaultRouteNameChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logOut) name:@"LogoutRequest" object:nil];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshResourcesList_debug_testing) name:@"FetchResourcesListComplete2" object:nil];
+    
+    // Mode Transitioning Notifications
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionExpired) name:LOGGEDOUT_NOTIFICATION object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnected) name:DISCONNECTED_NOTIFICATION object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:LOGGEDIN_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterStandbyMode) name:STANDBY_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterActiveMode) name:ACTIVE_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:OFFLINE_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterCachedMode) name:CACHED_NOTIFICATION object:nil];
+
 
     
     // initiate the notifications
@@ -243,11 +249,15 @@ static const int NumMenusInSection0 = 7;
 
         if (indexPath.row == 4 )
         {
-            cell.nameLabel.text = [NSString stringWithFormat:@"%@: %@", menuTitle, [[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseName]];
+            NSString *fName = [[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseName]?[NSString stringWithFormat:@": %@",[[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseName]]:@"";
+            
+            cell.nameLabel.text = [NSString stringWithFormat:@"%@ %@", menuTitle, fName];
         }
         else if (indexPath.row == 5)
         {
-            cell.nameLabel.text = [NSString stringWithFormat:@"%@: %@", menuTitle, [[UserDefaultsSingleton sharedInstance] getUserDefaultRouteName]];
+            NSString *rName = [[UserDefaultsSingleton sharedInstance] getUserDefaultRouteName]?[NSString stringWithFormat:@": %@",[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteName]]:@"";
+            
+            cell.nameLabel.text = [NSString stringWithFormat:@"%@ %@", menuTitle, rName];
         }
     }
     else
@@ -572,13 +582,22 @@ static const int NumMenusInSection0 = 7;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)transitionToOfflinMode
+{
+    [self dismissViewControllerAnimated:NO completion:^{
+        [self showOfflineScreen];
+    }];
+}
+
 - (void)showOfflineScreen
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     OfflineLoginViewController *vc = [[OfflineLoginViewController alloc] init];
     vc.delegate = self;
-    [self presentViewController:vc animated:YES completion:nil];
+    [self presentViewController:vc animated:YES completion:^{
+        NSLog(@"Offline View Launched.");
+    }];
 }
 
 - (void)showLoginScreen
@@ -588,9 +607,10 @@ static const int NumMenusInSection0 = 7;
     LoginViewController *vc = [[LoginViewController alloc] init];
     vc.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
+    
 }
 
-- (void)fetchFailedNoInternet
+- (void)disconnected
 {
     //[MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     //NoConnectionViewController *noc = [[NoConnectionViewController alloc] init];
@@ -604,28 +624,28 @@ static const int NumMenusInSection0 = 7;
 - (void)enterOfflineMode
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
     
-    if( [[UserDefaultsSingleton sharedInstance] isOfflineAuthorized] == NO )
-    {
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[LoginViewController  class]]){
+        [self dismissViewControllerAnimated:YES completion:^{
+            NSLog(@"LoginViewContrller dismissed");
+            [self showOfflineScreen];
+        }];
+    }else{
         [self showOfflineScreen];
-        
-        return;
     }
-    else
+    
+    if( [[UserDefaultsSingleton sharedInstance] isOfflineAuthorized]  )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedServerAlreadyDown" object:nil];
-        
-        if (alert == nil)
-        {
-            alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-            alert.tag = -1;
-            [alert show];
-        }
     }
+     
 }
 
-- (void)fetchFailedSessionExpired
+- (void)enterStandbyMode
 {
+    /*
     if( self.menuContainerViewController == nil )
     {
         return;
@@ -637,6 +657,7 @@ static const int NumMenusInSection0 = 7;
         return;
     }
     
+    NSLog(@"Session Expired, Show Login Screen");
     [self showLoginScreen];
     
     if( [[UserDefaultsSingleton sharedInstance] isFirstTimeInstall] == YES )
@@ -650,7 +671,59 @@ static const int NumMenusInSection0 = 7;
         alert.tag = -1;
         [alert show];
     }
+    */
+    
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[OfflineLoginViewController class]]){
+        // We are transitioning from Offline Mode
+        // Dismiss Offline Login View Controller first
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self showLoginScreen];
+        }];
+    }else{
+        // We are transitioning from Active Mode
+        // Display Login Screen
+        [self showLoginScreen];
+    
+    }
+    
 }
+
+-(void)enterActiveMode
+{
+    // We can only enter Active Mode thru Standby Mode or Cached Mode.
+    // If we are in Standby Mode, we need to lift the login screen.
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[LoginViewController class]]){
+        [self dismissViewControllerAnimated:YES completion:^{
+            NSLog(@"LoginViewContrller dismissed");
+        }];
+    }
+}
+
+-(void)enterCachedMode
+{
+    UIViewController *pvc = self.presentedViewController;
+    if([pvc isKindOfClass:[OfflineLoginViewController class]]){
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self displayCachedModeAlert];
+        }];
+    }else{
+        [self displayCachedModeAlert];        
+    }
+}
+
+-(void)displayCachedModeAlert
+{
+    if (alert == nil)
+    {
+        alert = [[UIAlertView alloc] initWithTitle:@"The JunkNet server is currently unreachable.  All data is cached and may not reflect recent changes." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        alert.tag = -1;
+        [alert show];
+    }
+}
+
+
 
 - (void)refreshTable
 {

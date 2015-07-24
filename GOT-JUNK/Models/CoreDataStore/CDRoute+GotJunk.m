@@ -9,6 +9,8 @@
 #import "CDRoute+GotJunk.h"
 #import "CDJob+GotJunk.h"
 #import "../Job.h"
+#import "../Route.h"
+#import "../DateHelper.h"
 
 @implementation CDRoute (GotJunk)
 
@@ -116,6 +118,38 @@
     
     return route;
 }
+
++(NSArray *)routesInManagedObjectContext:(NSManagedObjectContext*) context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDRoute"];
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    NSMutableArray *tempArray;
+    if(!matches || error){
+        // handle error
+    }else{
+        tempArray = [[NSMutableArray alloc] initWithCapacity:matches.count];
+        for(CDRoute* cdroute in matches){
+            Route *aRoute = [[Route alloc] init];
+            aRoute.routeID = cdroute.routeID;
+            aRoute.routeName = cdroute.routeName;
+            //aRoute.jobsInRoute = [NSNumber numberWithInt: cdroute.jobs.count];
+            
+            int jobCount = 0;
+            for(CDJob *job in cdroute.jobs){
+                if([DateHelper isCurrentDay:job.jobDate] && [job.jobType integerValue] != JobTypeBookOff){
+                    jobCount++;
+                }
+            }
+            aRoute.jobsInRoute = [NSNumber numberWithInt: jobCount];
+
+            
+            [tempArray addObject:aRoute];
+        }
+    }
+    return tempArray;
+}
+
 
 
 

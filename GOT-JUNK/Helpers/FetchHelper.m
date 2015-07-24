@@ -32,6 +32,7 @@
 #import "Enviro.h"
 #import "Flurry.h"
 #import "Notification.h"
+#import "CDJob+GotJunk.h"
 
 @implementation FetchHelper
 {
@@ -63,7 +64,7 @@
       isCaching = NO;
       isFetching = NO;
       
-      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllCachingData) name:@"CoreDataReady" object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllCachingData) name:COREDATAREADY_NOTIFICATION object:nil];
   }
 
   return self;
@@ -71,6 +72,7 @@
 
 - (void)startNeworkActivity
 {
+    NSLog(@"*** startNetworkActivity ***");
     isFetching = YES;
     
     dispatch_async( dispatch_get_main_queue(), ^
@@ -81,6 +83,7 @@
 
 - (void)endNetworkActivity
 {
+    NSLog(@"*** endNetworkActivity ***");
     isFetching = NO;
     
     dispatch_async( dispatch_get_main_queue(), ^
@@ -122,22 +125,20 @@
 
                         if (operation.responseString)
                         {
+                            [DataStoreSingleton sharedInstance].isUserLoggedIn = YES;
                             [self loginSucceededWithResponseString:operation.responseString andUsername:username];
                         }
                         else
                         {
-                            NSLog(@"login error: %@", operation.responseString);
-                        
-                            [self sendNotification:@"FetchLoginFailed"];
+                            [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
                         }
                     }
                  failure:^(AFHTTPRequestOperation *operation, NSError *error)
                     {
                         [self endNetworkActivity];
-                        
-                        NSLog(@"login error: %@", operation.responseString);
-                        
-                        [self sendNotification:@"FetchLoginFailed"];
+                        [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:LOGINFAILED_NOTIFICATION object:nil];
+
                     }];
 }
 
@@ -253,6 +254,7 @@
         
         UserDefaultsSingleton *defaults = [UserDefaultsSingleton sharedInstance];
         [defaults setUserSessionID:sessionID];
+        [defaults cacheSessionID];//cache sessionID in case OfflineMode -> CacheMode -> ActiveMode
         [defaults setUserID:userID];
         [defaults setUserPermissions:permissions];
         [defaults setUserFullName:fullName];
@@ -267,9 +269,9 @@
         [DataStoreSingleton sharedInstance].currentFranchise= franchise;
     }
     
-    [DataStoreSingleton sharedInstance].isUserLoggedIn = YES;
+    
 
-    [self sendNotification:@"FetchLoginSuccess"];
+    
 
     [self getAllCachingData];
 }
@@ -442,6 +444,7 @@
                     }
                  failure:^(AFHTTPRequestOperation *operation, NSError *error)
                     {
+                        [self endNetworkActivity];
                         NSLog(@"fetchResources failed: %@", operation.responseString);
                     }];
 }
@@ -519,7 +522,7 @@
 
 - (void)fetchExpensesByRoute:(int)routeID onDate:(NSDate *)date
 {
-    if( [self isAllowFetching] == NO )
+    if(![DataStoreSingleton sharedInstance].isConnected)
     {
         [self sendNotification:@"FetchExpensesListComplete"];
         return;
@@ -568,6 +571,7 @@
 
                         if (operation.responseString)
                         {
+                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
                             NSArray *jobListArray = [[DataStoreSingleton sharedInstance] mergeJobsDict:operation.responseString];
                             
                             if (shouldShowAlert)
@@ -597,6 +601,8 @@
                         [self checkFailedError:operation withError:error callingMethod:@"fetchJobListForRoute: "];
                         
                         NSLog(@"fetchJobListForRoute failed: %@", operation.responseString);
+                        
+                        
                     }];
     
 }
@@ -655,7 +661,7 @@
 
 - (void)fetchRouteList:(NSDate*)date
 {
-    if( [self isAllowFetching] == NO )
+    if(![DataStoreSingleton sharedInstance].isConnected)
     {
         [self sendNotification:@"FetchRouteListComplete"];
         return;
@@ -1238,6 +1244,7 @@
                         
                         if (operation.responseString)
                         {
+                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
                             [[DataStoreSingleton sharedInstance] parseJobListDict:operation.responseString routeID:routeID];
                         }
                         else
@@ -1352,11 +1359,7 @@
     {
         if( [DataStoreSingleton sharedInstance].isUserLoggedIn == YES )
         {
-            
             [DataStoreSingleton sharedInstance].debugDisplayText1 = @"getAndPerformSessionIDActions";
-            
-            [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedSessionExpired" object:nil];
         }
         
         return nil;
@@ -1877,15 +1880,11 @@
     {
         DataStoreSingleton *dataStore = [DataStoreSingleton sharedInstance];
         
-        if( dataStore.isJunkNetLive == NO || dataStore.isInternetLive == NO || dataStore.isUserLoggedIn == NO )
+        if( !dataStore.isConnected )
         {
-            dispatch_async( dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchTestSuccess" object:nil];
-            });
-            dataStore.isInternetLive = YES;
-            dataStore.isJunkNetLive = YES;
-            dataStore.isUserLoggedIn = YES;
             
+            dataStore.isUserLoggedIn = YES;
+            dataStore.isConnected = YES;
             //[self getAllCachingData];
         }
     }
@@ -1896,145 +1895,24 @@
     [self endNetworkActivity];
     //NSLog(@"%@ %@", method, operation.responseString);
     
-    if( [self checkInternetError:error forMessage:@"The Internet connection appears to be offline."] == YES )
-    {
-        return;
-    }
-    if( [self checkInternetError:error forMessage:@"The request timed out."] == YES )
-    {
-        return;
-    }
-    if( [self checkJunkNetError:error forMessage:@"The network connection was lost."] == YES )
-    {
-        return;
-    }
-    if( [self checkJunkNetError:error forMessage:@"Could not connect to the server."] == YES )
-    {
-        return;
-    }
-    
-
-    [DataStoreSingleton sharedInstance].debugDisplayText1 = method;
-    
-    if( [self checkSessionError:error forMessage:@"Expected status code in (200-299), got 403"] == YES )
-    {
-        return;
-    }
-    if( [self checkSessionError:error forMessage:@"Expected status code in (200-299), got 401"] == YES )
-    {
-        return;
-    }
-    
-    NSString *reason = operation.responseString;
-    if( [reason isEqualToString:@"\"Unauthorized Request\""] == YES )
-    {
-        NSLog(@"checkFailedError: %@", reason);
-
+    if(operation.response.statusCode == 401 || operation.response.statusCode == 403){
+        // session issue, user logged out
+        [DataStoreSingleton sharedInstance].isConnected = YES; // 401/403 means we are connected. Note we need to do this first to move us to StandbyMode
+        [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
+        
         [self clearChannels];
+        
+    }else{
+        // Cannot connect to JunkNet
+        [DataStoreSingleton sharedInstance].isConnected = NO;
+        
     }
-    
-    
-    // If execution reaches this point, the error is none of the above,
-    // and, we need to assume it is either server down or no connection, both triggers Offline Mode.
-    // Assume no connection.
-    // There are many types of error associated with server down or no connection.
-    // Interpreting the error based on error message is a bad idea.
-    // TODO: REFACTORING NEEDED.
-    if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
-    {
-        [DataStoreSingleton sharedInstance].isInternetLive = NO;
-        dispatch_async( dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedNoInternet" object:nil];
-        });
-    }
-    
 }
 
 
-- (BOOL)isAllowFetching
-{
-    return [DataStoreSingleton sharedInstance].isJunkNetLive == YES && [DataStoreSingleton sharedInstance].isInternetLive == YES;
-}
 
-- (BOOL)checkInternetError:(NSError*)error forMessage:(NSString*)messasge
-{
-    NSString *errorCause = [error.userInfo objectForKey:@"NSLocalizedDescription"];
-    if( [errorCause isEqualToString:messasge] == YES )
-    {
-        NSLog(@"checkInternetError: errorCause: %@", errorCause);
-        if( [DataStoreSingleton sharedInstance].isInternetLive == YES )
-        {
-            [DataStoreSingleton sharedInstance].isInternetLive = NO;
-            dispatch_async( dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedNoInternet" object:nil];
-            });
-        }
-        return YES;
-    }
-    
-    if( [DataStoreSingleton sharedInstance].isInternetLive == NO )
-    {
-        [DataStoreSingleton sharedInstance].isInternetLive = YES;
-        dispatch_async( dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchInternetUp" object:nil];
-        });
-    }
 
-    return NO;
-}
 
-- (BOOL)checkJunkNetError:(NSError*)error forMessage:(NSString*)messasge
-{
-    NSString *errorCause = [error.userInfo objectForKey:@"NSLocalizedDescription"];
-    if( [errorCause isEqualToString:messasge] == YES )
-    {
-        NSLog(@"checkJunkNetError: errorCause: %@", errorCause);
-        if( [DataStoreSingleton sharedInstance].isJunkNetLive == YES )
-        {
-            [DataStoreSingleton sharedInstance].isJunkNetLive = NO;
-            dispatch_async( dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedServerDown" object:nil];
-            });
-        }
-        return YES;
-    }
-    
-    if( [DataStoreSingleton sharedInstance].isJunkNetLive == NO )
-    {
-        [DataStoreSingleton sharedInstance].isJunkNetLive = YES;
-        dispatch_async( dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchServerUp" object:nil];
-        });
-    }
-    
-    return NO;
-}
-
-- (BOOL)checkSessionError:(NSError*)error forMessage:(NSString*)message
-{
-    NSString *errorCause = [error.userInfo objectForKey:@"NSLocalizedDescription"];
-    if( [errorCause isEqualToString:message] == YES )
-    {
-        NSLog(@"checkSessionError: errorCause: %@", errorCause);
-        if( [DataStoreSingleton sharedInstance].isUserLoggedIn == YES )
-        {
-            [DataStoreSingleton sharedInstance].isUserLoggedIn = NO;
-            
-            [self clearChannels];
-
-            dispatch_async( dispatch_get_main_queue(), ^{
-                
-                //[DataStoreSingleton sharedInstance].debugDisplayText1 = @"checkSessionError";
-                [DataStoreSingleton sharedInstance].debugDisplayText2 = message;
-
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchFailedSessionExpired" object:nil];
-            });
-        }
-        return YES;
-    }
-    
-    return NO;
-}
 
 ///=================================================================================
 

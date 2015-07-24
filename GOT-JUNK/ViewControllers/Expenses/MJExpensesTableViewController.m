@@ -181,7 +181,7 @@
 - (void) headerTapped: (UIButton*)sender
 {
     /* do what you want in response to section header tap */
-    if (![[DataStoreSingleton sharedInstance] isOffline])
+    if ([DataStoreSingleton sharedInstance].isConnected)
     {
         JNExpenseDetailViewController *vc = [[JNExpenseDetailViewController alloc] init];
         Expense * expense = [[Expense alloc] init];

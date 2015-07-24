@@ -224,15 +224,17 @@
 
 - (void)loadEmail
 {
-    if (self.currentJob.clientEmail && ![self.currentJob.clientEmail isEqualToString:@""])
+    if (self.currentJob.clientEmail && ![self.currentJob.clientEmail isEqualToString:@""] && [MFMailComposeViewController canSendMail])
     {
+        
         MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
         controller.mailComposeDelegate = self;
-        
+            
         [controller setToRecipients:[NSArray arrayWithObject:self.currentJob.clientEmail]];
         [controller setSubject:@""];
         [controller setMessageBody:@"" isHTML:NO];
         [self presentViewController:controller animated:YES completion:nil];
+        
     }
 }
 
@@ -246,7 +248,7 @@
 
 -(IBAction)callStatusButtonAction:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -331,7 +333,7 @@
 
 - (IBAction)setCallStatus:(NSInteger)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -530,7 +532,7 @@
 
 - (IBAction)editEmail:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -549,7 +551,7 @@
 
 - (IBAction)pressPayment:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -634,7 +636,7 @@
 
 - (IBAction)cancelJob:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -656,7 +658,7 @@
 
 - (IBAction)pushNoteController:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }
@@ -669,7 +671,7 @@
 
 - (IBAction)editJob:(id)sender
 {
-    if ([[DataStoreSingleton sharedInstance] isOffline])
+    if (![DataStoreSingleton sharedInstance].isConnected)
     {
         [self showOfflineIndicator];
     }

@@ -46,7 +46,8 @@
 {
   [super viewDidAppear:animated];
   
-  if ([DataStoreSingleton sharedInstance].franchiseList && [[DataStoreSingleton sharedInstance].franchiseList count] > 0  && [[DataStoreSingleton sharedInstance] isOffline] )
+  if ([DataStoreSingleton sharedInstance].franchiseList && [[DataStoreSingleton sharedInstance].franchiseList count] > 0
+      && ![DataStoreSingleton sharedInstance].isConnected )
   {
     self.franchiseList = [DataStoreSingleton sharedInstance].franchiseList;
     [self.franchiseListTableView reloadData];

@@ -118,7 +118,7 @@
     // Get Resources
     //
     NSArray *resourceList = [DataStoreSingleton sharedInstance].resourcesList;
-    if ([resourceList count] == 0 && ![[DataStoreSingleton sharedInstance] isOffline])
+    if ([resourceList count] == 0 && [DataStoreSingleton sharedInstance].isConnected)
     {
         [self fetchResourcesList];
     }

@@ -20,6 +20,13 @@
 #import "CoreDataStore/CDRoute+GotJunk.h"
 #import "UserDefaultsSingleton.h"
 #import "CoreDataStore/CDUser+GotJunk.h"
+#import "Mode.h"
+#import "ActiveMode.h"
+
+@interface DataStoreSingleton()
+@property (nonatomic, strong) id<Mode> mode;
+
+@end
 
 @implementation DataStoreSingleton
 {
@@ -43,8 +50,7 @@
 @synthesize currentJobPaymentID = _currentJobPaymentID;
 @synthesize pushJob = _pushJob;
 @synthesize routeJobs = _routeJobs;
-@synthesize isJunkNetLive = _isJunkNetLive;
-@synthesize isInternetLive = _isInternetLive;
+@synthesize isConnected = _isConnected;
 @synthesize isUserLoggedIn = _isUserLoggedIn;
 @synthesize debugDisplayText1 = _debugDisplayText1;
 @synthesize debugDisplayText2 = _debugDisplayText2;
@@ -52,6 +58,7 @@
 @synthesize currentJob = _currentJob;
 @synthesize filterRoute = _filterRoute;
 @synthesize assignedRoutes = _assignedRoutes;
+@synthesize mode = _mode;
 
 + (DataStoreSingleton *)sharedInstance
 {
@@ -60,13 +67,14 @@
     dispatch_once(&onceToken, ^
     {
         _sharedInstance = [[DataStoreSingleton alloc] init];
-    
-        _sharedInstance.isJunkNetLive = YES;
-        _sharedInstance.isInternetLive = YES;
+        _sharedInstance.mode = [[ActiveMode alloc] init]; // initialize as Active Mode.
+        _sharedInstance.isConnected = YES;
         _sharedInstance.isUserLoggedIn = YES;
         _sharedInstance->currentNotificationPageNumber = 0;
         
         [_sharedInstance prepareCoreDataStore];
+        
+        
         
 
     });
@@ -99,15 +107,12 @@
 {
     if(_document.documentState ==  UIDocumentStateNormal){
         self.managedObjectContext = _document.managedObjectContext;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"CoreDataReady" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:COREDATAREADY_NOTIFICATION object:nil];
         NSLog(@"\n\n *** CORE DATA READY! ***\n\n");
     }
 }
 
-- (BOOL)isOffline
-{
-    return self.isInternetLive == NO || self.isJunkNetLive == NO;
-}
+
 
 - (NSMutableArray *)mapPointsList
 {
@@ -200,6 +205,7 @@
     return _assignedRoutes;
 }
 
+/*
 -(void) setAssignedRoutes:(NSArray *)assignedRoutes
 {
     _assignedRoutes = assignedRoutes;
@@ -209,6 +215,7 @@
     
     
 }
+*/
 
 - (NSDictionary *)expensesDict;
 {
@@ -220,8 +227,9 @@
 
 - (NSMutableDictionary *)routeJobs;
 {
-    if (!_routeJobs) {
+    if (!_routeJobs && self.managedObjectContext) {
         _routeJobs = [[NSMutableDictionary alloc] init];
+        
     }
     return _routeJobs;
 }
@@ -282,7 +290,13 @@
 
 -(NSArray *)jobList
 {
-    return _jobList;
+    NSArray *result;
+    if(!_jobList && self.managedObjectContext){
+        result = [CDJob jobsForDate:self.currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:self.managedObjectContext];
+    }else{
+        result = _jobList;
+    }
+    return result;
 }
 
 
@@ -292,10 +306,20 @@
     
     [self setJobLocations];
     
-    // store in core data, but do it on a seperate thread.
-    //[self runAsync:^{
+    // store in core data
     [CDJob loadJobsFromArray:jobList inManagedObjectContext:self.managedObjectContext];
-    //}];
+    
+}
+
+-(NSArray *)routeList
+{
+    NSArray *result;
+    if(!_routeList && self.managedObjectContext){
+        result = [CDRoute routesInManagedObjectContext:self.managedObjectContext];
+    }else{
+        result = _routeList;
+    }
+    return result;
 }
 
 -(void)setRouteList:(NSArray *)routeList
@@ -331,6 +355,30 @@
         _filterRoute = [[Route alloc] init];
     }
     return _filterRoute;
+}
+
+-(void) setIsUserLoggedIn:(BOOL)isUserLoggedIn
+{
+    _isUserLoggedIn = isUserLoggedIn;
+    if(isUserLoggedIn){
+        self.mode = [self.mode loggedIn];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDIN_NOTIFICATION object:nil];
+    }else{
+        self.mode = [self.mode loggedOut];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LOGGEDOUT_NOTIFICATION object:nil];
+    }
+}
+
+-(void) setIsConnected:(BOOL)isConnected
+{
+    _isConnected = isConnected;
+    if(isConnected){
+        self.mode = [self.mode reconnect];
+        [[NSNotificationCenter defaultCenter] postNotificationName:RECONNECTED_NOTIFICATION object:nil];
+    }else{
+        self.mode = [self.mode disconnect];
+        [[NSNotificationCenter defaultCenter] postNotificationName:DISCONNECTED_NOTIFICATION object:nil];
+    }
 }
 
 - (void)mergeJobs:(NSArray *)jobs
@@ -388,6 +436,12 @@
     self.pushJob = nil;
     self.routeJobs = nil;
 }
+
+-(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID
+{
+    [CDJob deleteJobsForDate:date forRoute:routeID inManagedContext:self.managedObjectContext];
+}
+
 
 - (NSInteger)pendingDispatches
 {
