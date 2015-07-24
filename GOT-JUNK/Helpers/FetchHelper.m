@@ -150,13 +150,8 @@
 
     PFInstallation *ci = [PFInstallation currentInstallation];
     
-    NSArray *subscribedChannels = ci.channels;
-    for (NSString *channelName in subscribedChannels)
-    {
-        if( channelName != nil )
-        {
-            [ci removeObject:channelName forKey:@"channels"];
-        }
+    if(ci.channels){
+        [ci removeObjectsInArray:ci.channels forKey:@"channels"];
     }
     [ci saveInBackground];
 }
@@ -203,6 +198,7 @@
     else
     {
         NSMutableArray * tempArray = [[NSMutableArray alloc] init];
+        NSMutableArray* channelsArray = [[NSMutableArray alloc] init];
         for (NSDictionary * myDict in assignedRoutes)
         {
             Route *tempRoute = [[Route alloc] init];
@@ -212,7 +208,7 @@
             NSDate * date = [DataStoreSingleton sharedInstance].currentDate;
             [self fetchEnviroByRoute:[tempRoute.routeID intValue] onDate:date];
             NSString * ttmString = [NSString stringWithFormat:@"ittm%@%@",tempRoute.routeID,nowString];
-            [currentParseInstallation addUniqueObject:ttmString forKey:@"channels"];
+            [channelsArray addObject:ttmString];
         }
         
         NSString *sessionID = [dataDict objectForKey:@"sessionID"];
@@ -226,11 +222,12 @@
         if (![permissions isEqualToString:@"Truck Team Member"])
         {
             NSString *franchiseSubscription = [NSString stringWithFormat:@"ifranchise%@", defaultFranchiseID];
-            [currentParseInstallation addUniqueObject:franchiseSubscription forKey:@"channels"];
+            [channelsArray addObject:franchiseSubscription];
         }
         
         NSString *franchiseAll =[NSString stringWithFormat:@"franchise%@ALL", defaultFranchiseID];
-        [currentParseInstallation addUniqueObject:franchiseAll forKey:@"channels"];
+        [channelsArray addObject:franchiseAll];
+        [currentParseInstallation addUniqueObjectsFromArray:channelsArray forKey:@"channels"];
         
         [currentParseInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
             {
