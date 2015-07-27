@@ -49,6 +49,7 @@ Version 1.2.6 Release Notes (rev. 2507)
 - Potential crash fixes for 1. Resource addresses and 2. Deallocating the location manager.
 
 Version 1.3.1
+- 
 
 Version 1.3.2
 
