@@ -88,7 +88,7 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTimeStamp) name:JOBSTIMESTAMPUPDATE_NOTIFICTION object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTimeStamp) name:JOBSTIMESTAMPUPDATE_NOTIFICATION object:nil];
         
         MJCollectionViewCalendarLayout *automationLayout = (MJCollectionViewCalendarLayout *)self.collectionView.collectionViewLayout;
         [automationLayout registerClass:[MSGridline class]  forDecorationViewOfKind:@"MSGridLine"];

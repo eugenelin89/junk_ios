@@ -596,6 +596,7 @@
                     }
                 failure:^(AFHTTPRequestOperation *operation, NSError *error)
                     {
+                        [self sendNotification:FETCHJOBLISTFORROUTEFAILED_NOTIFICATION];
                         [self checkFailedError:operation withError:error callingMethod:@"fetchJobListForRoute: "];
                         
                         NSLog(@"fetchJobListForRoute failed: %@", operation.responseString);

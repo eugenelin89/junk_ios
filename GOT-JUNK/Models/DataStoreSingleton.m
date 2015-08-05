@@ -390,7 +390,7 @@
 -(void) setJobsLastUpdateTime:(NSDate *)jobsLastUpdateTime
 {
     [[UserDefaultsSingleton sharedInstance] setJobsLastUpdateTime:jobsLastUpdateTime];
-    [[NSNotificationCenter defaultCenter] postNotificationName:JOBSTIMESTAMPUPDATE_NOTIFICTION object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JOBSTIMESTAMPUPDATE_NOTIFICATION object:nil];
 }
 
 
