@@ -51,10 +51,12 @@
 - (NSDate *)getDateLastCheckedUpdate;
 - (void)offlineModeEnabled;
 - (void)offlineModeDisabled;
--(void)storeOfflineKey:(NSString * )myKey;
+- (void)storeOfflineKey:(NSString * )myKey;
 - (void)setUserSessionID:(NSString*)sessionID;
--(void)cacheSessionID;
--(void)restoreSessionID;
+- (void)cacheSessionID;
+- (void)restoreSessionID;
+- (void)setJobsLastUpdateTime:(NSDate*)timeStamp;
+- (NSDate*)jobsLastUpdateAt;
 - (void)setUserDefaultRouteID:(NSNumber*)routeID;
 - (void)setUserDefaultFranchiseID:(NSNumber*)franchiseID;
 - (void)setUserID:(NSNumber*)userID;
