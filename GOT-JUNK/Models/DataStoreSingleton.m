@@ -381,6 +381,17 @@
     }
 }
 
+-(NSDate*) jobsLastUpdateTime
+{
+    return [[UserDefaultsSingleton sharedInstance] jobsLastUpdateAt];
+}
+
+-(void) setJobsLastUpdateTime:(NSDate *)jobsLastUpdateTime
+{
+    [[UserDefaultsSingleton sharedInstance] setJobsLastUpdateTime:jobsLastUpdateTime];
+}
+
+
 - (void)mergeJobs:(NSArray *)jobs
 {
     NSMutableArray *tempJobList = [NSMutableArray array];

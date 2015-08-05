@@ -570,7 +570,8 @@
                         {
                             [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
                             NSArray *jobListArray = [[DataStoreSingleton sharedInstance] mergeJobsDict:operation.responseString];
-                            
+                            // Update TimeStamp
+                            [DataStoreSingleton sharedInstance].jobsLastUpdateTime = [NSDate date];
                             if (shouldShowAlert)
                             {
                                 [self sendNotification:@"FetchJobListCompleteShowAlert"];
