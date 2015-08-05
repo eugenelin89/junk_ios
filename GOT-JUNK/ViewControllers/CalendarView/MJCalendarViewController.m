@@ -137,13 +137,6 @@
         {
             [self getJobListForCurrentRoute];
         }
-        /*
-        if([DataStoreSingleton sharedInstance].isConnected){
-            [self.timestampDisplay setHidden:YES];
-        }else{
-            [self.timestampDisplay setHidden:NO];
-        }
-         */
         
         [self updateTimeStamp];
 
@@ -271,8 +264,6 @@
 {
     [self setButtonState:YES];
 
-    //[self.timestampDisplay setHidden: YES];
-
 }
 
 - (void)disconnected
@@ -281,8 +272,6 @@
 
     [self setButtonState:NO];
 
-    //[self.timestampDisplay setHidden:NO];
-    
     
     [self showContent];
 }
@@ -733,8 +722,8 @@
     NSString *result = @"";
     if(timeStamp){
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-        result =  [formatter stringFromDate:timeStamp];
+        [formatter setDateFormat:@"MMM dd, hh:mm a"];
+        result = [NSString stringWithFormat:@"Last Update: %@", [formatter stringFromDate:timeStamp]];
     }
     return result;
 }
