@@ -570,7 +570,8 @@
                         {
                             [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
                             NSArray *jobListArray = [[DataStoreSingleton sharedInstance] mergeJobsDict:operation.responseString];
-                            
+                            // Update TimeStamp
+                            [DataStoreSingleton sharedInstance].jobsLastUpdateTime = [NSDate date];
                             if (shouldShowAlert)
                             {
                                 [self sendNotification:@"FetchJobListCompleteShowAlert"];
@@ -595,6 +596,7 @@
                     }
                 failure:^(AFHTTPRequestOperation *operation, NSError *error)
                     {
+                        [self sendNotification:FETCHJOBLISTFORROUTEFAILED_NOTIFICATION];
                         [self checkFailedError:operation withError:error callingMethod:@"fetchJobListForRoute: "];
                         
                         NSLog(@"fetchJobListForRoute failed: %@", operation.responseString);

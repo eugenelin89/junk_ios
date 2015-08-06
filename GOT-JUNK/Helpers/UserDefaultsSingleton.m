@@ -11,6 +11,9 @@
 #import "NSString+MD5.h"
 #import <UIKit/UIKit.h>
 
+#define JOBS_LAST_UPDATED_TIMESTAMP @"jobsLastUpdateTimeStamp"
+#define CACHED_SESSIONID @"cachedSessionID"
+
 @implementation UserDefaultsSingleton
 
 + (UserDefaultsSingleton *)sharedInstance {
@@ -406,27 +409,38 @@
  When a user logs out, the sessionID is cleared.
  If the user then login via offline key during a network outage, there is no longer a sessionID.  
  And when the network is restored, the user will immediately get logged out.
- To work around this issue, store another copy of sessionID as cachedSessionID.
- When the user enters CACHED MODE via OfflineMode, set sessionID to be the value of cachedSessionID.
+ To work around this issue, store another copy of sessionID as CACHED_SESSIONID.
+ When the user enters CACHED MODE via OfflineMode, set sessionID to be the value of CACHED_SESSIONID.
  And when the user enters ACTIVE MODE via CACHED MODE, and if the sesseionID were still valid, the user can stay in ACTIVE MODE.
  This is accomplised thru the following two methods:
- -(void)cacheSessionID - store another copy of sessionID in NSUserDefault under "cachedSessionID"
- -(void)restoreSessionID - copy value in cachedSessionID into sessionID in NSUserDefault
+ -(void)cacheSessionID - store another copy of sessionID in NSUserDefault under CACHED_SESSIONID
+ -(void)restoreSessionID - copy value in CACHED_SESSIONID into sessionID in NSUserDefault
  */
 -(void)cacheSessionID
 {
-    [_userDefaults setObject:[self getUserSessionID] forKey:@"cachedSessionID"];
+    [_userDefaults setObject:[self getUserSessionID] forKey:CACHED_SESSIONID];
     [_userDefaults synchronize];
 }
 
 -(void)restoreSessionID
 {
     if(![self getUserSessionID]){
-        NSString *cachedSessionID = [_userDefaults objectForKey:@"cachedSessionID"];
+        NSString *cachedSessionID = [_userDefaults objectForKey:CACHED_SESSIONID];
         if(cachedSessionID){
             [self setUserSessionID:cachedSessionID];
         }
     }
+}
+
+-(void)setJobsLastUpdateTime:(NSDate*)timeStamp
+{
+    [_userDefaults setObject:timeStamp forKey:JOBS_LAST_UPDATED_TIMESTAMP];
+    [_userDefaults synchronize];
+}
+
+-(NSDate*)jobsLastUpdateAt
+{
+    return [_userDefaults objectForKey:JOBS_LAST_UPDATED_TIMESTAMP];
 }
 
 - (void)setUserDefaultRouteID:(NSNumber*)routeID

@@ -32,6 +32,7 @@
 #import "Mode.h"
 
 static const NSTimeInterval FETCH_JOBS_REFRESH_INTERVAL = 30;
+static const NSTimeInterval WARNINGMESSAGE_DISPLAY_INTERVAL = 1200;
 //static const NSTimeInterval MINUTE = 60.0;
 //static const NSTimeInterval POLLING_INTERVAL = 3 * MINUTE;
 
@@ -65,9 +66,12 @@ static const int NumMenusInSection0 = 7;
     UIStoryboard *storyboardMain;
 }
 
+@property (nonatomic, strong) NSDate* warningMessageTimeStamp; // timestamp for the last warning message popoup for not able to retreieve Jobs from JunkNet for over a period of time.
+
 @end
 
 @implementation JunkSideMenuViewController
+@synthesize warningMessageTimeStamp = _warningMessageTimeStamp;
 
 -(void)viewDidLoad
 {
@@ -104,6 +108,7 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterActiveMode) name:ACTIVE_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:OFFLINE_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterCachedMode) name:CACHED_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayWarningForFetchJobsFailed) name:FETCHJOBLISTFORROUTEFAILED_NOTIFICATION object:nil];
 
 
     
@@ -129,6 +134,7 @@ static const int NumMenusInSection0 = 7;
     
     [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, tableHeight)];
 }
+
 
 - (void)refreshResourcesList_debug_testing
 {
@@ -482,12 +488,13 @@ static const int NumMenusInSection0 = 7;
 // handle the button clicking for the dispatch alertviews
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+
     if( alertView.tag < 0 )
     {
         alert = nil;
         return;
     }
-    
+
     int dispatchID = alertView.tag;
     int jobID = [alertView.accessibilityLabel intValue];
     
@@ -538,8 +545,10 @@ static const int NumMenusInSection0 = 7;
             // do nothing; the local notification should appear again during the next 5 minutes
             break;
     }
-    
+
+
     alert = nil;
+
 }
 
 -(void)displayJob
@@ -703,16 +712,18 @@ static const int NumMenusInSection0 = 7;
 
 -(void)enterCachedMode
 {
+    NSLog(@"Enter cache mode...");
     UIViewController *pvc = self.presentedViewController;
     if([pvc isKindOfClass:[OfflineLoginViewController class]]){
         [self dismissViewControllerAnimated:YES completion:^{
-            [self displayCachedModeAlert];
+            //[self displayCachedModeAlert];
         }];
     }else{
-        [self displayCachedModeAlert];        
+        //[self displayCachedModeAlert];
     }
 }
 
+/*
 -(void)displayCachedModeAlert
 {
     if (alert == nil)
@@ -722,8 +733,43 @@ static const int NumMenusInSection0 = 7;
         [alert show];
     }
 }
+*/
 
+-(void)displayWarningForFetchJobsFailed
+{
+    // If lastPopup is >= INTERVAL, we check lastUpdate.
+    // If lastUpdate is nil or if lastUpdate is >= INTERVAL
+    NSDate *now = [NSDate date];
+    NSDate *lastUpdate = [DataStoreSingleton sharedInstance].jobsLastUpdateTime;
+    NSDate *lastPopup = self.warningMessageTimeStamp;
+    
+    if(!lastPopup){
+        // We have never done a popup for this session.
+        // We assume that there's network issue only after 20 minutes of trying.
+        // Next warning will be INTERVAL later.
+        self.warningMessageTimeStamp = now;
+    }else if([now timeIntervalSinceDate:lastPopup] >= WARNINGMESSAGE_DISPLAY_INTERVAL){
+        // if lastPopup is >= INTERVAL, we check lastUpdate
+        
+        NSTimeInterval lastUpdateInterval = [now timeIntervalSinceDate:lastUpdate];
+        if(!lastUpdate || lastUpdateInterval >= WARNINGMESSAGE_DISPLAY_INTERVAL){
+            // shows popup message
+            int intervalMin = (int)lastUpdateInterval / 60;
+            
+            if (alert == nil){
+                NSString *alertMessage = [NSString stringWithFormat:@"JunkNet Mobile has not updated in the last %d minutes. please check your data connection", intervalMin];
+                alert = [[UIAlertView alloc] initWithTitle:alertMessage message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                alert.tag = -1;
+                [alert show];
+            }
+            self.warningMessageTimeStamp = now;
+            
 
+        }
+        
+    }
+    
+}
 
 - (void)refreshTable
 {

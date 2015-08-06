@@ -35,7 +35,7 @@
 @property (nonatomic, strong) NSArray *jobList;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIAlertView *av;
-@property (weak, nonatomic) IBOutlet UIButton *offlineIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *timestampDisplay;
 
 @end
 
@@ -88,6 +88,8 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reconnected) name:RECONNECTED_NOTIFICATION object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTimeStamp) name:JOBSTIMESTAMPUPDATE_NOTIFICATION object:nil];
+        
         MJCollectionViewCalendarLayout *automationLayout = (MJCollectionViewCalendarLayout *)self.collectionView.collectionViewLayout;
         [automationLayout registerClass:[MSGridline class]  forDecorationViewOfKind:@"MSGridLine"];
         [automationLayout registerClass:[MSTimeRowHeader class]  forDecorationViewOfKind:@"MSTimeRowHeader"];
@@ -107,6 +109,8 @@
         self.dateLabel.text = [DateHelper dateToJobListString:self.currentDate];
         
         self.title = [[UserDefaultsSingleton sharedInstance] getUserDefaultRouteName];
+        
+        
     }
     @catch (NSException* exception)
     {
@@ -133,11 +137,9 @@
         {
             [self getJobListForCurrentRoute];
         }
-        if([DataStoreSingleton sharedInstance].isConnected){
-            [self.offlineIndicator setHidden:YES];
-        }else{
-            [self.offlineIndicator setHidden:NO];
-        }
+        
+        [self updateTimeStamp];
+
     }
     @catch (NSException* exception)
     {
@@ -169,8 +171,9 @@
         self.nextButton1.hidden = NO;
         [self updateState];
     }
-    
 }
+
+
 
 #pragma mark - UIBarButtonItem Callbacks
 
@@ -261,8 +264,6 @@
 {
     [self setButtonState:YES];
 
-    [self.offlineIndicator setHidden: YES];
-
 }
 
 - (void)disconnected
@@ -271,8 +272,6 @@
 
     [self setButtonState:NO];
 
-    [self.offlineIndicator setHidden:NO];
-    
     
     [self showContent];
 }
@@ -708,6 +707,25 @@
     
 //    MJNotificationsTableViewController *vc = [[MJNotificationsTableViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Helper Methods
+
+-(void)updateTimeStamp
+{
+    NSString * strTime = [self stringFromTimeStamp: [DataStoreSingleton sharedInstance].jobsLastUpdateTime];
+    [self.timestampDisplay setTitle:strTime forState:UIControlStateNormal];
+}
+
+-(NSString*)stringFromTimeStamp:(NSDate *)timeStamp
+{
+    NSString *result = @"";
+    if(timeStamp){
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MMM dd, hh:mm a"];
+        result = [NSString stringWithFormat:@"Last Update: %@", [formatter stringFromDate:timeStamp]];
+    }
+    return result;
 }
 
 

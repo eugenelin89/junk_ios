@@ -19,6 +19,8 @@
 #define LOGGEDOUT_NOTIFICATION @"LOGGEDOUT_NOTIFICATION"             // logged out
 #define LOGGEDIN_NOTIFICATION @"LOGGEDIN_NOTIFICATION"               // logged in
 #define LOGINFAILED_NOTIFICATION @"LOGINFAILED_NOTIFICATION"         // attempt to login failed.
+#define JOBSTIMESTAMPUPDATE_NOTIFICATION @"JOBSTIMESTAMPUPDATE_NOTIFICATION" // timestamp updated
+#define FETCHJOBLISTFORROUTEFAILED_NOTIFICATION @"FETCHJOBLISTFORROUTEFAILED_NOTIFICATION" // fetchJobListForRoute:andDate:withAlert failed
 
 @class Route;
 @class Franchise;
@@ -79,6 +81,8 @@
 @property (nonatomic, strong) NSMutableArray *notificationList;
 @property (nonatomic, strong) Job *currentJob;
 @property (nonatomic, strong) Route *filterRoute;
+@property (nonatomic, strong) NSDate *jobsLastUpdateTime;
+
 
 + (DataStoreSingleton *)sharedInstance;
 -(void)addExpense:(Expense *)expense expenseTypeID:(int)et;
