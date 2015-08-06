@@ -67,13 +67,11 @@ static const int NumMenusInSection0 = 7;
 }
 
 @property (nonatomic, strong) NSDate* warningMessageTimeStamp; // timestamp for the last warning message popoup for not able to retreieve Jobs from JunkNet for over a period of time.
-@property (nonatomic) int warningMessageCounter; // keep a count of how many times we have displayed the warning message since it first appeared for the session.  Cleared when  jobsLastUpdateTime timestamp in DataStoreSingleton is updated.
 
 @end
 
 @implementation JunkSideMenuViewController
 @synthesize warningMessageTimeStamp = _warningMessageTimeStamp;
-@synthesize warningMessageCounter = _warningMessageCounter;
 
 -(void)viewDidLoad
 {
@@ -111,7 +109,6 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:OFFLINE_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterCachedMode) name:CACHED_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayWarningForFetchJobsFailed) name:FETCHJOBLISTFORROUTEFAILED_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jobsUpdated) name:JOBSTIMESTAMPUPDATE_NOTIFICATION object:nil];
 
 
     
@@ -757,8 +754,7 @@ static const int NumMenusInSection0 = 7;
         NSTimeInterval lastUpdateInterval = [now timeIntervalSinceDate:lastUpdate];
         if(!lastUpdate || lastUpdateInterval >= WARNINGMESSAGE_DISPLAY_INTERVAL){
             // shows popup message
-            self.warningMessageCounter++;
-            int intervalMin =   (int)WARNINGMESSAGE_DISPLAY_INTERVAL * self.warningMessageCounter / 60;
+            int intervalMin = (int)lastUpdateInterval / 60;
             
             if (alert == nil){
                 NSString *alertMessage = [NSString stringWithFormat:@"JunkNet Mobile has not updated in the last %d minutes. please check your data connection", intervalMin];
@@ -774,15 +770,6 @@ static const int NumMenusInSection0 = 7;
     }
     
 }
-
-
-
--(void)jobsUpdated
-{
-    self.warningMessageCounter = 0;
-}
-
-
 
 - (void)refreshTable
 {
