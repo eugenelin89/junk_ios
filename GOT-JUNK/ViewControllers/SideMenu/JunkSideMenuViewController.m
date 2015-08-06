@@ -32,7 +32,7 @@
 #import "Mode.h"
 
 static const NSTimeInterval FETCH_JOBS_REFRESH_INTERVAL = 30;
-static const NSTimeInterval WARNINGMESSAGE_DISPLAY_INTERVAL = 120;
+static const NSTimeInterval WARNINGMESSAGE_DISPLAY_INTERVAL = 1200;
 //static const NSTimeInterval MINUTE = 60.0;
 //static const NSTimeInterval POLLING_INTERVAL = 3 * MINUTE;
 
@@ -60,7 +60,7 @@ static const int NumMenusInSection0 = 7;
 {
     NSTimer *dispatchTimer;
     NSTimer *jobListRefreshTimer;
-    //UIAlertView *alert;
+    UIAlertView *alert;
     NSArray *menus;
     int franchiseIndex_debug_testing;
     UIStoryboard *storyboardMain;
@@ -150,9 +150,7 @@ static const int NumMenusInSection0 = 7;
     
     dispatchTimer = nil;
     jobListRefreshTimer = nil;
-/*
     alert = nil;
-*/
     menus = nil;
 }
 
@@ -493,13 +491,13 @@ static const int NumMenusInSection0 = 7;
 // handle the button clicking for the dispatch alertviews
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-/*
+
     if( alertView.tag < 0 )
     {
         alert = nil;
         return;
     }
-*/
+
     int dispatchID = alertView.tag;
     int jobID = [alertView.accessibilityLabel intValue];
     
@@ -551,9 +549,9 @@ static const int NumMenusInSection0 = 7;
             break;
     }
 
-/*
+
     alert = nil;
-*/
+
 }
 
 -(void)displayJob
@@ -747,11 +745,6 @@ static const int NumMenusInSection0 = 7;
     NSDate *now = [NSDate date];
     NSDate *lastUpdate = [DataStoreSingleton sharedInstance].jobsLastUpdateTime;
     NSDate *lastPopup = self.warningMessageTimeStamp;
-    NSLog(@"******************** Warning triggered at %@", now);
-    NSLog(@"********************  Job last fetched at %@", lastUpdate);
-    NSLog(@"******************** Warninglast popup at %@", lastPopup);
-    
-    NSLog(@"******************** Last popup interval: %f", [now timeIntervalSinceDate:lastPopup]);
     
     if(!lastPopup){
         // We have never done a popup for this session.
@@ -767,15 +760,14 @@ static const int NumMenusInSection0 = 7;
             self.warningMessageCounter++;
             int intervalMin =   (int)WARNINGMESSAGE_DISPLAY_INTERVAL * self.warningMessageCounter / 60;
             
-            NSString *alertMessage = [NSString stringWithFormat:@"JunkNet Mobile has not updated in the last %d minutes. please check your data connection", intervalMin];
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertMessage message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            alert.tag = -1;
-            [alert show];
-            
+            if (alert == nil){
+                NSString *alertMessage = [NSString stringWithFormat:@"JunkNet Mobile has not updated in the last %d minutes. please check your data connection", intervalMin];
+                alert = [[UIAlertView alloc] initWithTitle:alertMessage message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                alert.tag = -1;
+                [alert show];
+            }
             self.warningMessageTimeStamp = now;
-
-            NSLog(@"******************** Warning now popup at %@", self.warningMessageTimeStamp);
+            
 
         }
         
