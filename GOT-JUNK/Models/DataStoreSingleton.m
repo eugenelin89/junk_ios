@@ -691,7 +691,7 @@
     newJob.programDiscount = [dict objectForKey:@"programDiscount"];
     newJob.programDiscountType = [dict objectForKey:@"programDiscountType"];
     newJob.promoCode = [dict objectForKey:@"promoCode"];
-    newJob.zoneColor =[dict objectForKey:@"zoneColor"];
+    newJob.zoneColor = [[dict objectForKey:@"zoneColor"] isKindOfClass:[NSString class]]? [dict objectForKey:@"zoneColor"]:@"";
     newJob.zoneFontColor =[dict objectForKey:@"zoneFontColor"];
     newJob.taxAmount =[dict objectForKey:@"taxAmount"];
     

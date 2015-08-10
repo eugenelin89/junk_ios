@@ -119,7 +119,9 @@
     cdjob.totalSpent = job.totalSpent;
     cdjob.typeID = job.typeID;
     cdjob.zipCode = job.zipCode;
-    cdjob.zoneColor = job.zoneColor;
+    
+    cdjob.zoneColor = [job.zoneColor isKindOfClass:[NSString class]]?job.zoneColor : @"";
+    
     cdjob.zoneFontColor = job.zoneFontColor;
     cdjob.zoneName = job.zoneName;
 
