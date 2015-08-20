@@ -455,6 +455,11 @@
     [CDJob deleteJobsForDate:date forRoute:routeID inManagedContext:self.managedObjectContext];
 }
 
+-(void)removeJobsInLocalPersistentStoreForDate:(NSDate*)fromDate toDate:(NSDate*)toDate forRoute:(NSNumber*)routeID
+{
+    [CDJob deleteJobsForDate:fromDate toDate:toDate forRoute:routeID inManagedContext:self.managedObjectContext];
+}
+
 
 - (NSInteger)pendingDispatches
 {

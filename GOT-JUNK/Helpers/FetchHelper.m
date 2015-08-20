@@ -1226,14 +1226,15 @@
                     }];
 }
 
-- (void)fetchJobListForEachRoute:(NSNumber *)routeID andDate:(NSDate *)date
+- (void)fetchJobListForEachRoute:(NSNumber *)routeID andDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
     [self startNeworkActivity];
     
     NSString *sessionID = [[UserDefaultsSingleton sharedInstance] getUserSessionID];
-    NSString *dateString = [DateHelper dateToApiString: date];
+    NSString *fromDateString = [DateHelper dateToApiString: fromDate];
+    NSString *toDateString = [DateHelper dateToApiString:toDate];
     
-    NSString *path = [NSString stringWithFormat:@"v1/Route/%d/Job?sessionID=%@&dayID=%@", [routeID integerValue], sessionID, dateString];
+    NSString *path = [NSString stringWithFormat:@"v1/Route/%d/Job?sessionID=%@&dayID=%@&toDayID=%@", [routeID integerValue], sessionID, fromDateString, toDateString];
 
     
     [httpManager getPath:path parameters:nil
@@ -1243,7 +1244,7 @@
                         
                         if (operation.responseString)
                         {
-                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
+                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:fromDate toDate:toDate forRoute:routeID];
                             [[DataStoreSingleton sharedInstance] parseJobListDict:operation.responseString routeID:routeID];
                         }
                         else
@@ -1280,7 +1281,8 @@
             [DataStoreSingleton sharedInstance].currentRoute = route;
         }
         
-        [self fetchJobListForEachRoute:route.routeID andDate:currentDate];
+        NSDate *endDate = [currentDate dateByAddingTimeInterval:60*60*24*7];
+        [self fetchJobListForEachRoute:route.routeID andDate:currentDate toDate:endDate];
     }
 }
 

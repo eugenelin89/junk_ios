@@ -111,6 +111,7 @@
 - (Job*)getJob:(int)jobId;
 - (Job*)mapJob:(NSDictionary*)dict; // Map a NSDictionary to Job
 -(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID;
+-(void)removeJobsInLocalPersistentStoreForDate:(NSDate*)fromDate toDate:(NSDate*)toDate forRoute:(NSNumber*)routeID;
 
 
 @end
