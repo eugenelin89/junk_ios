@@ -1280,7 +1280,7 @@
             [DataStoreSingleton sharedInstance].currentRoute = route;
         }
         
-        NSDate *endDate = [currentDate dateByAddingTimeInterval:60*60*24*7];
+        NSDate *endDate = [currentDate dateByAddingTimeInterval:60*60*24*CACHE_RANGE]; 
         [self fetchJobListForEachRoute:route.routeID andDate:currentDate toDate:endDate];
     }
 }

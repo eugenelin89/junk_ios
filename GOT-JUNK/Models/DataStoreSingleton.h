@@ -21,6 +21,7 @@
 #define LOGINFAILED_NOTIFICATION @"LOGINFAILED_NOTIFICATION"         // attempt to login failed.
 #define JOBSTIMESTAMPUPDATE_NOTIFICATION @"JOBSTIMESTAMPUPDATE_NOTIFICATION" // timestamp updated
 #define FETCHJOBLISTFORROUTEFAILED_NOTIFICATION @"FETCHJOBLISTFORROUTEFAILED_NOTIFICATION" // fetchJobListForRoute:andDate:withAlert failed
+#define CACHE_RANGE 7 // number of days to forward cache
 
 @class Route;
 @class Franchise;
