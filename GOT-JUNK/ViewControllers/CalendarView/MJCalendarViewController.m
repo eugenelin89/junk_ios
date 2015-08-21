@@ -257,7 +257,7 @@
 
 - (void)updateState
 {
-    [self setButtonState:[DataStoreSingleton sharedInstance].isConnected];
+    //[self setButtonState:[DataStoreSingleton sharedInstance].isConnected];
 }
 
 - (void)reconnected
@@ -270,7 +270,7 @@
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
-    [self setButtonState:NO];
+    //[self setButtonState:NO];
 
     
     [self showContent];
@@ -289,7 +289,7 @@
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
-    [self setButtonState:NO];
+    //[self setButtonState:NO];
     
     [self showContent];
 }
@@ -310,6 +310,8 @@
 - (IBAction)nextWasPressed:(id)sender
 {
     if(![DataStoreSingleton sharedInstance].isConnected){
+        _currentDate = [DateHelper tomorrow:_currentDate];
+        [DataStoreSingleton sharedInstance].currentDate = _currentDate;
         [self refreshJobList];
     }else{
         [self getJobListForRoute:YES];
@@ -323,7 +325,14 @@
 
 - (IBAction)previousWasPressed:(id)sender
 {
-    [self getJobListForRoute:NO];
+    if(![DataStoreSingleton sharedInstance].isConnected){
+        _currentDate = [DateHelper yesterday:_currentDate];
+        [DataStoreSingleton sharedInstance].currentDate = _currentDate;
+        [self refreshJobList];
+    }else{
+        [self getJobListForRoute:NO];
+    }
+    
     if (self.currentDate)
     {
         self.dateLabel.text = [DateHelper dateToJobListString:self.currentDate];
