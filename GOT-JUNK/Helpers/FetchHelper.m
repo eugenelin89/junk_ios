@@ -1272,8 +1272,7 @@
     
     NSNumber *defaultRouteID = [[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID];
 
-    [[DataStoreSingleton sharedInstance] clearRouteJobs];
-    
+        
     for( Route *route in [DataStoreSingleton sharedInstance].routeList )
     {
         if( [route.routeID isEqualToNumber:defaultRouteID] == YES )

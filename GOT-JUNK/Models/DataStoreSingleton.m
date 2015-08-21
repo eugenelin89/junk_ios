@@ -49,7 +49,6 @@
 @synthesize permissions = _permissions;
 @synthesize currentJobPaymentID = _currentJobPaymentID;
 @synthesize pushJob = _pushJob;
-@synthesize routeJobs = _routeJobs;
 @synthesize isConnected = _isConnected;
 @synthesize isUserLoggedIn = _isUserLoggedIn;
 @synthesize debugDisplayText1 = _debugDisplayText1;
@@ -223,20 +222,6 @@
         _expensesDict = [[NSDictionary alloc] init];
     }
     return _expensesDict;
-}
-
-- (NSMutableDictionary *)routeJobs;
-{
-    if (!_routeJobs && self.managedObjectContext) {
-        _routeJobs = [[NSMutableDictionary alloc] init];
-        
-    }
-    return _routeJobs;
-}
-
--(void) setRouteJobs:(NSMutableDictionary *)routeJobs
-{
-    _routeJobs = routeJobs;
 }
 
 - (Job *)pushJob;
@@ -444,7 +429,6 @@
     self.currentRoute = nil;
     self.loadTypeSizeList = nil;
     self.pushJob = nil;
-    self.routeJobs = nil;
 }
 
 -(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID
@@ -479,19 +463,12 @@
 //  }
 }
 
-- (void)getJobListForCachedCurrentRoute
-{
-    self.jobList = [self.routeJobs objectForKey:self.currentRoute.routeID];
-}
 
-- (void)clearRouteJobs
-{
-    [self.routeJobs removeAllObjects];
-}
+
+
 
 - (void)addJobsList:(NSArray*)jobListArray forRoute:(NSNumber*)routeID;
 {
-    [self.routeJobs setObject:jobListArray forKey:routeID];
     [CDRoute addJobs:jobListArray toRouteWithID:routeID inManagedObjectContext:self.managedObjectContext];
 }
 

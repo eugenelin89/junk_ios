@@ -69,7 +69,6 @@
 @property (nonatomic) BOOL minutesTilAlert;
 
 @property (nonatomic, strong) Job *pushJob;
-@property (nonatomic, strong) NSMutableDictionary *routeJobs;
 @property (nonatomic) BOOL isUserLoggedIn;
 @property (nonatomic) BOOL isConnected;
 @property (nonatomic, strong) NSString *paymentErrors;
@@ -91,9 +90,7 @@
 - (void)setPendingDispatches:(NSInteger)badgeCount;
 - (void)setCurrentJobPaymentID:(NSNumber *)jobID;
 - (void)decrementPendingDispatches;
-- (void)getJobListForCachedCurrentRoute;
 - (void)addJobsList:(NSArray*)jobListArray forRoute:(NSNumber*)routeID;
-- (void)clearRouteJobs;
 
 - (void)parseEnviroDict:(NSString*)responseString;
 - (void)parseExpenseDict:(NSString*)responseString;
