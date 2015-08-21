@@ -290,13 +290,10 @@
 
 -(NSArray *)jobList
 {
-    NSArray *result;
-    if(!_jobList && self.managedObjectContext){
-        result = [CDJob jobsForDate:self.currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:self.managedObjectContext];
-    }else{
-        result = _jobList;
+    if(self.managedObjectContext){
+        _jobList = [CDJob jobsForDate:self.currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:self.managedObjectContext];
     }
-    return result;
+    return _jobList;
 }
 
 

@@ -309,7 +309,12 @@
 
 - (IBAction)nextWasPressed:(id)sender
 {
-    [self getJobListForRoute:YES];
+    if(![DataStoreSingleton sharedInstance].isConnected){
+        [self refreshJobList];
+    }else{
+        [self getJobListForRoute:YES];
+    }
+    
     if (self.currentDate)
     {
         self.dateLabel.text = [DateHelper dateToJobListString:self.currentDate];
