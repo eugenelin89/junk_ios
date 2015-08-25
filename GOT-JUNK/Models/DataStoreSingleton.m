@@ -22,6 +22,7 @@
 #import "CoreDataStore/CDUser+GotJunk.h"
 #import "Mode.h"
 #import "ActiveMode.h"
+#import "FetchHelper.h"
 
 @interface DataStoreSingleton()
 @property (nonatomic, strong) id<Mode> mode;
@@ -58,6 +59,7 @@
 @synthesize filterRoute = _filterRoute;
 @synthesize assignedRoutes = _assignedRoutes;
 @synthesize mode = _mode;
+@synthesize lastForwardCacheTime = _lastForwardCacheTime;
 
 + (DataStoreSingleton *)sharedInstance
 {
@@ -375,6 +377,12 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:JOBSTIMESTAMPUPDATE_NOTIFICATION object:nil];
 }
 
+-(NSDate *)lastForwardCacheTime
+{
+    if(!_lastForwardCacheTime)
+        _lastForwardCacheTime = [NSDate date];
+    return _lastForwardCacheTime;
+}
 
 - (void)mergeJobs:(NSArray *)jobs
 {
@@ -937,6 +945,14 @@
     }
     
     return nil;
+}
+
+-(void)forwardCache
+{
+    // Forward Cache
+    if([[NSDate date] timeIntervalSinceDate:self.lastForwardCacheTime] >= MIN_FORWARDCACHE_INTERVAL){
+        [[FetchHelper sharedInstance] fetchJobListsForAllRoutes];
+    }
 }
 
 -(void)runAsync:(void (^)(void))asyncBlock

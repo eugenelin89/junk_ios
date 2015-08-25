@@ -1263,6 +1263,7 @@
 
 - (void)fetchJobListsForAllRoutes
 {
+    [DataStoreSingleton sharedInstance].lastForwardCacheTime = [NSDate date]; // Since we will trigger a round of async calls, set the time stamp in the beginning.
     NSDate *currentDate = [[DataStoreSingleton sharedInstance] currentDate];
     
     if (!currentDate)

@@ -21,7 +21,8 @@
 #define LOGINFAILED_NOTIFICATION @"LOGINFAILED_NOTIFICATION"         // attempt to login failed.
 #define JOBSTIMESTAMPUPDATE_NOTIFICATION @"JOBSTIMESTAMPUPDATE_NOTIFICATION" // timestamp updated
 #define FETCHJOBLISTFORROUTEFAILED_NOTIFICATION @"FETCHJOBLISTFORROUTEFAILED_NOTIFICATION" // fetchJobListForRoute:andDate:withAlert failed
-#define CACHE_RANGE 7 // number of days to forward cache
+#define CACHE_RANGE 2 // number of days to forward cache
+#define MIN_FORWARDCACHE_INTERVAL 120
 
 @class Route;
 @class Franchise;
@@ -82,7 +83,7 @@
 @property (nonatomic, strong) Job *currentJob;
 @property (nonatomic, strong) Route *filterRoute;
 @property (nonatomic, strong) NSDate *jobsLastUpdateTime;
-
+@property (nonatomic, strong) NSDate *lastForwardCacheTime;
 
 + (DataStoreSingleton *)sharedInstance;
 -(void)addExpense:(Expense *)expense expenseTypeID:(int)et;
@@ -110,6 +111,7 @@
 - (Job*)mapJob:(NSDictionary*)dict; // Map a NSDictionary to Job
 -(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID;
 -(void)removeJobsInLocalPersistentStoreForDate:(NSDate*)fromDate toDate:(NSDate*)toDate forRoute:(NSNumber*)routeID;
+-(void)forwardCache;
 
 
 @end

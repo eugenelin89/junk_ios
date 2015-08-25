@@ -341,8 +341,18 @@
 
 -(void)startRefresh
 {
-    [self getJobListForCurrentRoute];
+    
+    if([DataStoreSingleton sharedInstance].isConnected){
+        [self getJobListForCurrentRoute];
+        
+    }else{
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You are currently not connected to JunkNet" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        [av show];
+    }
     [self.refreshControl endRefreshing];
+
+    
+
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
