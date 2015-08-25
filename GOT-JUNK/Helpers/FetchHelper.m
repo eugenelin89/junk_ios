@@ -1226,7 +1226,7 @@
                     }];
 }
 
-- (void)fetchJobListForEachRoute:(NSNumber *)routeID andDate:(NSDate *)fromDate toDate:(NSDate *)toDate
+- (void)fetchJobListForEachRoute:(NSNumber *)routeID andDate:(NSDate *)fromDate toDate:(NSDate *)toDate forwardCache:(BOOL)isForwardCache
 {
     [self startNeworkActivity];
     
@@ -1236,6 +1236,8 @@
     
     NSString *path = [NSString stringWithFormat:@"v1/Route/%d/Job?sessionID=%@&dayID=%@&toDayID=%@", [routeID integerValue], sessionID, fromDateString, toDateString];
 
+    if(isForwardCache)
+        path = [NSString stringWithFormat:@"%@&forwardCache=true", path];
     
     [httpManager getPath:path parameters:nil
                  success:^(AFHTTPRequestOperation *operation, id responseObject)
@@ -1261,7 +1263,7 @@
     
 }
 
-- (void)fetchJobListsForAllRoutes
+- (void)fetchJobListsForAllRoutes:(bool)isForwardCache
 {
     [DataStoreSingleton sharedInstance].lastForwardCacheTime = [NSDate date]; // Since we will trigger a round of async calls, set the time stamp in the beginning.
     NSDate *currentDate = [[DataStoreSingleton sharedInstance] currentDate];
@@ -1282,7 +1284,7 @@
         }
         
         NSDate *endDate = [currentDate dateByAddingTimeInterval:60*60*24*CACHE_RANGE]; 
-        [self fetchJobListForEachRoute:route.routeID andDate:currentDate toDate:endDate];
+        [self fetchJobListForEachRoute:route.routeID andDate:currentDate toDate:endDate forwardCache:isForwardCache];
     }
 }
 
@@ -1311,7 +1313,7 @@
         isCaching = NO;
         
         [self fetchFranchiseList];
-        [self fetchJobListsForAllRoutes];
+        [self fetchJobListsForAllRoutes:NO];
     }
 }
 

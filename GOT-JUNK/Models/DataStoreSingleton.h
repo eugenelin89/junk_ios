@@ -22,7 +22,7 @@
 #define JOBSTIMESTAMPUPDATE_NOTIFICATION @"JOBSTIMESTAMPUPDATE_NOTIFICATION" // timestamp updated
 #define FETCHJOBLISTFORROUTEFAILED_NOTIFICATION @"FETCHJOBLISTFORROUTEFAILED_NOTIFICATION" // fetchJobListForRoute:andDate:withAlert failed
 #define CACHE_RANGE 2 // number of days to forward cache
-#define MIN_FORWARDCACHE_INTERVAL 120
+#define MIN_FORWARDCACHE_INTERVAL 600 // in seconds
 
 @class Route;
 @class Franchise;

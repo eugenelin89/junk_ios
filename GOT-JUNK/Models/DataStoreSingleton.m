@@ -951,7 +951,7 @@
 {
     // Forward Cache
     if([[NSDate date] timeIntervalSinceDate:self.lastForwardCacheTime] >= MIN_FORWARDCACHE_INTERVAL){
-        [[FetchHelper sharedInstance] fetchJobListsForAllRoutes];
+        [[FetchHelper sharedInstance] fetchJobListsForAllRoutes:YES];
     }
 }
 
