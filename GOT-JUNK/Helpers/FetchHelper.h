@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, SubmitMode)
 - (void)fetchResources:(int)resourceTypeID;
 - (void)fetchExpensesByRoute:(int)routeID onDate:(NSDate *)date;
 - (void)fetchJobListForRoute:(NSNumber*)routeID andDate:(NSDate *)date withAlert:(BOOL)shouldShowAlert;
+- (void)fetchJobListsForAllRoutes:(bool)isForwardCache; // used for initial caching of data and forward caching
 - (void)fetchRouteList;
 - (void)fetchFranchiseList;
 - (void)fetchJobDetaislForJob:(NSNumber*)jobID;

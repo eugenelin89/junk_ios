@@ -22,6 +22,7 @@
 #import "CoreDataStore/CDUser+GotJunk.h"
 #import "Mode.h"
 #import "ActiveMode.h"
+#import "FetchHelper.h"
 
 @interface DataStoreSingleton()
 @property (nonatomic, strong) id<Mode> mode;
@@ -49,7 +50,6 @@
 @synthesize permissions = _permissions;
 @synthesize currentJobPaymentID = _currentJobPaymentID;
 @synthesize pushJob = _pushJob;
-@synthesize routeJobs = _routeJobs;
 @synthesize isConnected = _isConnected;
 @synthesize isUserLoggedIn = _isUserLoggedIn;
 @synthesize debugDisplayText1 = _debugDisplayText1;
@@ -59,6 +59,7 @@
 @synthesize filterRoute = _filterRoute;
 @synthesize assignedRoutes = _assignedRoutes;
 @synthesize mode = _mode;
+@synthesize lastForwardCacheTime = _lastForwardCacheTime;
 
 + (DataStoreSingleton *)sharedInstance
 {
@@ -225,20 +226,6 @@
     return _expensesDict;
 }
 
-- (NSMutableDictionary *)routeJobs;
-{
-    if (!_routeJobs && self.managedObjectContext) {
-        _routeJobs = [[NSMutableDictionary alloc] init];
-        
-    }
-    return _routeJobs;
-}
-
--(void) setRouteJobs:(NSMutableDictionary *)routeJobs
-{
-    _routeJobs = routeJobs;
-}
-
 - (Job *)pushJob;
 {
     if (!_pushJob) {
@@ -290,13 +277,10 @@
 
 -(NSArray *)jobList
 {
-    NSArray *result;
-    if(!_jobList && self.managedObjectContext){
-        result = [CDJob jobsForDate:self.currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:self.managedObjectContext];
-    }else{
-        result = _jobList;
+    if(self.managedObjectContext){
+        _jobList = [CDJob jobsForDate:self.currentDate forRoute:[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] InManagedContext:self.managedObjectContext];
     }
-    return result;
+    return _jobList;
 }
 
 
@@ -393,6 +377,12 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:JOBSTIMESTAMPUPDATE_NOTIFICATION object:nil];
 }
 
+-(NSDate *)lastForwardCacheTime
+{
+    if(!_lastForwardCacheTime)
+        _lastForwardCacheTime = [NSDate date];
+    return _lastForwardCacheTime;
+}
 
 - (void)mergeJobs:(NSArray *)jobs
 {
@@ -447,12 +437,16 @@
     self.currentRoute = nil;
     self.loadTypeSizeList = nil;
     self.pushJob = nil;
-    self.routeJobs = nil;
 }
 
 -(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID
 {
     [CDJob deleteJobsForDate:date forRoute:routeID inManagedContext:self.managedObjectContext];
+}
+
+-(void)removeJobsInLocalPersistentStoreForDate:(NSDate*)fromDate toDate:(NSDate*)toDate forRoute:(NSNumber*)routeID
+{
+    [CDJob deleteJobsForDate:fromDate toDate:toDate forRoute:routeID inManagedContext:self.managedObjectContext];
 }
 
 
@@ -477,19 +471,12 @@
 //  }
 }
 
-- (void)getJobListForCachedCurrentRoute
-{
-    self.jobList = [self.routeJobs objectForKey:self.currentRoute.routeID];
-}
 
-- (void)clearRouteJobs
-{
-    [self.routeJobs removeAllObjects];
-}
+
+
 
 - (void)addJobsList:(NSArray*)jobListArray forRoute:(NSNumber*)routeID;
 {
-    [self.routeJobs setObject:jobListArray forKey:routeID];
     [CDRoute addJobs:jobListArray toRouteWithID:routeID inManagedObjectContext:self.managedObjectContext];
 }
 
@@ -958,6 +945,14 @@
     }
     
     return nil;
+}
+
+-(void)forwardCache
+{
+    // Forward Cache
+    if([[NSDate date] timeIntervalSinceDate:self.lastForwardCacheTime] >= MIN_FORWARDCACHE_INTERVAL){
+        [[FetchHelper sharedInstance] fetchJobListsForAllRoutes:YES];
+    }
 }
 
 -(void)runAsync:(void (^)(void))asyncBlock

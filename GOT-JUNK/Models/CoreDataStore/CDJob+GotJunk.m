@@ -146,12 +146,17 @@
 
 +(void)deleteJobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID inManagedContext:(NSManagedObjectContext*)context
 {
+    [CDJob deleteJobsForDate:date toDate:date forRoute:routeID inManagedContext:context];
+}
 
-    NSDate *todayStart = [DateHelper dayStart:date];
-    NSDate *todayEnd = [DateHelper dayEnd:date];
+
++(void)deleteJobsForDate:(NSDate*)fromDate toDate:(NSDate*)toDate forRoute:(NSNumber*)routeID inManagedContext:(NSManagedObjectContext*)context
+{
+    NSDate *dayStart = [DateHelper dayStart:fromDate];
+    NSDate *dayEnd = [DateHelper dayEnd:toDate];
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CDJob"];
-    request.predicate = [NSPredicate predicateWithFormat:@"jobDate >= %@ AND jobDate <= %@ AND routeID = %@", todayStart, todayEnd, routeID];
+    request.predicate = [NSPredicate predicateWithFormat:@"jobDate >= %@ AND jobDate <= %@ AND routeID = %@", dayStart, dayEnd, routeID];
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
     

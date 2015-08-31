@@ -184,12 +184,7 @@
         // empty out the list of expenses
         [DataStoreSingleton sharedInstance].expensesDict = nil;
         
-        if( ![DataStoreSingleton sharedInstance].isConnected )
-        {
-            // get the joblist from the currentRoute
-            [[DataStoreSingleton sharedInstance] getJobListForCachedCurrentRoute];
-        }
-        else
+        if( [DataStoreSingleton sharedInstance].isConnected )
         {
             // load up the jobs for this chosen route, but block until complete
             [[FetchHelper sharedInstance] fetchJobListForRoute:route.routeID andDate:currentDate withAlert:NO];

@@ -1226,15 +1226,18 @@
                     }];
 }
 
-- (void)fetchJobListForEachRoute:(NSNumber *)routeID andDate:(NSDate *)date
+- (void)fetchJobListForEachRoute:(NSNumber *)routeID andDate:(NSDate *)fromDate toDate:(NSDate *)toDate forwardCache:(BOOL)isForwardCache
 {
     [self startNeworkActivity];
     
     NSString *sessionID = [[UserDefaultsSingleton sharedInstance] getUserSessionID];
-    NSString *dateString = [DateHelper dateToApiString: date];
+    NSString *fromDateString = [DateHelper dateToApiString: fromDate];
+    NSString *toDateString = [DateHelper dateToApiString:toDate];
     
-    NSString *path = [NSString stringWithFormat:@"v1/Route/%d/Job?sessionID=%@&dayID=%@", [routeID integerValue], sessionID, dateString];
+    NSString *path = [NSString stringWithFormat:@"v1/Route/%d/Job?sessionID=%@&dayID=%@&toDayID=%@", [routeID integerValue], sessionID, fromDateString, toDateString];
 
+    if(isForwardCache)
+        path = [NSString stringWithFormat:@"%@&forwardCache=true", path];
     
     [httpManager getPath:path parameters:nil
                  success:^(AFHTTPRequestOperation *operation, id responseObject)
@@ -1243,7 +1246,7 @@
                         
                         if (operation.responseString)
                         {
-                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:date forRoute:routeID];
+                            [[DataStoreSingleton sharedInstance] removeJobsInLocalPersistentStoreForDate:fromDate toDate:toDate forRoute:routeID];
                             [[DataStoreSingleton sharedInstance] parseJobListDict:operation.responseString routeID:routeID];
                         }
                         else
@@ -1260,8 +1263,9 @@
     
 }
 
-- (void)fetchJobListsForAllRoutes
+- (void)fetchJobListsForAllRoutes:(bool)isForwardCache
 {
+    [DataStoreSingleton sharedInstance].lastForwardCacheTime = [NSDate date]; // Since we will trigger a round of async calls, set the time stamp in the beginning.
     NSDate *currentDate = [[DataStoreSingleton sharedInstance] currentDate];
     
     if (!currentDate)
@@ -1271,8 +1275,7 @@
     
     NSNumber *defaultRouteID = [[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID];
 
-    [[DataStoreSingleton sharedInstance] clearRouteJobs];
-    
+        
     for( Route *route in [DataStoreSingleton sharedInstance].routeList )
     {
         if( [route.routeID isEqualToNumber:defaultRouteID] == YES )
@@ -1280,7 +1283,8 @@
             [DataStoreSingleton sharedInstance].currentRoute = route;
         }
         
-        [self fetchJobListForEachRoute:route.routeID andDate:currentDate];
+        NSDate *endDate = [currentDate dateByAddingTimeInterval:60*60*24*CACHE_RANGE]; 
+        [self fetchJobListForEachRoute:route.routeID andDate:currentDate toDate:endDate forwardCache:isForwardCache];
     }
 }
 
@@ -1309,7 +1313,7 @@
         isCaching = NO;
         
         [self fetchFranchiseList];
-        [self fetchJobListsForAllRoutes];
+        [self fetchJobListsForAllRoutes:NO];
     }
 }
 
