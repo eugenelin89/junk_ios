@@ -189,12 +189,15 @@ static const int NumMenusInSection0 = 7;
 }
 
 // Triggered by UIApplicationWillResignActiveNotification notification, indicating the app is about to go into background.
+// Deactivate the job list refresh timer when going to background so that when the app returns to foreground it will not cause
+// fetching of currentday jobs at the same time as forward caching.
 -(void)resignActive
 {
     [jobListRefreshTimer invalidate];
 }
 
 // Triggered by UIApplicationWillEnterForegroundNotification notification, indicating the app is about to return to foreground.
+// When the app returns to foreground, re-activate the fetch-job-refresh timer.
 -(void)enterForeground
 {
      jobListRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:FETCH_JOBS_REFRESH_INTERVAL target:self selector:@selector(fetchJobListForDefaultRouteAndCurrentDate) userInfo:nil repeats:YES];
