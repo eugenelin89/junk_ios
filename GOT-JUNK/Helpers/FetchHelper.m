@@ -1264,8 +1264,8 @@
     
 }
 
-// This method only gets run when a user logs into the app.
-// Therefore, we want to take this opportunity to cache data for the next CACHE_RANGE hours.
+// This method only gets run when a user logs into the app and when forward-caching.
+// Therefore, we want to cache data for the next CACHE_RANGE days.
 - (void)fetchJobListsForAllRoutes:(bool)isForwardCache
 {
     [DataStoreSingleton sharedInstance].lastForwardCacheTime = [NSDate date]; // Since we will trigger a round of async calls, set the time stamp in the beginning.

@@ -33,7 +33,7 @@
 
 static const NSTimeInterval FETCH_JOBS_REFRESH_INTERVAL = 30;
 static const NSTimeInterval WARNINGMESSAGE_DISPLAY_INTERVAL = 1200;
-static const NSTimeInterval FORWARD_CACHE_INTERVAL = 610; // 10 minutes and 10 seconds
+static const NSTimeInterval FORWARD_CACHE_INTERVAL = 610; // 10 minutes and 10 seconds. To avoid Forward Caching coinciding with preiodic update of current-day data, we add extra 10 seconds.
 //static const NSTimeInterval MINUTE = 60.0;
 //static const NSTimeInterval POLLING_INTERVAL = 3 * MINUTE;
 
