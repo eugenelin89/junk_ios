@@ -1236,6 +1236,7 @@
     
     NSString *path = [NSString stringWithFormat:@"v1/Route/%d/Job?sessionID=%@&dayID=%@&toDayID=%@", [routeID integerValue], sessionID, fromDateString, toDateString];
 
+    // Server side does not process the query paramenter "forwardCache".  We use it just so we can differentiate it when we read the IIS logs.
     if(isForwardCache)
         path = [NSString stringWithFormat:@"%@&forwardCache=true", path];
     
@@ -1263,6 +1264,8 @@
     
 }
 
+// This method only gets run when a user logs into the app and when forward-caching.
+// Therefore, we want to cache data for the next CACHE_RANGE days.
 - (void)fetchJobListsForAllRoutes:(bool)isForwardCache
 {
     [DataStoreSingleton sharedInstance].lastForwardCacheTime = [NSDate date]; // Since we will trigger a round of async calls, set the time stamp in the beginning.
@@ -1283,7 +1286,7 @@
             [DataStoreSingleton sharedInstance].currentRoute = route;
         }
         
-        NSDate *endDate = [currentDate dateByAddingTimeInterval:60*60*24*CACHE_RANGE]; 
+        NSDate *endDate = [currentDate dateByAddingTimeInterval:60*60*24*CACHE_RANGE];
         [self fetchJobListForEachRoute:route.routeID andDate:currentDate toDate:endDate forwardCache:isForwardCache];
     }
 }
