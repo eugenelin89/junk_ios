@@ -257,7 +257,7 @@
 
 - (void)updateState
 {
-    [self setButtonState:[DataStoreSingleton sharedInstance].isConnected];
+    //[self setButtonState:[DataStoreSingleton sharedInstance].isConnected];
 }
 
 - (void)reconnected
@@ -270,7 +270,7 @@
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
-    [self setButtonState:NO];
+    //[self setButtonState:NO];
 
     
     [self showContent];
@@ -289,7 +289,7 @@
 {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
-    [self setButtonState:NO];
+    //[self setButtonState:NO];
     
     [self showContent];
 }
@@ -309,7 +309,14 @@
 
 - (IBAction)nextWasPressed:(id)sender
 {
-    [self getJobListForRoute:YES];
+    if(![DataStoreSingleton sharedInstance].isConnected){
+        _currentDate = [DateHelper tomorrow:_currentDate];
+        [DataStoreSingleton sharedInstance].currentDate = _currentDate;
+        [self refreshJobList];
+    }else{
+        [self getJobListForRoute:YES];
+    }
+    
     if (self.currentDate)
     {
         self.dateLabel.text = [DateHelper dateToJobListString:self.currentDate];
@@ -318,7 +325,14 @@
 
 - (IBAction)previousWasPressed:(id)sender
 {
-    [self getJobListForRoute:NO];
+    if(![DataStoreSingleton sharedInstance].isConnected){
+        _currentDate = [DateHelper yesterday:_currentDate];
+        [DataStoreSingleton sharedInstance].currentDate = _currentDate;
+        [self refreshJobList];
+    }else{
+        [self getJobListForRoute:NO];
+    }
+    
     if (self.currentDate)
     {
         self.dateLabel.text = [DateHelper dateToJobListString:self.currentDate];
@@ -327,8 +341,18 @@
 
 -(void)startRefresh
 {
-    [self getJobListForCurrentRoute];
+    
+    if([DataStoreSingleton sharedInstance].isConnected){
+        [self getJobListForCurrentRoute];
+        
+    }else{
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You are currently not connected to JunkNet" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        [av show];
+    }
     [self.refreshControl endRefreshing];
+
+    
+
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout

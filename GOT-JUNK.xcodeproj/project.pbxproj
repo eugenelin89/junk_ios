@@ -22,7 +22,6 @@
 		90B761D119F6E57D00B61D33 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90B7604D19F6E57C00B61D33 /* Main.storyboard */; };
 		90B761D219F6E57D00B61D33 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 90B7605019F6E57C00B61D33 /* InfoPlist.strings */; };
 		90B761D319F6E57D00B61D33 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 90B7605319F6E57C00B61D33 /* InfoPlist.strings */; };
-		90B761D719F6E57D00B61D33 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90B7605B19F6E57C00B61D33 /* Parse.framework */; };
 		90B761D819F6E57D00B61D33 /* APIDataConversionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B7605E19F6E57C00B61D33 /* APIDataConversionHelper.m */; };
 		90B761D919F6E57D00B61D33 /* APIObjectConversionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B7606019F6E57C00B61D33 /* APIObjectConversionHelper.m */; };
 		90B761DA19F6E57D00B61D33 /* FetchHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B7606219F6E57C00B61D33 /* FetchHelper.m */; };
@@ -272,6 +271,9 @@
 		CBB13CD21B4B43D100FC6B54 /* CachedMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB13CD11B4B43D100FC6B54 /* CachedMode.m */; };
 		CBB13CD51B4B43FC00FC6B54 /* OfflineMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB13CD41B4B43FC00FC6B54 /* OfflineMode.m */; };
 		CBE0F3EC1B42FAF60073C82D /* CDJob.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0F3EB1B42FAF60073C82D /* CDJob.m */; };
+		CBEEDB9C1B95006C0005A397 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBEEDB9B1B95006C0005A397 /* Parse.framework */; };
+		CBEEDB9E1B9500A40005A397 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBEEDB9D1B9500A40005A397 /* Bolts.framework */; };
+		CBEEDBA01B9501270005A397 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBEEDB9F1B9501270005A397 /* libsqlite3.dylib */; };
 		E17723BC1522BDF296F07F61 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F768C695B88026F944EDD2 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -309,7 +311,6 @@
 		90B7605119F6E57C00B61D33 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		90B7605419F6E57C00B61D33 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = InfoPlist.strings; sourceTree = "<group>"; };
 		90B7605819F6E57C00B61D33 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flurry.h; path = "GOT-JUNK/Frameworks/Flurry.h"; sourceTree = "<group>"; };
-		90B7605B19F6E57C00B61D33 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = "GOT-JUNK/Frameworks/Parse.framework"; sourceTree = "<group>"; };
 		90B7605D19F6E57C00B61D33 /* APIDataConversionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIDataConversionHelper.h; sourceTree = "<group>"; };
 		90B7605E19F6E57C00B61D33 /* APIDataConversionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIDataConversionHelper.m; sourceTree = "<group>"; };
 		90B7605F19F6E57C00B61D33 /* APIObjectConversionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIObjectConversionHelper.h; sourceTree = "<group>"; };
@@ -658,6 +659,9 @@
 		CBB13CD41B4B43FC00FC6B54 /* OfflineMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineMode.m; sourceTree = "<group>"; };
 		CBE0F3EA1B42FAF60073C82D /* CDJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDJob.h; path = CoreDataStore/CDJob.h; sourceTree = "<group>"; };
 		CBE0F3EB1B42FAF60073C82D /* CDJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDJob.m; path = CoreDataStore/CDJob.m; sourceTree = "<group>"; };
+		CBEEDB9B1B95006C0005A397 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		CBEEDB9D1B9500A40005A397 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		CBEEDB9F1B9501270005A397 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		F96F8057550944CB709C73BF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -666,7 +670,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90B761D719F6E57D00B61D33 /* Parse.framework in Frameworks */,
+				CBEEDBA01B9501270005A397 /* libsqlite3.dylib in Frameworks */,
 				90BB14FF19F5956B005715E4 /* Foundation.framework in Frameworks */,
 				90BB14FD19F59563005715E4 /* UIKit.framework in Frameworks */,
 				90BB14FB19F5955E005715E4 /* MessageUI.framework in Frameworks */,
@@ -680,7 +684,9 @@
 				90BB14EB19F59523005715E4 /* AdSupport.framework in Frameworks */,
 				90BB14E919F5951D005715E4 /* SystemConfiguration.framework in Frameworks */,
 				90BB14E719F5950F005715E4 /* StoreKit.framework in Frameworks */,
+				CBEEDB9C1B95006C0005A397 /* Parse.framework in Frameworks */,
 				9070A5391A3AA74800C41490 /* libFlurry_5.4.0.a in Frameworks */,
+				CBEEDB9E1B9500A40005A397 /* Bolts.framework in Frameworks */,
 				90BB14E519F59509005715E4 /* CoreGraphics.framework in Frameworks */,
 				90BB14E319F59502005715E4 /* libz.1.1.3.dylib in Frameworks */,
 				90BB14E119F594F5005715E4 /* AudioToolbox.framework in Frameworks */,
@@ -701,9 +707,11 @@
 		05BDE4A908CB880E8C95D467 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CBEEDB9F1B9501270005A397 /* libsqlite3.dylib */,
+				CBEEDB9D1B9500A40005A397 /* Bolts.framework */,
+				CBEEDB9B1B95006C0005A397 /* Parse.framework */,
 				9070A5381A3AA74800C41490 /* libFlurry_5.4.0.a */,
 				90B7605819F6E57C00B61D33 /* Flurry.h */,
-				90B7605B19F6E57C00B61D33 /* Parse.framework */,
 				90BB14FE19F5956B005715E4 /* Foundation.framework */,
 				90BB14FC19F59563005715E4 /* UIKit.framework */,
 				90BB14FA19F5955E005715E4 /* MessageUI.framework */,
@@ -1829,6 +1837,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/GOT-JUNK",
 					"$(PROJECT_DIR)/GOT-JUNK/Frameworks",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"${PODS_ROOT}/Headers/Public",
@@ -1881,6 +1890,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/GOT-JUNK",
 					"$(PROJECT_DIR)/GOT-JUNK/Frameworks",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers/Public\"",

@@ -33,6 +33,7 @@
 
 static const NSTimeInterval FETCH_JOBS_REFRESH_INTERVAL = 30;
 static const NSTimeInterval WARNINGMESSAGE_DISPLAY_INTERVAL = 1200;
+static const NSTimeInterval FORWARD_CACHE_INTERVAL = 610; // 10 minutes and 10 seconds. To avoid Forward Caching coinciding with preiodic update of current-day data, we add extra 10 seconds.
 //static const NSTimeInterval MINUTE = 60.0;
 //static const NSTimeInterval POLLING_INTERVAL = 3 * MINUTE;
 
@@ -60,6 +61,7 @@ static const int NumMenusInSection0 = 7;
 {
     NSTimer *dispatchTimer;
     NSTimer *jobListRefreshTimer;
+    NSTimer *forwardCacheTimer;
     UIAlertView *alert;
     NSArray *menus;
     int franchiseIndex_debug_testing;
@@ -109,6 +111,8 @@ static const int NumMenusInSection0 = 7;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterOfflineMode) name:OFFLINE_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterCachedMode) name:CACHED_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayWarningForFetchJobsFailed) name:FETCHJOBLISTFORROUTEFAILED_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resignActive) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
 
 
     
@@ -116,6 +120,8 @@ static const int NumMenusInSection0 = 7;
     //dispatchTimer = [NSTimer scheduledTimerWithTimeInterval:POLLING_INTERVAL target:self selector:@selector(fetchDispatchesByRoute) userInfo:nil repeats:YES];
     
     jobListRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:FETCH_JOBS_REFRESH_INTERVAL target:self selector:@selector(fetchJobListForDefaultRouteAndCurrentDate) userInfo:nil repeats:YES];
+    
+    forwardCacheTimer = [NSTimer scheduledTimerWithTimeInterval:FORWARD_CACHE_INTERVAL target:self selector:@selector(forwardCache) userInfo:nil repeats:YES];
     
     //[[FetchHelper sharedInstance] getAllCachingData];
 
@@ -174,6 +180,27 @@ static const int NumMenusInSection0 = 7;
 - (void)fetchJobListForDefaultRouteAndCurrentDate
 {
     [[FetchHelper sharedInstance] fetchJobListForDefaultRouteAndCurrentDate];
+}
+
+// Triggered by timer to forward-cache jobs.
+-(void)forwardCache
+{
+    [[DataStoreSingleton sharedInstance] forwardCache];
+}
+
+// Triggered by UIApplicationWillResignActiveNotification notification, indicating the app is about to go into background.
+// Deactivate the job list refresh timer when going to background so that when the app returns to foreground it will not cause
+// fetching of currentday jobs at the same time as forward caching.
+-(void)resignActive
+{
+    [jobListRefreshTimer invalidate];
+}
+
+// Triggered by UIApplicationWillEnterForegroundNotification notification, indicating the app is about to return to foreground.
+// When the app returns to foreground, re-activate the fetch-job-refresh timer.
+-(void)enterForeground
+{
+     jobListRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:FETCH_JOBS_REFRESH_INTERVAL target:self selector:@selector(fetchJobListForDefaultRouteAndCurrentDate) userInfo:nil repeats:YES];
 }
 
 - (MFSideMenuContainerViewController *)menuContainerViewController

@@ -21,6 +21,8 @@
 #define LOGINFAILED_NOTIFICATION @"LOGINFAILED_NOTIFICATION"         // attempt to login failed.
 #define JOBSTIMESTAMPUPDATE_NOTIFICATION @"JOBSTIMESTAMPUPDATE_NOTIFICATION" // timestamp updated
 #define FETCHJOBLISTFORROUTEFAILED_NOTIFICATION @"FETCHJOBLISTFORROUTEFAILED_NOTIFICATION" // fetchJobListForRoute:andDate:withAlert failed
+#define CACHE_RANGE 2 // number of days to forward cache
+#define MIN_FORWARDCACHE_INTERVAL 600 // 10 minutes, in seconds
 
 @class Route;
 @class Franchise;
@@ -69,7 +71,6 @@
 @property (nonatomic) BOOL minutesTilAlert;
 
 @property (nonatomic, strong) Job *pushJob;
-@property (nonatomic, strong) NSMutableDictionary *routeJobs;
 @property (nonatomic) BOOL isUserLoggedIn;
 @property (nonatomic) BOOL isConnected;
 @property (nonatomic, strong) NSString *paymentErrors;
@@ -82,7 +83,7 @@
 @property (nonatomic, strong) Job *currentJob;
 @property (nonatomic, strong) Route *filterRoute;
 @property (nonatomic, strong) NSDate *jobsLastUpdateTime;
-
+@property (nonatomic, strong) NSDate *lastForwardCacheTime;
 
 + (DataStoreSingleton *)sharedInstance;
 -(void)addExpense:(Expense *)expense expenseTypeID:(int)et;
@@ -91,9 +92,7 @@
 - (void)setPendingDispatches:(NSInteger)badgeCount;
 - (void)setCurrentJobPaymentID:(NSNumber *)jobID;
 - (void)decrementPendingDispatches;
-- (void)getJobListForCachedCurrentRoute;
 - (void)addJobsList:(NSArray*)jobListArray forRoute:(NSNumber*)routeID;
-- (void)clearRouteJobs;
 
 - (void)parseEnviroDict:(NSString*)responseString;
 - (void)parseExpenseDict:(NSString*)responseString;
@@ -111,6 +110,8 @@
 - (Job*)getJob:(int)jobId;
 - (Job*)mapJob:(NSDictionary*)dict; // Map a NSDictionary to Job
 -(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID;
+-(void)removeJobsInLocalPersistentStoreForDate:(NSDate*)fromDate toDate:(NSDate*)toDate forRoute:(NSNumber*)routeID;
+-(void)forwardCache;
 
 
 @end

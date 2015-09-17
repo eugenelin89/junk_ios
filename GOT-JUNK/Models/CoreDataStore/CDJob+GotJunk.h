@@ -25,6 +25,8 @@
 
 +(void)deleteJobsForDate:(NSDate*)date forRoute:(NSNumber*)routeID inManagedContext:(NSManagedObjectContext*)context;
 
++(void)deleteJobsForDate:(NSDate*)fromDate toDate:(NSDate*)toDate forRoute:(NSNumber*)routeID inManagedContext:(NSManagedObjectContext*)context;
+
 +(Job *) toJobWithCDJob:(CDJob *)cdjob;
 
 @end

@@ -142,7 +142,7 @@ BOOL isJobListLoaded = NO;
 {
     if (![DataStoreSingleton sharedInstance].isConnected)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You are in offline Mode and you have no cached enviromental data" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You are currently not connected to JunkNet and you have no cached enviromental data" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
         [av show];
     }
     else
@@ -397,7 +397,7 @@ viewForHeaderInSection: (NSInteger) section
     }
     else
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You are in offline Mode.  You cannot create new expenses in offline mode" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You are are currently not connected to JunkNet.  You cannot create new expenses offline." message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
         [av show];
     }
 }

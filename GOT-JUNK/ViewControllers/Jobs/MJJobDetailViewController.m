@@ -526,7 +526,7 @@
 
 - (void) showOfflineIndicator
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You are in offline Mode.  You cannot perform this action" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You are currently not connected to JunkNet.  You cannot perform this action" message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
     [av show];
 }
 
