@@ -11,8 +11,8 @@
 
 static NSString * const API_PUBLIC_KEY = @"6773328730";
 static NSString * const API_PRIVATE_KEY = @"2062497429";
-static NSString * const kBASEURL = @"https://api.1800gotjunk.com/"; // Don't forget the slash at the end!  kBASEURL gets used in generating of MD5 checksum and without the slash authentication will fail.
-//static NSString * const kBASEURL = @"https://apidev1.1800gotjunk.com/";  // TEST API
+//static NSString * const kBASEURL = @"https://api.1800gotjunk.com/"; // Don't forget the slash at the end!  kBASEURL gets used in generating of MD5 checksum and without the slash authentication will fail.
+static NSString * const kBASEURL = @"https://apidev1.1800gotjunk.com/";  // TEST API
 
 @implementation HTTPClientSingleton
 

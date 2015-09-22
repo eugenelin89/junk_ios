@@ -1199,7 +1199,11 @@
     [httpManager setParameterEncoding:AFJSONParameterEncoding];
 
     NSString *path = [NSString stringWithFormat:@"v1/UpdateJobDispatchStatus?sessionID=%@", sessionID];
-    [httpManager putPath:path parameters:job.apiJob
+    
+    // Parameters for the HTTP PUT request.
+    NSDictionary* params = [NSDictionary dictionaryWithObjects:@[[job.dispatchID stringValue],[job.jobID stringValue]] forKeys:@[@"dispatchID",@"jobID"]];
+    
+    [httpManager putPath:path parameters:params
                 success:^(AFHTTPRequestOperation *operation, id responseObject)
                     {
                         [self endNetworkActivity];
