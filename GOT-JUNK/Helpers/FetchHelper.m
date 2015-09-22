@@ -1170,6 +1170,7 @@
                         if (operation.responseString)
                         {
                             [job appendCommentsAndJunkLocation:comment];
+                            [[DataStoreSingleton sharedInstance] updateJob:job];
 
                             [self sendNotification:@"UpdateNoteCompleteSuccessful"];
                         }

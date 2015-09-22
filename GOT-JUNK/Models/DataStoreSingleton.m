@@ -946,6 +946,11 @@
     return nil;
 }
 
+-(void)updateJob:(Job*)job
+{
+    [CDJob job:job inManagedObjectContext:self.managedObjectContext];
+}
+
 -(void)forwardCache
 {
     // Forward Cache

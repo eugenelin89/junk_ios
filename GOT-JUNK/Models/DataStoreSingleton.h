@@ -108,6 +108,7 @@
 - (void)incrementCurrentNotificationPageNumber;
 - (int)getCurrentNotificationPageNumber;
 - (Job*)getJob:(int)jobId;
+- (void)updateJob:(Job*)job;
 - (Job*)mapJob:(NSDictionary*)dict; // Map a NSDictionary to Job
 -(void)removeJobsInLocalPersistentStoreForDate:(NSDate*) date forRoute:(NSNumber*)routeID;
 -(void)removeJobsInLocalPersistentStoreForDate:(NSDate*)fromDate toDate:(NSDate*)toDate forRoute:(NSNumber*)routeID;
