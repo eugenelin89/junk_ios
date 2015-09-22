@@ -832,7 +832,6 @@
 
     [newJob parseOutLocationComments];
     
-    newJob.apiJob = dict;
     
     return newJob;
 }

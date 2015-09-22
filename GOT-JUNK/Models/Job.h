@@ -94,7 +94,6 @@ typedef NSUInteger JobType;
 @property (nonatomic) BOOL isCentrallyBilled;
 @property (nonatomic) BOOL isCashedOut;
 
-@property (nonatomic, strong) NSDictionary *apiJob;
 @property (nonatomic, strong) NSString *junkLocationComments;
 @property (nonatomic, strong) NSString *jobComments;
 @property (nonatomic, strong) MapPoint *mapPoint;
