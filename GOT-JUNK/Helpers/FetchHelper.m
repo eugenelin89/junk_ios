@@ -1157,11 +1157,12 @@
     [self startNeworkActivity];
     
     NSString *sessionID = [[UserDefaultsSingleton sharedInstance] getUserSessionID];
-    [job.apiJob setValue:comment forKey:@"jobComments"];
+    
+    NSDictionary* params = [NSDictionary dictionaryWithObjects:@[comment] forKeys:@[@"jobComments"]];
 
     NSString *path = [NSString stringWithFormat:@"v1/Job/%d/AppendJobComments?&sessionID=%@", [job.jobID integerValue], sessionID];
     [httpManager setParameterEncoding:AFJSONParameterEncoding];
-    [httpManager putPath:path parameters:job.apiJob
+    [httpManager putPath:path parameters:params
                  success:^(AFHTTPRequestOperation *operation, id responseObject)
                     {
                         [self endNetworkActivity];
@@ -1169,7 +1170,7 @@
                         if (operation.responseString)
                         {
                             [job appendCommentsAndJunkLocation:comment];
-                            [job.apiJob setValue:job.comments forKey:@"jobComments"];
+                            [[DataStoreSingleton sharedInstance] updateJob:job];
 
                             [self sendNotification:@"UpdateNoteCompleteSuccessful"];
                         }
@@ -1199,7 +1200,11 @@
     [httpManager setParameterEncoding:AFJSONParameterEncoding];
 
     NSString *path = [NSString stringWithFormat:@"v1/UpdateJobDispatchStatus?sessionID=%@", sessionID];
-    [httpManager putPath:path parameters:job.apiJob
+    
+    // Parameters for the HTTP PUT request.
+    NSDictionary* params = [NSDictionary dictionaryWithObjects:@[[job.dispatchID stringValue],[job.jobID stringValue]] forKeys:@[@"dispatchID",@"jobID"]];
+    
+    [httpManager putPath:path parameters:params
                 success:^(AFHTTPRequestOperation *operation, id responseObject)
                     {
                         [self endNetworkActivity];

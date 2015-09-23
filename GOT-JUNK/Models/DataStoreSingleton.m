@@ -832,7 +832,6 @@
 
     [newJob parseOutLocationComments];
     
-    newJob.apiJob = dict;
     
     return newJob;
 }
@@ -945,6 +944,11 @@
     }
     
     return nil;
+}
+
+-(void)updateJob:(Job*)job
+{
+    [CDJob job:job inManagedObjectContext:self.managedObjectContext];
 }
 
 -(void)forwardCache
