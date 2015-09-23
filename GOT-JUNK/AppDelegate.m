@@ -139,6 +139,11 @@
     @try
     {
         CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+        
+        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [locationManager requestWhenInUseAuthorization];
+        }
+        
         [locationManager startUpdatingLocation];
 
         CLLocation *location = locationManager.location;
