@@ -50,7 +50,7 @@
     cdjob.routeID = job.routeID; // no null value
     cdjob.clientName = [job.clientName isKindOfClass:[NSString class]] ? job.clientName : nil;
     cdjob.jobDate = job.jobDate; // no null value
-    cdjob.callAheadStatus = [cdjob.callAheadStatus isKindOfClass:[NSString class]] ? job.callAheadStatus : nil;
+    cdjob.callAheadStatus = [job.callAheadStatus isKindOfClass:[NSString class]] ? job.callAheadStatus : nil;
     cdjob.callAheadTime = job.callAheadTime; // always nil
     cdjob.clientCompany = [job.clientCompany isKindOfClass:[NSString class]] ? job.clientCompany : nil;
     cdjob.clientEmail = [job.clientEmail isKindOfClass:[NSString class]] ? job.clientEmail : nil;

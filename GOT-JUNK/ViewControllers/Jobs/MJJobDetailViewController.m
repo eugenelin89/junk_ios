@@ -327,6 +327,7 @@
         default:
             break;
     }
+    [[DataStoreSingleton sharedInstance] updateJob:self.currentJob];
     
     [self.callStatusButton setTitle:[actionSheet buttonTitleAtIndex:buttonIndex] forState:UIControlStateNormal];
 }
