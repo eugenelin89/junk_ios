@@ -140,7 +140,9 @@
     {
         CLLocationManager *locationManager = [[CLLocationManager alloc] init];
         
+        // for iOS 8+, need to explicitly make location service request in code.
         if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            // Requesting for location service when the app is in foreground.
             [locationManager requestWhenInUseAuthorization];
         }
         
