@@ -327,7 +327,7 @@
         default:
             break;
     }
-    [[DataStoreSingleton sharedInstance] updateJob:self.currentJob];
+    [[DataStoreSingleton sharedInstance] updateJob:self.currentJob]; // update callahead status in CoreData
     
     [self.callStatusButton setTitle:[actionSheet buttonTitleAtIndex:buttonIndex] forState:UIControlStateNormal];
 }
