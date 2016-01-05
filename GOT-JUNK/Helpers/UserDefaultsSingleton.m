@@ -67,6 +67,33 @@
 
 #pragma mark - Retrieval
 
+-(void)setLastKnownLocation:(CLLocationCoordinate2D)coordinate
+{
+    NSNumber *lat = [NSNumber numberWithDouble:coordinate.latitude];
+    NSNumber *lon = [NSNumber numberWithDouble:coordinate.longitude];
+    NSDictionary *userLocation=@{@"lat":lat,@"long":lon};
+    
+    [[NSUserDefaults standardUserDefaults] setObject:userLocation forKey:@"lastKnownLocation"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(CLLocationCoordinate2D) getLastKnownLocation
+{
+    NSDictionary *userLoc=[[NSUserDefaults standardUserDefaults] objectForKey:@"lastKnownLocation"];
+
+    CLLocationDegrees lat = 0.0;
+    CLLocationDegrees lon = 0.0;
+    
+    if(userLoc && [userLoc isKindOfClass:[NSDictionary class]]){
+        lat = [userLoc objectForKey:@"lat"] && [[userLoc objectForKey:@"lat"] isKindOfClass:[NSNumber class]] ? [[userLoc objectForKey:@"lat"] doubleValue] : 0.0;
+        lon = [userLoc objectForKey:@"lat"] && [[userLoc objectForKey:@"lat"] isKindOfClass:[NSNumber class]] ? lat = [[userLoc objectForKey:@"lat"] doubleValue] : 0.0;
+    }
+    
+    return CLLocationCoordinate2DMake(lat, lon);
+}
+
+
+
 -(void)setDeviceID:(NSString*)deviceID
 {
     [_userDefaults setObject:deviceID forKey:@"uniqueDeviceID"];

@@ -985,6 +985,8 @@
     
     
     // App Version
+    NSString *appVersion = [UserDefaultsSingleton appVersion];
+    
 }
 
 @end

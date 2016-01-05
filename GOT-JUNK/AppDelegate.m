@@ -155,6 +155,7 @@
                   longitude:location.coordinate.longitude
          horizontalAccuracy:location.horizontalAccuracy
            verticalAccuracy:location.verticalAccuracy];
+        [[UserDefaultsSingleton sharedInstance] setLastKnownLocation:location.coordinate];
     }
     @catch (NSException* exception)
     {
@@ -252,7 +253,7 @@
     // Using Device Token as Unique Identifier
     NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
-    [[UserDefaultsSingleton sharedInstance] setDefaultFranchiseName:token];
+    [[UserDefaultsSingleton sharedInstance] setDeviceID:token];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

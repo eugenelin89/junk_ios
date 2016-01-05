@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CLLocationManagerDelegate.h>
+
 
 @interface UserDefaultsSingleton : NSObject
 {
@@ -82,5 +84,8 @@
 
 -(void)setDeviceID:(NSString*)deviceID;
 -(NSString*)getDeviceID;
+-(void)setLastKnownLocation:(CLLocationCoordinate2D)coordinate;
+-(CLLocationCoordinate2D) getLastKnownLocation;
+
 
 @end
