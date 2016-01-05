@@ -145,7 +145,6 @@
             // Requesting for location service when the app is in foreground.
             [locationManager requestWhenInUseAuthorization];
         }
-        locationManager.delegate = self;
         
         [locationManager startUpdatingLocation];
         
