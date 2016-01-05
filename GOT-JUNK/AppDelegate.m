@@ -23,7 +23,6 @@
 
 @implementation AppDelegate
 
-@synthesize locationManager = _locationManager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -139,19 +138,19 @@
 {
     @try
     {
-        self.locationManager = [[CLLocationManager alloc] init];
+        CLLocationManager *locationManager = [[CLLocationManager alloc] init];
         
         // for iOS 8+, need to explicitly make location service request in code.
-        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
             // Requesting for location service when the app is in foreground.
-            [self.locationManager requestWhenInUseAuthorization];
+            [locationManager requestWhenInUseAuthorization];
         }
-        self.locationManager.delegate = self;
+        locationManager.delegate = self;
         
-        [self.locationManager startUpdatingLocation];
+        [locationManager startUpdatingLocation];
         
 
-        CLLocation *location = self.locationManager.location;
+        CLLocation *location = locationManager.location;
         [Flurry setLatitude:location.coordinate.latitude
                   longitude:location.coordinate.longitude
          horizontalAccuracy:location.horizontalAccuracy
@@ -165,14 +164,7 @@
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager
-     didUpdateLocations:(NSArray *)locations
-{
-    NSLog(@"Location Updated");
-    NSLog(@"Location: %@", manager.location.description);
 
-    
-}
 
 - (void)setWindows
 {
