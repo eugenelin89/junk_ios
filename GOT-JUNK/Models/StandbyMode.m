@@ -23,6 +23,9 @@
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:STANDBY_NOTIFICATION object:nil];
     self.modeType = StandbyModeType;
+    
+    [DataStoreSingleton addEvent:@"EnterStandbyMode"];
+    
     return self;
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DataStoreSingleton.h"
 
 #define ACTIVE_NOTIFICATION @"ACTIVE_NOTIFICATION"
 #define STANDBY_NOTIFICATION @"STANDBY_NOTIFICATION"

@@ -23,6 +23,8 @@
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:ACTIVE_NOTIFICATION object:nil];
     self.modeType = ActiveModeType;
+
+    [DataStoreSingleton addEvent:@"EnterActiveMode"];
     return self;
 }
 

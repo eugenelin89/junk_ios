@@ -8,6 +8,9 @@
 
 #import "DataStoreSingleton.h"
 #import <CoreLocation/CoreLocation.h>
+#import <Parse/Parse.h>
+#import <Parse/PFObject+Subclass.h>
+#import <Parse/PFGeoPoint.h>
 #import "AppDelegate.h"
 #import "Job.h"
 #import "Expense.h"
@@ -982,11 +985,21 @@
     NSString *userID = [[UserDefaultsSingleton sharedInstance] getUserLogin];
     
     // Last Known Location
-    
+    CLLocationCoordinate2D lastKnownLocation = [[UserDefaultsSingleton sharedInstance] getLastKnownLocation];
+    PFGeoPoint *geopoint = [PFGeoPoint geoPointWithLatitude:lastKnownLocation.latitude longitude:lastKnownLocation.longitude];
     
     // App Version
     NSString *appVersion = [UserDefaultsSingleton appVersion];
     
+    PFObject *event = [PFObject objectWithClassName:@"Event"];
+    [event setObject:eventName forKey:@"eventName"];
+    [event setObject:udId forKey:@"UDID"];
+    [event setObject:routeId forKey:@"routeId"];
+    [event setObject:franchiseID forKey:@"franchiseId"];
+    [event setObject:userID forKey:@"userId"];
+    [event setObject:geopoint forKey:@"lastKnownLocation"];
+    [event setObject:appVersion forKey:@"appVersion"];
+    [event saveEventually];
 }
 
 @end

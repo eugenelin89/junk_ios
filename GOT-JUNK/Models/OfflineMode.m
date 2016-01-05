@@ -25,6 +25,9 @@
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:OFFLINE_NOTIFICATION object:nil];
     self.modeType = OfflineModeType;
+    
+    [DataStoreSingleton addEvent:@"EnterOfflineMode"];
+
     return self;
 }
 
