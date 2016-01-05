@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "Job.h"
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
+#import <CoreLocation/CLLocationManagerDelegate.h>
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate, CLLocationManagerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) CLLocationManager *locationManager;
 
 @end

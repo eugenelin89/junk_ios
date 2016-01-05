@@ -66,6 +66,26 @@
 }
 
 #pragma mark - Retrieval
+
+-(void)setDeviceID:(NSString*)deviceID
+{
+    [_userDefaults setObject:deviceID forKey:@"uniqueDeviceID"];
+    [_userDefaults synchronize];
+}
+
+-(NSString*)getDeviceID
+{
+    NSString *obj = [_userDefaults objectForKey:@"uniqueDeviceID"];
+    if (obj && ![obj isEqualToString:@""])
+    {
+        return obj;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
 - (NSString*)getServerDate
 {
     //return @"ea7c7bcc-84a5-4bf7-85fe-ee863f12db05";

@@ -23,6 +23,8 @@
 #import "Mode.h"
 #import "ActiveMode.h"
 #import "FetchHelper.h"
+#import "UserDefaultsSingleton.h"
+
 
 @interface DataStoreSingleton()
 @property (nonatomic, strong) id<Mode> mode;
@@ -965,5 +967,24 @@
     dispatch_async(bq,asyncBlock);
 }
 
++(void)addEvent:(NSString *)eventName
+{
+    // UDID
+    NSString* udId = [[UserDefaultsSingleton sharedInstance] getDeviceID];
+    
+    // Route ID
+    NSString* routeId = [[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] stringValue];
+    
+    // Franchise ID
+    NSString* franchiseID = [[[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseID] stringValue];
+    
+    // User ID
+    NSString *userID = [[UserDefaultsSingleton sharedInstance] getUserLogin];
+    
+    // Last Known Location
+    
+    
+    // App Version
+}
 
 @end

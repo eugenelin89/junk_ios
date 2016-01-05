@@ -80,4 +80,7 @@
 - (BOOL)didUserLogout;
 - (NSDictionary*)getUserObject;
 
+-(void)setDeviceID:(NSString*)deviceID;
+-(NSString*)getDeviceID;
+
 @end

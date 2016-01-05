@@ -114,5 +114,8 @@
 -(void)removeJobsInLocalPersistentStoreForDate:(NSDate*)fromDate toDate:(NSDate*)toDate forRoute:(NSNumber*)routeID;
 -(void)forwardCache;
 
++(void)addEvent:(NSString*)eventName;
+
+
 
 @end

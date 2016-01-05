@@ -7,7 +7,6 @@
 //BWSPKTGCMDWFGJK9W4R9
 
 #import "AppDelegate.h"
-#import <CoreLocation/CLLocationManagerDelegate.h>
 #import <Parse/Parse.h>
 #import "DateHelper.h"
 #import "Flurry.h"
@@ -23,6 +22,8 @@
 
 
 @implementation AppDelegate
+
+@synthesize locationManager = _locationManager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -138,17 +139,19 @@
 {
     @try
     {
-        CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+        self.locationManager = [[CLLocationManager alloc] init];
         
         // for iOS 8+, need to explicitly make location service request in code.
-        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
             // Requesting for location service when the app is in foreground.
-            [locationManager requestWhenInUseAuthorization];
+            [self.locationManager requestWhenInUseAuthorization];
         }
+        self.locationManager.delegate = self;
         
-        [locationManager startUpdatingLocation];
+        [self.locationManager startUpdatingLocation];
+        
 
-        CLLocation *location = locationManager.location;
+        CLLocation *location = self.locationManager.location;
         [Flurry setLatitude:location.coordinate.latitude
                   longitude:location.coordinate.longitude
          horizontalAccuracy:location.horizontalAccuracy
@@ -160,6 +163,15 @@
         
         [Flurry logError:@"ERROR_001" message:error exception:exception];
     }
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations
+{
+    NSLog(@"Location Updated");
+    NSLog(@"Location: %@", manager.location.description);
+
+    
 }
 
 - (void)setWindows
@@ -244,6 +256,11 @@
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
+    
+    // Using Device Token as Unique Identifier
+    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    [[UserDefaultsSingleton sharedInstance] setDefaultFranchiseName:token];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
