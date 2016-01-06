@@ -38,6 +38,9 @@
     [Flurry startSession:@"BWSPKTGCMDWFGJK9W4R9"];
     [Flurry setDebugLogEnabled:YES];
 
+    [DataStoreSingleton addEvent:@"Launch"];
+
+    
     //LIVE Parse appID and Key
      	
     [Parse setApplicationId:@"G7PdwnD2JF8tuKFKlSJ46Lb7MM8jV1JoSgWYBepV" clientKey:@"qyGI54YdFFj2UDMs4ztNQUXS8bcEOQXidTNDKFXs"];
@@ -63,7 +66,7 @@
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
-    [DataStoreSingleton addEvent:@"ResignActive"];
+    [DataStoreSingleton addEvent:@"ResignForegroundActive"];
 
 }
 
@@ -89,7 +92,7 @@
     [userDefaults flushUserAcknowledgedDispatches];
     [userDefaults setDateAcknowledgedDispatchesCleared:[NSDate date]];
     
-    [DataStoreSingleton addEvent:@"BecomeActive"];
+    [DataStoreSingleton addEvent:@"BecomeForegroundActive"];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

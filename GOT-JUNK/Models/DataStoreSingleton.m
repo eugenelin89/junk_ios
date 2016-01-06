@@ -972,17 +972,18 @@
 
 +(void)addEvent:(NSString *)eventName
 {
+    
     // UDID
-    NSString* udId = [[UserDefaultsSingleton sharedInstance] getDeviceID];
+    NSString* udId = [[UserDefaultsSingleton sharedInstance] getDeviceID]?[[UserDefaultsSingleton sharedInstance] getDeviceID]:@"";
     
     // Route ID
-    NSString* routeId = [[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] stringValue];
+    NSString* routeId = [[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID]?[[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] stringValue]:@"";
     
     // Franchise ID
-    NSString* franchiseID = [[[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseID] stringValue];
+    NSString* franchiseID = [[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseID]?[[[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseID] stringValue]:@"";
     
     // User ID
-    NSString *userID = [[UserDefaultsSingleton sharedInstance] getUserLogin];
+    NSString *userID = [[UserDefaultsSingleton sharedInstance] getUserLogin]? [[UserDefaultsSingleton sharedInstance] getUserLogin] :@"";
     
     // Last Known Location
     CLLocationCoordinate2D lastKnownLocation = [[UserDefaultsSingleton sharedInstance] getLastKnownLocation];
@@ -999,7 +1000,9 @@
     [event setObject:userID forKey:@"userId"];
     [event setObject:geopoint forKey:@"lastKnownLocation"];
     [event setObject:appVersion forKey:@"appVersion"];
+    [event setObject:[NSDate date] forKey:@"eventDateTime"];
     [event saveEventually];
+     
 }
 
 @end
