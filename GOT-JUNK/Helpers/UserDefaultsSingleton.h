@@ -86,6 +86,9 @@
 -(NSString*)getDeviceID;
 -(void)setLastKnownLocation:(CLLocationCoordinate2D)coordinate;
 -(CLLocationCoordinate2D) getLastKnownLocation;
+-(void)setInstallationID:(NSString*)installationID;
+-(NSString *)getInstallationID;
+
 
 
 @end

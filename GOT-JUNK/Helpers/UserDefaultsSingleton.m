@@ -92,7 +92,25 @@
     return CLLocationCoordinate2DMake(lat, lon);
 }
 
+-(void)setInstallationID:(NSString*)installationID
+{
+    // first, check if installationID already exist.  If so, we just ignore and use the old one.
+    NSString *iid =[[NSUserDefaults standardUserDefaults] objectForKey:@"installationID"];
+    if(!iid || [iid isEqualToString:@""]){
+        [_userDefaults setObject:installationID forKey:@"installationID"];
+        [_userDefaults synchronize];
+    }
+}
 
+-(NSString *)getInstallationID
+{
+    NSString *iid =[[NSUserDefaults standardUserDefaults] objectForKey:@"installationID"];
+    if(iid && ![iid isEqualToString:@""]){
+        return iid;
+    }else{
+        return nil;
+    }
+}
 
 -(void)setDeviceID:(NSString*)deviceID
 {

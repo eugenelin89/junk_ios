@@ -989,6 +989,9 @@
     CLLocationCoordinate2D lastKnownLocation = [[UserDefaultsSingleton sharedInstance] getLastKnownLocation];
     PFGeoPoint *geopoint = [PFGeoPoint geoPointWithLatitude:lastKnownLocation.latitude longitude:lastKnownLocation.longitude];
     
+    // Installation ID
+    NSString* installationId = [[UserDefaultsSingleton sharedInstance] getInstallationID]?[[UserDefaultsSingleton sharedInstance] getInstallationID]:@"";
+    
     // App Version
     NSString *appVersion = [UserDefaultsSingleton appVersion];
     
@@ -1001,6 +1004,8 @@
     [event setObject:geopoint forKey:@"lastKnownLocation"];
     [event setObject:appVersion forKey:@"appVersion"];
     [event setObject:[NSDate date] forKey:@"eventDateTime"];
+    [event setObject:installationId forKey:@"installationId"];
+    
     [event saveEventually];
      
 }

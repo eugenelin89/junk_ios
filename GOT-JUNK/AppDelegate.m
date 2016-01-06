@@ -33,6 +33,9 @@
     }
 #endif
 
+    // Create a guid and make it installation ID if not already exist.
+    // This will help for tracking.
+    [[UserDefaultsSingleton sharedInstance] setInstallationID:[[NSProcessInfo processInfo] globallyUniqueString]];
 
     [Flurry setCrashReportingEnabled:YES];
     [Flurry startSession:@"BWSPKTGCMDWFGJK9W4R9"];
@@ -55,6 +58,7 @@
     [self setLocationCoordinates];
     
     [self setWindows];
+    
     
     [DataStoreSingleton sharedInstance]; // make sure DataStoreSingleton gets initialized.
 
