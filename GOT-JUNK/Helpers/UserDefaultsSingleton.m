@@ -86,7 +86,7 @@
     
     if(userLoc && [userLoc isKindOfClass:[NSDictionary class]]){
         lat = [userLoc objectForKey:@"lat"] && [[userLoc objectForKey:@"lat"] isKindOfClass:[NSNumber class]] ? [[userLoc objectForKey:@"lat"] doubleValue] : 0.0;
-        lon = [userLoc objectForKey:@"lat"] && [[userLoc objectForKey:@"lat"] isKindOfClass:[NSNumber class]] ? lat = [[userLoc objectForKey:@"lat"] doubleValue] : 0.0;
+        lon = [userLoc objectForKey:@"long"] && [[userLoc objectForKey:@"long"] isKindOfClass:[NSNumber class]] ? [[userLoc objectForKey:@"long"] doubleValue] : 0.0;
     }
     
     return CLLocationCoordinate2DMake(lat, lon);
