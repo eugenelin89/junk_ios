@@ -66,6 +66,71 @@
 }
 
 #pragma mark - Retrieval
+
+-(void)setLastKnownLocation:(CLLocationCoordinate2D)coordinate
+{
+    NSNumber *lat = [NSNumber numberWithDouble:coordinate.latitude];
+    NSNumber *lon = [NSNumber numberWithDouble:coordinate.longitude];
+    NSDictionary *userLocation=@{@"lat":lat,@"long":lon};
+    
+    [[NSUserDefaults standardUserDefaults] setObject:userLocation forKey:@"lastKnownLocation"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(CLLocationCoordinate2D) getLastKnownLocation
+{
+    NSDictionary *userLoc=[[NSUserDefaults standardUserDefaults] objectForKey:@"lastKnownLocation"];
+
+    CLLocationDegrees lat = 0.0;
+    CLLocationDegrees lon = 0.0;
+    
+    if(userLoc && [userLoc isKindOfClass:[NSDictionary class]]){
+        lat = [userLoc objectForKey:@"lat"] && [[userLoc objectForKey:@"lat"] isKindOfClass:[NSNumber class]] ? [[userLoc objectForKey:@"lat"] doubleValue] : 0.0;
+        lon = [userLoc objectForKey:@"long"] && [[userLoc objectForKey:@"long"] isKindOfClass:[NSNumber class]] ? [[userLoc objectForKey:@"long"] doubleValue] : 0.0;
+    }
+    
+    return CLLocationCoordinate2DMake(lat, lon);
+}
+
+-(void)setInstallationID:(NSString*)installationID
+{
+    // first, check if installationID already exist.  If so, we just ignore and use the old one.
+    NSString *iid =[[NSUserDefaults standardUserDefaults] objectForKey:@"installationID"];
+    if(!iid || [iid isEqualToString:@""]){
+        [_userDefaults setObject:installationID forKey:@"installationID"];
+        [_userDefaults synchronize];
+    }
+}
+
+-(NSString *)getInstallationID
+{
+    NSString *iid =[[NSUserDefaults standardUserDefaults] objectForKey:@"installationID"];
+    if(iid && ![iid isEqualToString:@""]){
+        return iid;
+    }else{
+        return nil;
+    }
+}
+
+-(void)setDeviceID:(NSString*)deviceID
+{
+    [_userDefaults setObject:deviceID forKey:@"uniqueDeviceID"];
+    [_userDefaults synchronize];
+}
+
+-(NSString*)getDeviceID
+{
+    NSString *obj = [_userDefaults objectForKey:@"uniqueDeviceID"];
+    if (obj && ![obj isEqualToString:@""])
+    {
+        return obj;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
 - (NSString*)getServerDate
 {
     //return @"ea7c7bcc-84a5-4bf7-85fe-ee863f12db05";

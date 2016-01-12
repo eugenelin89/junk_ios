@@ -8,6 +8,9 @@
 
 #import "DataStoreSingleton.h"
 #import <CoreLocation/CoreLocation.h>
+#import <Parse/Parse.h>
+#import <Parse/PFObject+Subclass.h>
+#import <Parse/PFGeoPoint.h>
 #import "AppDelegate.h"
 #import "Job.h"
 #import "Expense.h"
@@ -23,6 +26,8 @@
 #import "Mode.h"
 #import "ActiveMode.h"
 #import "FetchHelper.h"
+#import "UserDefaultsSingleton.h"
+
 
 @interface DataStoreSingleton()
 @property (nonatomic, strong) id<Mode> mode;
@@ -965,5 +970,44 @@
     dispatch_async(bq,asyncBlock);
 }
 
++(void)addEvent:(NSString *)eventName
+{
+    
+    // UDID
+    NSString* udId = [[UserDefaultsSingleton sharedInstance] getDeviceID]?[[UserDefaultsSingleton sharedInstance] getDeviceID]:@"";
+    
+    // Route ID
+    NSString* routeId = [[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID]?[[[UserDefaultsSingleton sharedInstance] getUserDefaultRouteID] stringValue]:@"";
+    
+    // Franchise ID
+    NSString* franchiseID = [[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseID]?[[[UserDefaultsSingleton sharedInstance] getUserDefaultFranchiseID] stringValue]:@"";
+    
+    // User ID
+    NSString *userID = [[UserDefaultsSingleton sharedInstance] getUserLogin]? [[UserDefaultsSingleton sharedInstance] getUserLogin] :@"";
+    
+    // Last Known Location
+    CLLocationCoordinate2D lastKnownLocation = [[UserDefaultsSingleton sharedInstance] getLastKnownLocation];
+    PFGeoPoint *geopoint = [PFGeoPoint geoPointWithLatitude:lastKnownLocation.latitude longitude:lastKnownLocation.longitude];
+    
+    // Installation ID
+    NSString* installationId = [[UserDefaultsSingleton sharedInstance] getInstallationID]?[[UserDefaultsSingleton sharedInstance] getInstallationID]:@"";
+    
+    // App Version
+    NSString *appVersion = [UserDefaultsSingleton appVersion];
+    
+    PFObject *event = [PFObject objectWithClassName:@"Event"];
+    [event setObject:eventName forKey:@"eventName"];
+    [event setObject:udId forKey:@"UDID"];
+    [event setObject:routeId forKey:@"routeId"];
+    [event setObject:franchiseID forKey:@"franchiseId"];
+    [event setObject:userID forKey:@"userId"];
+    [event setObject:geopoint forKey:@"lastKnownLocation"];
+    [event setObject:appVersion forKey:@"appVersion"];
+    [event setObject:[NSDate date] forKey:@"eventDateTime"];
+    [event setObject:installationId forKey:@"installationId"];
+    
+    [event saveEventually];
+     
+}
 
 @end

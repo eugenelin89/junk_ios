@@ -23,6 +23,9 @@
     // Send Notification
     [[NSNotificationCenter defaultCenter] postNotificationName:CACHED_NOTIFICATION object:nil];
     self.modeType = CachedModeType;
+    
+    [DataStoreSingleton addEvent:@"EnterCachedMode"];
+    
     return self;
 }
 

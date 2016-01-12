@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CLLocationManagerDelegate.h>
+
 
 @interface UserDefaultsSingleton : NSObject
 {
@@ -79,5 +81,14 @@
 - (void)setDateAcknowledgedDispatchesCleared:(NSDate *)clearDate;
 - (BOOL)didUserLogout;
 - (NSDictionary*)getUserObject;
+
+-(void)setDeviceID:(NSString*)deviceID;
+-(NSString*)getDeviceID;
+-(void)setLastKnownLocation:(CLLocationCoordinate2D)coordinate;
+-(CLLocationCoordinate2D) getLastKnownLocation;
+-(void)setInstallationID:(NSString*)installationID;
+-(NSString *)getInstallationID;
+
+
 
 @end

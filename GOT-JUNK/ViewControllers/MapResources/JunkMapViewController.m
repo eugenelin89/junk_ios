@@ -159,6 +159,9 @@
     region.span.latitudeDelta = spanX;
     region.span.longitudeDelta = spanY;
     [self.myMapView setRegion:region animated:YES];
+    
+
+    
 }
 
 -(void)refreshResourcesList
@@ -294,6 +297,9 @@
         
         self.userLocation = userLocation;
         [self zoomTo];
+        
+        // update lastKnownLocation here
+        [[UserDefaultsSingleton sharedInstance] setLastKnownLocation:userLocation.coordinate];
     }
 }
 

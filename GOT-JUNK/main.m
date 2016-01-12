@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Flurry.h"
 #import "AppDelegate.h"
+#import "DataStoreSingleton.h"
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +28,8 @@ int main(int argc, char *argv[])
 
             NSLog(@"Uncaught exception: %@", exception.description);
             NSLog(@"Stack trace: %@", [exception callStackSymbols]);
+            [DataStoreSingleton addEvent:@"Crash"];
+
         }
     }
     

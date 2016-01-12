@@ -7,7 +7,6 @@
 //BWSPKTGCMDWFGJK9W4R9
 
 #import "AppDelegate.h"
-#import <CoreLocation/CLLocationManagerDelegate.h>
 #import <Parse/Parse.h>
 #import "DateHelper.h"
 #import "Flurry.h"
@@ -24,6 +23,7 @@
 
 @implementation AppDelegate
 
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 #if DEBUG
@@ -33,11 +33,17 @@
     }
 #endif
 
+    // Create a guid and make it installation ID if not already exist.
+    // This will help for tracking.
+    [[UserDefaultsSingleton sharedInstance] setInstallationID:[[NSProcessInfo processInfo] globallyUniqueString]];
 
     [Flurry setCrashReportingEnabled:YES];
     [Flurry startSession:@"BWSPKTGCMDWFGJK9W4R9"];
     [Flurry setDebugLogEnabled:YES];
 
+    [DataStoreSingleton addEvent:@"Launch"];
+
+    
     //LIVE Parse appID and Key
      	
     [Parse setApplicationId:@"G7PdwnD2JF8tuKFKlSJ46Lb7MM8jV1JoSgWYBepV" clientKey:@"qyGI54YdFFj2UDMs4ztNQUXS8bcEOQXidTNDKFXs"];
@@ -53,6 +59,7 @@
     
     [self setWindows];
     
+    
     [DataStoreSingleton sharedInstance]; // make sure DataStoreSingleton gets initialized.
 
     return YES;
@@ -62,6 +69,9 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    [DataStoreSingleton addEvent:@"ResignForegroundActive"];
+
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -86,12 +96,14 @@
     [userDefaults flushUserAcknowledgedDispatches];
     [userDefaults setDateAcknowledgedDispatchesCleared:[NSDate date]];
     
-
+    [DataStoreSingleton addEvent:@"BecomeForegroundActive"];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
+    [DataStoreSingleton addEvent:@"Terminate"];
+
 }
 
 - (void)setupNotifications:(UIApplication*)application
@@ -147,12 +159,14 @@
         }
         
         [locationManager startUpdatingLocation];
+        
 
         CLLocation *location = locationManager.location;
         [Flurry setLatitude:location.coordinate.latitude
                   longitude:location.coordinate.longitude
          horizontalAccuracy:location.horizontalAccuracy
            verticalAccuracy:location.verticalAccuracy];
+        [[UserDefaultsSingleton sharedInstance] setLastKnownLocation:location.coordinate];
     }
     @catch (NSException* exception)
     {
@@ -161,6 +175,8 @@
         [Flurry logError:@"ERROR_001" message:error exception:exception];
     }
 }
+
+
 
 - (void)setWindows
 {
@@ -244,6 +260,11 @@
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
+    
+    // Using Device Token as Unique Identifier
+    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    [[UserDefaultsSingleton sharedInstance] setDeviceID:token];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
