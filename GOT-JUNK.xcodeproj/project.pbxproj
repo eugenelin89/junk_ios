@@ -270,9 +270,9 @@
 		CBB13CCF1B4B427200FC6B54 /* StandbyMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB13CCE1B4B427200FC6B54 /* StandbyMode.m */; };
 		CBB13CD21B4B43D100FC6B54 /* CachedMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB13CD11B4B43D100FC6B54 /* CachedMode.m */; };
 		CBB13CD51B4B43FC00FC6B54 /* OfflineMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB13CD41B4B43FC00FC6B54 /* OfflineMode.m */; };
+		CBBF2A1E1DDB8842001517A3 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBF2A1D1DDB8842001517A3 /* Bolts.framework */; };
+		CBBF2A201DDB885F001517A3 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBF2A1F1DDB885F001517A3 /* Parse.framework */; };
 		CBE0F3EC1B42FAF60073C82D /* CDJob.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0F3EB1B42FAF60073C82D /* CDJob.m */; };
-		CBEEDB9C1B95006C0005A397 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBEEDB9B1B95006C0005A397 /* Parse.framework */; };
-		CBEEDB9E1B9500A40005A397 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBEEDB9D1B9500A40005A397 /* Bolts.framework */; };
 		CBEEDBA01B9501270005A397 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBEEDB9F1B9501270005A397 /* libsqlite3.dylib */; };
 		E17723BC1522BDF296F07F61 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F768C695B88026F944EDD2 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -657,10 +657,10 @@
 		CBB13CD11B4B43D100FC6B54 /* CachedMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CachedMode.m; sourceTree = "<group>"; };
 		CBB13CD31B4B43FC00FC6B54 /* OfflineMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineMode.h; sourceTree = "<group>"; };
 		CBB13CD41B4B43FC00FC6B54 /* OfflineMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineMode.m; sourceTree = "<group>"; };
+		CBBF2A1D1DDB8842001517A3 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		CBBF2A1F1DDB885F001517A3 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		CBE0F3EA1B42FAF60073C82D /* CDJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDJob.h; path = CoreDataStore/CDJob.h; sourceTree = "<group>"; };
 		CBE0F3EB1B42FAF60073C82D /* CDJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDJob.m; path = CoreDataStore/CDJob.m; sourceTree = "<group>"; };
-		CBEEDB9B1B95006C0005A397 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
-		CBEEDB9D1B9500A40005A397 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		CBEEDB9F1B9501270005A397 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		F96F8057550944CB709C73BF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -680,13 +680,13 @@
 				90BB14F319F59542005715E4 /* CoreLocation.framework in Frameworks */,
 				90BB14F119F5953C005715E4 /* CoreText.framework in Frameworks */,
 				90BB14EF19F59532005715E4 /* AddressBook.framework in Frameworks */,
+				CBBF2A201DDB885F001517A3 /* Parse.framework in Frameworks */,
 				90BB14ED19F5952B005715E4 /* Security.framework in Frameworks */,
 				90BB14EB19F59523005715E4 /* AdSupport.framework in Frameworks */,
 				90BB14E919F5951D005715E4 /* SystemConfiguration.framework in Frameworks */,
 				90BB14E719F5950F005715E4 /* StoreKit.framework in Frameworks */,
-				CBEEDB9C1B95006C0005A397 /* Parse.framework in Frameworks */,
 				9070A5391A3AA74800C41490 /* libFlurry_5.4.0.a in Frameworks */,
-				CBEEDB9E1B9500A40005A397 /* Bolts.framework in Frameworks */,
+				CBBF2A1E1DDB8842001517A3 /* Bolts.framework in Frameworks */,
 				90BB14E519F59509005715E4 /* CoreGraphics.framework in Frameworks */,
 				90BB14E319F59502005715E4 /* libz.1.1.3.dylib in Frameworks */,
 				90BB14E119F594F5005715E4 /* AudioToolbox.framework in Frameworks */,
@@ -707,9 +707,9 @@
 		05BDE4A908CB880E8C95D467 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CBBF2A1F1DDB885F001517A3 /* Parse.framework */,
+				CBBF2A1D1DDB8842001517A3 /* Bolts.framework */,
 				CBEEDB9F1B9501270005A397 /* libsqlite3.dylib */,
-				CBEEDB9D1B9500A40005A397 /* Bolts.framework */,
-				CBEEDB9B1B95006C0005A397 /* Parse.framework */,
 				9070A5381A3AA74800C41490 /* libFlurry_5.4.0.a */,
 				90B7605819F6E57C00B61D33 /* Flurry.h */,
 				90BB14FE19F5956B005715E4 /* Foundation.framework */,
@@ -1355,7 +1355,7 @@
 		90BB14AC19F593CF005715E4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "David Block";
 				TargetAttributes = {
 					90BB14B319F593CF005715E4 = {
@@ -1767,6 +1767,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: 1-800-GOT-JUNK/ LLC";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1810,6 +1811,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: 1-800-GOT-JUNK/ LLC";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

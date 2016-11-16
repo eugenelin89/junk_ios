@@ -169,7 +169,7 @@
     NSLog(@"LOGIN SUCCESSFUL. RESPONSE: %@", response);
     
     NSError *err = nil;
-    PFInstallation *currentParseInstallation = [PFInstallation currentInstallation];
+    //PFInstallation *currentParseInstallation = [PFInstallation currentInstallation];
     NSMutableDictionary *dataDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&err];
     // access the dictionaries
     
@@ -230,6 +230,7 @@
         
         NSString *franchiseAll =[NSString stringWithFormat:@"franchise%@ALL", defaultFranchiseID];
         [channelsArray addObject:franchiseAll];
+        /*
         [currentParseInstallation addUniqueObjectsFromArray:channelsArray forKey:@"channels"];
         
         [currentParseInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
@@ -242,7 +243,7 @@
                 {
                     NSLog(@"Parse Errir: %@", error);
                 }
-            }];
+            }];*/
         
         Franchise * franchise = [[Franchise alloc] init];
         franchise.franchiseName = franchiseName;

@@ -46,7 +46,7 @@
     
     //LIVE Parse appID and Key
      	
-    [Parse setApplicationId:@"G7PdwnD2JF8tuKFKlSJ46Lb7MM8jV1JoSgWYBepV" clientKey:@"qyGI54YdFFj2UDMs4ztNQUXS8bcEOQXidTNDKFXs"];
+    //[Parse setApplicationId:@"G7PdwnD2JF8tuKFKlSJ46Lb7MM8jV1JoSgWYBepV" clientKey:@"qyGI54YdFFj2UDMs4ztNQUXS8bcEOQXidTNDKFXs"];
     
     // Dev/Staging Parse appID and Key
     
