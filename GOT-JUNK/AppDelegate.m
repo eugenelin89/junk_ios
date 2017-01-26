@@ -55,9 +55,9 @@
     
 
     [Parse initializeWithConfiguration:[ParseClientConfiguration configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
-        configuration.applicationId = @"G7PdwnD2JF8tuKFKlSJ46Lb7MM8jV1JoSgWYBepV";
-        configuration.clientKey = @"qyGI54YdFFj2UDMs4ztNQUXS8bcEOQXidTNDKFXs";
-        configuration.server = @"https://mobijunkparse.herokuapp.com/parse";
+        configuration.clientKey = @"abc";
+        configuration.applicationId = @"3d1bb2c1-2561-43c6-8386-e10bebbe7727";
+        configuration.server = @"https://api.parse.buddy.com/parse/";
     }]];
     
     [self setupNotifications:application];
