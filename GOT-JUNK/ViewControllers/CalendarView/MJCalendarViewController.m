@@ -387,7 +387,7 @@
     [f setNumberStyle:NSNumberFormatterDecimalStyle];
     NSNumber * myNumber = [f numberFromString:job.jobDuration];
     int i = [myNumber integerValue]/30;
-    CGSize retval = CGSizeMake(240, 80* i-1);
+    CGSize retval = CGSizeMake(240, 80* i);
     retval.height += 0; retval.width += 30; return retval;
 }
 

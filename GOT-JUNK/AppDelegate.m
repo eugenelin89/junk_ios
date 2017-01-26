@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
+#import <Bolts/Bolts.h>
 #import "DateHelper.h"
 #import "Flurry.h"
 #import "MJCalendarViewController.h"
@@ -46,12 +47,18 @@
     
     //LIVE Parse appID and Key
      	
-    [Parse setApplicationId:@"G7PdwnD2JF8tuKFKlSJ46Lb7MM8jV1JoSgWYBepV" clientKey:@"qyGI54YdFFj2UDMs4ztNQUXS8bcEOQXidTNDKFXs"];
+    //[Parse setApplicationId:@"G7PdwnD2JF8tuKFKlSJ46Lb7MM8jV1JoSgWYBepV" clientKey:@"qyGI54YdFFj2UDMs4ztNQUXS8bcEOQXidTNDKFXs"];
     
     // Dev/Staging Parse appID and Key
     
     //[Parse setApplicationId:@"DHDzAGrkmxNCBeoqgjm4PvnBNIiUWwXuuIWNFZJT"  clientKey:@"TqWYkY5b7hJEqhOCR9UKspE8Ndq7FoIXwZTk82AC"];
     
+
+    [Parse initializeWithConfiguration:[ParseClientConfiguration configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
+        configuration.clientKey = @"abc";
+        configuration.applicationId = @"3d1bb2c1-2561-43c6-8386-e10bebbe7727";
+        configuration.server = @"https://api.parse.buddy.com/parse/";
+    }]];
     
     [self setupNotifications:application];
 
@@ -256,11 +263,17 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+    PFObject* test = [PFObject objectWithClassName:@"TEST"];
+    test[@"name"] = @"FooBar";
+    [test saveInBackground];
+    
     // Store the deviceToken in the current installation and save it to Parse.
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
+
     
+
     // Using Device Token as Unique Identifier
     NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];

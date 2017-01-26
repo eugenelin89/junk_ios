@@ -230,6 +230,7 @@
         
         NSString *franchiseAll =[NSString stringWithFormat:@"franchise%@ALL", defaultFranchiseID];
         [channelsArray addObject:franchiseAll];
+        
         [currentParseInstallation addUniqueObjectsFromArray:channelsArray forKey:@"channels"];
         
         [currentParseInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
